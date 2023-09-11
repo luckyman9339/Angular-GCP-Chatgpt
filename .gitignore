@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 
 # Files to Ignore
-environment/
+src/environments/
