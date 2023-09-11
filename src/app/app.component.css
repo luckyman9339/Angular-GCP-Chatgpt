@@ -1,0 +1,131 @@
+    /* Styles for the hamburger menu */
+    .hamburger-menu {
+        position: relative;
+        width: 0;
+        block-size: 5px;
+        transition: 0.5s;
+    }
+
+    .menu-icon {
+        cursor: pointer;
+        padding: 15px;
+    }
+
+    .bar {
+        width: 30px;
+        height: 3px;
+        background-color: #333;
+        margin: 6px 0;
+        transition: 0.4s;
+    }
+
+    .active .bar:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .active .bar:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    .menu-items {
+        position: relative;
+        top: 0;
+        left: -300px;
+        width: 250px;
+        /* Width of the menu */
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        transition: left 0.5s;
+    }
+
+    .active .menu-items {
+        transform: translate(125%, 0%);
+    }
+
+    .menu-items a {
+        display: block;
+        padding: 10px 20px;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .active.screen {
+        display: block;
+        filter: blur(5px) brightness(70%);
+        /* Adjust values as needed */
+    }
+
+    /* Media query to show/hide menu on small screens */
+    @media screen and (max-width: 768px) {
+        .hamburger-menu.active {
+            width: 300px;
+            /* Adjust the width as needed */
+        }
+
+        .menu-items.active {
+            left: 0;
+            /* Slide it into view */
+        }
+    }
+    .page-container {
+        height: 100%;
+        background: #fafafa;
+        color: #000;
+    
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .page-container a {
+        color: inherit;
+        text-decoration: none;
+    }
+    
+    .page-container header {
+        background: #74c4dc;
+        color: #fff;
+    
+        padding: 10px 24px;
+        
+        font-size: 14px;
+        font-weight: bold;
+    
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .page-container header .menu-button {
+        margin-right: 24px;
+        min-width: 1;
+        padding: 0;
+        line-height: normal;
+    }
+    
+    .page-container header .app-title {
+        padding: 0 3px;
+    }
+    
+    .page-container .sidenav-container {
+        flex: 1;
+    }
+    
+    .page-container .sidenav-container .sidenav {
+        min-width: 240px;
+    }
+    
+    .page-container .sidenav-container .sidenav a {
+        display: block;
+        padding: 6px 24px;
+        width: 100%;
+        text-align: left;
+    }
+    
+    .page-container .sidenav-container main {
+        padding: 18px 24px;
+    }
+    
+    
