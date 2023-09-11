@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { SharedServiceService } from './shared-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -27,10 +28,6 @@ export class AppComponent implements OnInit {
   // setData() {
   //   this.sharedService.setSharedData({ message: 'Hello from MyComponent!' });
   // }
-
-  test() {
-    console.log('This is the shared service', this.sharedService);
-  }
 
   onSidenavClick(): void{
     this.isMenuOpen = false;

@@ -86,7 +86,7 @@
     }
     
     .page-container header {
-        background: #74c4dc;
+        background: #00d0ff;
         color: #fff;
     
         padding: 10px 24px;
@@ -126,6 +126,10 @@
     
     .page-container .sidenav-container main {
         padding: 18px 24px;
+    }
+
+    .page-container .button {
+        padding: 100px 100px;
     }
     
     
