@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ClickOutsideDirective } from 'src/app/clickoutsidedirective';
 import { AppUiModule } from './app-ui.module';
 import { SharedServiceService } from './shared-service.service';
-
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,6 +26,7 @@ import { MainComponent } from './main/main.component';
     FormsModule,
     BrowserAnimationsModule,
     AppUiModule,
+    HttpClientModule
   ],
   providers: [SharedServiceService],
   bootstrap: [AppComponent]

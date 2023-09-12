@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { SharedServiceService } from '../shared-service.service';
+import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,21 +15,13 @@ export class LoginComponent implements OnInit {
   user_validate = new FormControl(true); // makes sure that user is within the list below
   wrong_password = new FormControl(true);
 
-  // list of users
-  users = [
-    {
-      email: "Russell",
-      password: "Ho"
-    },
-    {
-      email: "Kevin",
-      password: "Ho"
-    }
-  ] 
-
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private sharedService: SharedServiceService) {
+  constructor(
+    private fb: FormBuilder,
+    private sharedService: SharedServiceService,
+    private route: Router
+    ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -52,11 +45,11 @@ export class LoginComponent implements OnInit {
       this.password_validation.setValue(false)
       return false;
     }
-    for (let i = 0; i < this.users.length; i++) {
+    for (let i = 0; i < environment.users.length; i++) {
       // Acquire email username (first name)
       const user_name = this.loginForm.value.email[0].toUpperCase() + this.loginForm.value.email.slice(1);
-      if (user_name === this.users[i].email) {
-        if (this.loginForm.value.password === this.users[i].password) {
+      if (user_name === environment.users[i].email) {
+        if (this.loginForm.value.password === environment.users[i].password) {
           console.log('Welcome user');
           this.email_validation.setValue(true)
           this.password_validation.setValue(true)
@@ -77,6 +70,7 @@ export class LoginComponent implements OnInit {
     this.sharedService.updateData({ isLoggedIn: true }); // push logged in true
     this.sharedService.updateUserName(name); // storing username
     // console.log('Shared service', this.sharedService);
+    this.route.navigate(['/main'])
   }
 
   // submit button

@@ -1,0 +1,14 @@
+<div class="container">
+    <mat-card class="response-card">
+      <div class="response-text" #responseCardContainer>
+        <span class="typing-text" [@fadeInOut]>{{ response }}</span>
+      </div>
+    </mat-card>
+    <div class="input-container">
+      <mat-form-field class="input-field">
+        <input matInput type="text" (input)="chatInput($event)" placeholder="Enter text to chat with AI">
+      </mat-form-field>
+      <button mat-raised-button style = "padding: 20px; margin-bottom: 20px" (click)="submit()">Submit</button>
+    </div>
+  </div>
+  
