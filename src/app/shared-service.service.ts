@@ -85,14 +85,21 @@ export class SharedServiceService implements OnInit{
 
   private someDataSubject = new BehaviorSubject<any>(false);
   someData$ = this.someDataSubject.asObservable();
-  sharedData = {};
+  sharedData = {
+    firstName:'',
+    encoder:''
+  };
   // specifically for showing hamburger menu after logging in
   updateData(data: any) {
     this.someDataSubject.next(data);
   }
+  // method for remembering user first name
   updateUserName(name: string) {
+    const encodedName = btoa(name);
+    console.log('This is the encodedName', encodedName);
     this.sharedData = {
-      firstName: name
+      firstName: name,
+      encoder: encodedName
     }
   }
 }

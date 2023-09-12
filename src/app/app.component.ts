@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { SharedServiceService } from './shared-service.service';
-import { Router } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +12,11 @@ export class AppComponent implements OnInit {
   title = 'friday';
   isMenuOpen: boolean = false;
   isLoggedIn: boolean = false;
+  encodedURL: string = '';
 
   constructor(private sharedService: SharedServiceService) { }
   ngOnInit(): void {
+    this.encodedURL = atob(this.sharedService.sharedData.firstName)
     // Subscribe to changes in the shared data
     this.sharedService.someData$.subscribe((data) => {
       if (data && data.isLoggedIn) {

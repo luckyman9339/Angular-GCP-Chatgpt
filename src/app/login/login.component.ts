@@ -31,6 +31,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
       console.log('Log in page reached');
+      this.sharedService.updateData({ isLoggedIn: false });
+      this.sharedService.someData$.subscribe((data) => {
+        console.log('This is the data:', data);
+      })
   }
 
   // validation function
@@ -70,7 +74,7 @@ export class LoginComponent implements OnInit {
     this.sharedService.updateData({ isLoggedIn: true }); // push logged in true
     this.sharedService.updateUserName(name); // storing username
     // console.log('Shared service', this.sharedService);
-    this.route.navigate(['/main'])
+    this.route.navigate(['/main/' + this.sharedService.sharedData.encoder])
   }
 
   // submit button

@@ -39,14 +39,15 @@
   class="sidenav" 
   (click)="onSidenavClick()"
   >
-    <a mat-button style="padding-block: 30px" routerLink="/main">Virtual Assistant</a>
+    <a mat-button style="padding-block: 30px" routerLink="/main/+[encodedURL]">Virtual Assistant</a>
     <a mat-button style="padding-block: 30px" routerLink="/page2">Page 2</a>
     <a mat-button style="padding-block: 30px" routerLink="/page3">Page 3</a>
-    <a mat-button style="padding-block: 30px" routerLink="/page4">Page 4</a>
+    <a mat-button style="padding-block: 30px" routerLink="/">Sign Out</a>
   </mat-sidenav>
-  <mat-sidenav-content>
-      <router-outlet></router-outlet>
+  <mat-sidenav-content class="content">
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
 </div>
 <router-outlet *ngIf="!isLoggedIn"></router-outlet>

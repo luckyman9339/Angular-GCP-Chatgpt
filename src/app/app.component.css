@@ -97,6 +97,9 @@
         display: flex;
         justify-content: space-between;
     }
+    .page-container .content {
+        background: #fff;
+    }
     
     .page-container header .menu-button {
         margin-right: 24px;
