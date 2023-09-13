@@ -18,8 +18,9 @@
         <br>
         <br>
           <div class="wrap-input100 validate-input" [ngClass]="{'alert-validate': loginForm.value.email.length <= 3}">
-            <input class="input100" type="text" formControlName="email" placeholder="First Name">
-            <span class="focus-input100"></span>
+              <input class="input100" type="text" (input)="nameInput($event)" formControlName="email" placeholder="First Name">
+              <span class="focus-input100"></span>
+              <mat-icon *ngIf="icon_show" class="input-icon">verified_user</mat-icon>  
           </div>
           <div *ngIf="!email_validation.value" class="alert-validate">Valid First Name required</div>
 
@@ -27,6 +28,7 @@
             <input class="input100" type="password" formControlName="password" placeholder="Password">
             <span class="focus-input100"></span>
           </div>
+
           <div *ngIf="password_validation.value !== true" class="alert-validate">Valid Password required</div>
           <div *ngIf="wrong_password.value !== true" class="alert-validate">Password Incorrect, please double-check</div>
           <div *ngIf="user_validate.value !== true" class="alert-validate">You are not authorized to use this web application</div>

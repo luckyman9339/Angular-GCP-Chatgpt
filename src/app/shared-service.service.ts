@@ -1,12 +1,14 @@
 import { Injectable, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SharedServiceService implements OnInit{
+export class SharedServiceService implements OnInit {
+  private userLoggedOut = new Subject<void>();
+  public userLoggedOut$ = this.userLoggedOut.asObservable();
   // // constructing custom JSON object
   // aiObject:JSON;
   ai = [
@@ -23,14 +25,14 @@ export class SharedServiceService implements OnInit{
       instructions: "Please act like Tony Stark's AI Edith when replying to the user's prompts, limit responses to less than 50 words"
     }
   ]
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     // this.aiObject=<JSON>this.ai;
   }
-  ngOnInit(): void {  }
+  ngOnInit(): void { }
   open_apikey = environment.OPENAI_API_KEY;
   model: string = 'gpt-3.5-turbo';
 
-  apiUrl:string = 'https://api.openai.com/v1/chat/completions'; // set openAI API Url
+  apiUrl: string = 'https://api.openai.com/v1/chat/completions'; // set openAI API Url
   openaioptions: Object = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -40,7 +42,7 @@ export class SharedServiceService implements OnInit{
   // method for finding the correct system prompt
   modelFinder(assistant: string) {
     const foundIndex = this.ai.findIndex(item => item.assistant === assistant);
-  
+
     if (foundIndex !== -1) {
       // The assistant was found, and foundIndex contains the index
       const instructions = this.ai[foundIndex].instructions;
@@ -53,14 +55,14 @@ export class SharedServiceService implements OnInit{
 
     }
   }
-  
+
   // method for calling openaiChat
-  openaiChat (prompt: string, assistant: string, model: string = this.model): Promise<any> {
+  openaiChat(prompt: string, assistant: string, model: string = this.model): Promise<any> {
     const instructions = this.modelFinder(assistant); // find corresponding prompts first
     const requestData = {
       model: model,
       messages: [
-        { role: 'system', content: instructions},
+        { role: 'system', content: instructions },
         { role: 'user', content: prompt }
       ]
 
@@ -86,8 +88,8 @@ export class SharedServiceService implements OnInit{
   private someDataSubject = new BehaviorSubject<any>(false);
   someData$ = this.someDataSubject.asObservable();
   sharedData = {
-    firstName:'',
-    encoder:''
+    firstName: '',
+    encoder: ''
   };
   // specifically for showing hamburger menu after logging in
   updateData(data: any) {
@@ -96,10 +98,14 @@ export class SharedServiceService implements OnInit{
   // method for remembering user first name
   updateUserName(name: string) {
     const encodedName = btoa(name);
-    console.log('This is the encodedName', encodedName);
+    // console.log('This is the encodedName', encodedName);
     this.sharedData = {
       firstName: name,
       encoder: encodedName
     }
+  }
+  // method that logs out user
+  logOutUser() {
+    this.userLoggedOut.next();
   }
 }
