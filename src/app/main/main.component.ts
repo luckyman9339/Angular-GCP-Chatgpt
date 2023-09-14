@@ -33,13 +33,16 @@ export class MainComponent implements OnInit, OnDestroy {
     private ngZone: NgZone,
   ) { }
   @ViewChild('responseCardContainer', { static: false }) responseCardContainer?: ElementRef;
-  input: string = '';
+  @ViewChild('inputText', { static: true}) inputElement?:ElementRef; // for placeholder
+  typingInterval:any; // Declare a class property to store interval ID
+  voice_input: boolean = true; // controls icon change between voice input & typing
+  stop_icon: boolean = false; // controls stop button icon
+  stop_typing: boolean = false;
+  input: string = ''; // typed respone from user
   response: string = ''; // initialize response string
   recognition: any; // for speech recognition
   model_ai: string = 'Jarvis';
-  send_command: boolean = false; // decides whether or not to send command
-  // user_input: string = ''; // user_input
-  // private _command:string = '';
+  send_command: boolean = false; // flag that decides whether or not to send command
   listenCommand: string = '';
 
   generateRandomResponse(): string {
@@ -60,6 +63,8 @@ export class MainComponent implements OnInit, OnDestroy {
     return responses[randomIndex];
   }
   ngOnInit(): void {
+    // Initialize data-placeholder attribute
+    this.renderer.setAttribute(this.inputElement?.nativeElement, 'data-placeholder', 'Enter text to chat with AI');
     this.response = this.generateRandomResponse();
     // Initialize speech recognition
     this.recognition = new (window as any).webkitSpeechRecognition();
@@ -74,6 +79,7 @@ export class MainComponent implements OnInit, OnDestroy {
           if (this.send_command === true) {
             console.log('Final transcript: ', transcript); // transcript that is final (that should be submitted to chat)
             // place this.chat here
+            // update this.input to display the values the user has entered through voice command
             this.send_command = false;
           }
         } else {
@@ -81,6 +87,7 @@ export class MainComponent implements OnInit, OnDestroy {
           // this.listenCommand = transcript;
           if (this.model_ai.toLowerCase() === transcript.toLowerCase()) { // if value is equal to name of model_ai
             console.log('I hear you loud and clear sir');
+            this.voice_input = true;
             this.send_command = true;
           }
           // console.log('Interim transcript: ', transcript); // transcript that is constantly being typed out
@@ -92,9 +99,17 @@ export class MainComponent implements OnInit, OnDestroy {
   // Function to simulate typing animation
   typeResponse(response: string) {
     // console.log('Response container', this.responseCardContainer)
+    this.stop_typing = false; // Initialize stop_typing to false
     this.response = ''; // Clear the response first
     let index = 0;
+    
     const typingInterval = setInterval(() => {
+      this.stop_icon = true;
+      if (this.stop_typing) { // check the stop_typing flag
+        clearInterval(this.typingInterval); // Stops the animation
+        this.stop_icon = false;
+        return;
+      }
       if (index < response.length) {
         this.response += response.charAt(index);
         index++;
@@ -111,6 +126,7 @@ export class MainComponent implements OnInit, OnDestroy {
         });
       } else {
         clearInterval(typingInterval); // Stop the animation when done
+        this.stop_icon = false;
       }
     }, 25); // Adjust the interval to control typing speed
   }
@@ -129,12 +145,26 @@ export class MainComponent implements OnInit, OnDestroy {
 
   // Chatbox for OpenAI
   chatInput(event: Event) {
-    this.input = (event.target as HTMLInputElement).value;
+    this.input = (event.target as HTMLInputElement).textContent || '';
+    // console.log('This is the input value', this.input);
+  }
+
+  // Stop text generation
+  stop() {
+    this.stop_typing = true;
+    if (this.typingInterval) {
+      clearInterval(this.typingInterval);
+    }
   }
 
   submit() {
+    this.stop_typing = false;
     // console.log('This is the input value:', this.input);
     this.chat(this.input, this.model_ai);
+  }
+  // switching voice inputs when user clicks on edit text button
+  inputSwitch(){
+    this.voice_input = false;
   }
   // Destroy the speech recognition element
   ngOnDestroy(): void {

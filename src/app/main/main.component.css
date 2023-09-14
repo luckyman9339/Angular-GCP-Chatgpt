@@ -50,6 +50,10 @@
     display: flex;
     align-items: center;
   }
+  .input-text:empty:before {
+    content:attr(data-placeholder);
+    color:#ccc;
+  }
 
   .input-text {
     margin-left:40px;

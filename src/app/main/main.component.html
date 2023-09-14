@@ -6,12 +6,21 @@
     </mat-card>
     <div style="margin-bottom:30px" class="input-container">
       <button mat-raised-button style="padding: 10px; height:40px">
-        <mat-icon style="padding:10px; margin-left:8px">mic</mat-icon>
+        <mat-icon *ngIf="voice_input" style="padding:10px; margin-left:8px">mic</mat-icon>
+        <mat-icon *ngIf="!voice_input" style="padding:10px; margin-left:8px">settings_voice</mat-icon>
       </button>
       <div class="input-field">
-        <input class="input-text" type="text" (input)="chatInput($event)" placeholder="Enter text to chat with AI">
+        <div class="input-text" 
+            #inputText
+            contenteditable="true"
+            type="text" 
+            (input)="chatInput($event)" 
+            [textContent]="input"
+            (click)="inputSwitch()">
+        </div>
       </div>
-      <button mat-raised-button style = "padding: 20px" (click)="submit()">Submit</button>
+      <button *ngIf="!stop_icon" mat-raised-button style = "padding: 20px" (click)="submit()">Submit</button>
+      <button *ngIf="stop_icon" mat-raised-button style = "padding: 20px" (click)="stop()">Stop</button>
     </div>
   </div>
   
