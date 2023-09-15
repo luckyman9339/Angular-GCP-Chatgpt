@@ -80,3 +80,17 @@
     margin-right: 10px;
   }
   
+  .hidden {
+    visibility: hidden;
+    position: absolute;
+  }
+  
+  .left-bottom {
+    margin: 0; /* Remove default margin */
+    align-self: flex-start; /* Align to the left within the card */
+    margin-top:100px;
+    border:none;
+    outline:none;
+    background:none;
+  } 
+

@@ -53,8 +53,8 @@ export class AppComponent implements OnInit {
   //     this.cdr.detectChanges();
   // }
 
-  // url parser method
-  urlParser(url: string) {
+  // url parser method (can return string or null)
+  urlParser(url: string):any {
     const firstSlash = url.indexOf('/');
     if (firstSlash !== -1) {
       const secondSlash = url.indexOf('/', firstSlash + 1) // start the search from the next character from where the first slash was found

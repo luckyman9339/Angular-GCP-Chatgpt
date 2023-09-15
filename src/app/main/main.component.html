@@ -3,9 +3,16 @@
       <div class="response-text" #responseCardContainer>
         <span class="typing-text" [@fadeInOut]>{{ response }}</span>
       </div>
+      <button class="left-bottom" (click)="silence()">
+        <mat-icon *ngIf="voice_output">volume_up</mat-icon>
+        <mat-icon *ngIf="!voice_output">volume_off</mat-icon>
+      </button>
     </mat-card>
     <div style="margin-bottom:30px" class="input-container">
-      <button mat-raised-button style="padding: 10px; height:40px">
+      <button *ngIf="isMuted" mat-raised-button style="padding: 10px; height:40px" (click)="mute_off()">
+        <mat-icon style="padding:10px; margin-left:8px">mic_off</mat-icon>
+      </button>
+      <button *ngIf="!isMuted" mat-raised-button style="padding: 10px; height:40px" (click)="mute()">
         <mat-icon *ngIf="voice_input" style="padding:10px; margin-left:8px">mic</mat-icon>
         <mat-icon *ngIf="!voice_input" style="padding:10px; margin-left:8px">settings_voice</mat-icon>
       </button>
@@ -23,4 +30,5 @@
       <button *ngIf="stop_icon" mat-raised-button style = "padding: 20px" (click)="stop()">Stop</button>
     </div>
   </div>
-  
+  <audio id="audioPlayer" class="hidden" controls></audio>
+  <!-- <button (click)="fetchAudio()">Fetch Audio</button>   -->

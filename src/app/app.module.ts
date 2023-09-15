@@ -17,7 +17,7 @@ import { MainComponent } from './main/main.component';
     AppComponent,
     LoginComponent,
     ClickOutsideDirective,
-    MainComponent
+    MainComponent,
   ],
   imports: [
     BrowserModule,
