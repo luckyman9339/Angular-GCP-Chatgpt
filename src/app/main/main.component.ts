@@ -45,14 +45,14 @@ export class MainComponent implements OnInit, OnDestroy {
   input: string = ''; // typed respone from user
   response: string = ''; // initialize response string
   recognition: any; // for speech recognition
-  model_ai: string = 'Friday';
-  language: string = 'en-gb'; // 'en-US' for English. Use 'zh-TW' for Taiwan Chinese.
+  model_ai: string = '電腦';
+  language: string = 'zh-TW'; // 'en-US' for English. Use 'zh-TW' for Taiwan Chinese.
   send_command: boolean = false; // flag that decides whether or not to send command
   listenCommand: string = '';
   converter = Converter({ from: 'cn', to: 'tw' }) //  to translate from cn to tw chinese
   voice_output: boolean = true;
-  // variables for voice
-  model_name: string = 'en-GB-Neural2-C' // take a look: https://cloud.google.com/text-to-speech/docs/voices
+  // variables for voice en-GB-Neural2-C
+  model_name: string = 'cmn-TW-Wavenet-A' // take a look: https://cloud.google.com/text-to-speech/docs/voices
   speed = '1.3';
   pitch = '-2.0';
 
@@ -175,7 +175,11 @@ export class MainComponent implements OnInit, OnDestroy {
   // API function call
   async chat(prompt: string, ai: string) {
     const response = await this.sharedService.openaiChat(prompt, ai);
-    this.response = response.choices[0].message.content;
+    if (this.language === 'zh-TW') {
+      this.response = this.converter(response.choices[0].message.content)
+    } else {
+      this.response = response.choices[0].message.content;
+    }
     this.fetchAudio(this.response); // response from ChatGPT (and voice)
     // // Trigger the typing animation
     // this.typeResponse(this.response);

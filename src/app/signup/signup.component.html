@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Signup</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="signup.component.css">
+</head>
+<body>
+  <div class="limiter">
+    <div class="container-signup100">
+      <div class="wrap-signup100">
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup100-form validate-form">
+          <span class="signup100-form-title">
+            Account Signup
+          </span>
+        <br>
+        <br>
+        <br>
+        <div class="wrap-input100 validate-input" [ngClass]="{'alert-validate': signupForm.value.firstName.length <= 3}">
+            <input class="input100" type="text" formControlName="firstName" placeholder="First Name">
+            <span class="focus-input100"></span>
+          </div>
+          <div class="wrap-input100 validate-input" [ngClass]="{'alert-validate': signupForm.value.email.length <= 3}">
+              <input class="input100" type="text" formControlName="email" placeholder="Email">
+              <span class="focus-input100"></span> 
+          </div>
+          <div *ngIf="!email_validation.value" class="alert-validate">Valid Email required</div>
+
+          <div class="wrap-input100 validate-input" [ngClass]="{'alert-validate': signupForm.value.password.length <= 3}">
+            <input class="input100" type="password" formControlName="password" placeholder="Password">
+            <span class="focus-input100"></span>
+          </div>
+
+          <div *ngIf="password_validation.value !== true" class="alert-validate">Valid Password required</div>
+          <div *ngIf="registration_fail.value" class="alert-validate">Registration has failed because number of users has exceeded the limit. Please contact Russell</div>
+          <!-- <div *ngIf="wrong_password.value !== true && !icon_show" class="alert-validate">You have not yet registered for this web application</div> -->
+          <a routerLink="/">Log In</a>
+          <div class="container-signup100-form-btn">
+            <button class="signup100-form-btn" type="submit">
+              Register
+            </button>
+          </div>
+          <!-- <div class="text-center p-t-45 p-b-4">
+            <span class="txt1">
+              Forgot your password?
+            </span>
+          </div>
+          <div class="text-center">
+            <span class="txt1">
+              Don't have an account?
+            </span>
+          </div> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+

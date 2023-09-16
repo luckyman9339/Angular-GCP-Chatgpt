@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { SharedServiceService } from '../shared-service.service';
 import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,11 +17,13 @@ export class LoginComponent implements OnInit {
   wrong_password = new FormControl(true);
   icon_show: boolean = false;
   loginForm: FormGroup;
+  firstNames: string[] = []; // API retrieved list of user first names
 
   constructor(
     private fb: FormBuilder,
     private sharedService: SharedServiceService,
-    private route: Router
+    private route: Router,
+    private httpClient: HttpClient
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -31,17 +34,30 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('Log in page reached');
+    this.getFirstNames();
     this.sharedService.updateData({ isLoggedIn: false });
     this.sharedService.someData$.subscribe((data) => {
       console.log('This is the data:', data);
     })
   }
+  // method for retrieving first names
+  getFirstNames(): void {
+    this.httpClient.get<string[]>('https://nodal-component-399020.wl.r.appspot.com/getFirstNames')
+      .subscribe({
+        next: (response) => {
+          this.firstNames = response;
+        },
+        error: (error) => {
+          console.error('Error fetching first names:', error);
+        }
+      });
+  }
   // method for showing function
-  nameInput(event: Event){
+  nameInput(event: Event) {
     this.icon_show = false;
     this.wrong_password.setValue(true);
-    for (let i=0;i<environment.users.length;i++) {
-      const user_name = environment.users[i].email.toLowerCase();
+    for (let i = 0; i < this.firstNames.length; i++) {
+      const user_name = this.firstNames[i].toLowerCase();
       if (user_name === (event.target as HTMLInputElement).value.toLowerCase()) {
         // console.log('Name Match found!', user_name);
         this.icon_show = true;
