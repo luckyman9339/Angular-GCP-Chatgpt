@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
   // method for showing function
   nameInput(event: Event){
     this.icon_show = false;
+    this.wrong_password.setValue(true);
     for (let i=0;i<environment.users.length;i++) {
       const user_name = environment.users[i].email.toLowerCase();
       if (user_name === (event.target as HTMLInputElement).value.toLowerCase()) {
@@ -61,7 +62,7 @@ export class LoginComponent implements OnInit {
       return false;
     }
     for (let i = 0; i < environment.users.length; i++) {
-      // Acquire email username (first name)
+      // Acquire username (first name)
       const user_name = this.loginForm.value.email[0].toUpperCase() + this.loginForm.value.email.slice(1);
       if (user_name === environment.users[i].email) {
         if (this.loginForm.value.password === environment.users[i].password) {
@@ -79,7 +80,7 @@ export class LoginComponent implements OnInit {
     }
     return null;
   }
-
+  // Logging In
   onLogin(name: string) {
     // Update the data in the shared service
     this.sharedService.updateData({ isLoggedIn: true }); // push logged in true
@@ -96,14 +97,39 @@ export class LoginComponent implements OnInit {
     this.password_validation.setValue(true)
     this.wrong_password.setValue(true);
     // console.log(this.loginForm.value)
-    const result = this.validation()
-    if (result === null) {
-      this.user_validate.setValue(false);
-    } else if (result === false) {
-      console.log('Authentication failed');
+    this.logIn();
+    // const result = this.validation()
+    // if (result === null) {
+    //   this.user_validate.setValue(false);
+    // } else if (result === false) {
+    //   console.log('Authentication failed');
+    // } else {
+    //   console.log('Authentication success!')
+    //   this.onLogin(result); // result contains the name of the user
+    // }
+  }
+
+  async logIn() {
+    const user_name = btoa(this.loginForm.value.email[0].toUpperCase() + this.loginForm.value.email.slice(1))
+    const encoded_username = encodeURIComponent(user_name);
+    const password = encodeURIComponent(btoa(this.loginForm.value.password));
+    // console.log('First Name:', encoded_username);
+    // console.log('This is the password', password);
+    const res = await fetch(`https://nodal-component-399020.wl.r.appspot.com/getUserData?encoded_firstName=${encoded_username}&encoded_password=${password}`);
+    // const res = await fetch(`http://localhost:3000/getUserData?encoded_firstName=${encoded_username}&encoded_password=${password}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data === false) {
+        console.log('Wrong Password!');
+        this.wrong_password.setValue(false);
+      } else {
+        console.log('Success!');
+        console.log('JSON Data', data);
+        this.route.navigate(['/main/' + user_name]);
+      }
     } else {
-      console.log('Authentication success!')
-      this.onLogin(result); // result contains the name of the user
+      console.log('Fetch request unsuccessful, please check with administrator Russell Ho');
     }
+
   }
 }

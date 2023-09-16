@@ -31,7 +31,7 @@
 
           <div *ngIf="password_validation.value !== true" class="alert-validate">Valid Password required</div>
           <div *ngIf="wrong_password.value !== true" class="alert-validate">Password Incorrect, please double-check</div>
-          <div *ngIf="user_validate.value !== true" class="alert-validate">You are not authorized to use this web application</div>
+          <!-- <div *ngIf="wrong_password.value !== true && !icon_show" class="alert-validate">You have not yet registered for this web application</div> -->
           <div class="container-login100-form-btn">
             <button class="login100-form-btn" type="submit">
               Sign in

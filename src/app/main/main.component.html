@@ -7,6 +7,9 @@
         <mat-icon *ngIf="voice_output">volume_up</mat-icon>
         <mat-icon *ngIf="!voice_output">volume_off</mat-icon>
       </button>
+      <div *ngIf="active_icon" class="drawing" id="loading">
+        <div class="loading-dot"></div>
+      </div>
     </mat-card>
     <div style="margin-bottom:30px" class="input-container">
       <button *ngIf="isMuted" mat-raised-button style="padding: 10px; height:40px" (click)="mute_off()">

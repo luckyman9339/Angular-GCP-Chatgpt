@@ -40,6 +40,7 @@ export class MainComponent implements OnInit, OnDestroy {
   voice_input: any = true; // controls icon change between voice input & typing (true for voice, false for typing, null for mute)
   isMuted: boolean = false;
   stop_icon: boolean = false; // controls stop button icon
+  active_icon: boolean = false;
   stop_typing: boolean = false;
   input: string = ''; // typed respone from user
   response: string = ''; // initialize response string
@@ -100,6 +101,7 @@ export class MainComponent implements OnInit, OnDestroy {
               transcript = event.results[i][0].transcript.trim();
             }
             if (((this.recognition.lang === 'en-US' || this.recognition.lang === 'en-gb') && this.send_command === true && this.model_ai.toLowerCase() === transcript.split(" ")[0].toLowerCase()) || (this.recognition.lang === 'zh-TW' && this.send_command === true)) {
+              this.active_icon = true;
               this.voice_input = true;
               console.log('I hear you loud and clear sir');
               console.log('Final transcript: ', transcript); // transcript that is final (that should be submitted to chat)
@@ -144,6 +146,7 @@ export class MainComponent implements OnInit, OnDestroy {
       if (this.stop_typing) { // check the stop_typing flag
         clearInterval(this.typingInterval); // Stops the animation
         this.stop_icon = false;
+        this.active_icon = false;
         return;
       }
       if (index < response.length) {
@@ -163,6 +166,7 @@ export class MainComponent implements OnInit, OnDestroy {
       } else {
         clearInterval(typingInterval); // Stop the animation when done
         this.stop_icon = false; // stop icon removed once animation has been completed
+        this.active_icon = false;
         this.cdr.detectChanges();
       }
     }, 55); // Adjust the interval to control typing speed
@@ -230,7 +234,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
   // fetch audio and play!
   async fetchAudio(input: string) {
-    if (this.voice_output === true) {
+    if (this.voice_output === true) { // if voice output is not silenced
       const res = await fetch(`https://nodal-component-399020.wl.r.appspot.com/speak?text=${input}&languageCode=${this.language}&name=${this.model_name}&speed=${this.speed}&pitch=${this.pitch}`);
       // const res = await fetch(`http://localhost:3000/speak?text=${input}&languageCode=${this.language}&name=${this.model_name}&speed=${this.speed}&pitch=${this.pitch}`);
       const data = await res.json();
@@ -250,7 +254,7 @@ export class MainComponent implements OnInit, OnDestroy {
       });
       audio.src = url;
       audio.play();
-    } else {
+    } else { // if voice output (speaking functionality) is silenced
       this.typeResponse(this.response);
     }
   }

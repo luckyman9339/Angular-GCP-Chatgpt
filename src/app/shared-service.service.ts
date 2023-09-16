@@ -32,6 +32,12 @@ export class SharedServiceService implements OnInit {
   constructor(private http: HttpClient) {
     // this.aiObject=<JSON>this.ai;
   }
+  private someDataSubject = new BehaviorSubject<any>(false); // sharedData across all pages
+  someData$ = this.someDataSubject.asObservable();
+  sharedData = {
+    firstName: '',
+    encoder: ''
+  };
   ngOnInit(): void { }
   open_apikey = environment.OPENAI_API_KEY;
   model: string = 'gpt-3.5-turbo';
@@ -87,12 +93,6 @@ export class SharedServiceService implements OnInit {
     });
   }
 
-  private someDataSubject = new BehaviorSubject<any>(false);
-  someData$ = this.someDataSubject.asObservable();
-  sharedData = {
-    firstName: '',
-    encoder: ''
-  };
   // specifically for showing hamburger menu after logging in
   updateData(data: any) {
     this.someDataSubject.next(data);
