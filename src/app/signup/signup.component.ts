@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
@@ -18,6 +18,7 @@ export class SignupComponent {
   constructor(
     private fb: FormBuilder,
     private httpClient: HttpClient,
+    private cdr: ChangeDetectorRef,
   ) {
     this.signupForm = this.fb.group({
       firstName: ['', [Validators.required]],
@@ -70,6 +71,7 @@ export class SignupComponent {
             next: email_response => {
               console.log('Email sent?', email_response);
               this.registration_success.setValue(true);
+              this.cdr.detectChanges();
             },
             error: error => {
               console.log('Something went wrong in calling the send email API', error);
