@@ -21,6 +21,8 @@
             <input class="input100" type="text" formControlName="firstName" placeholder="First Name">
             <span class="focus-input100"></span>
           </div>
+          <div *ngIf="firstName_required.value" class="alert-validate">First Name required</div>
+
           <div class="wrap-input100 validate-input" [ngClass]="{'alert-validate': signupForm.value.email.length <= 3}">
               <input class="input100" type="text" formControlName="email" placeholder="Email">
               <span class="focus-input100"></span> 
@@ -33,7 +35,8 @@
           </div>
 
           <div *ngIf="password_validation.value !== true" class="alert-validate">Valid Password required</div>
-          <div *ngIf="registration_fail.value" class="alert-validate">Registration has failed because number of users has exceeded the limit. Please contact Russell</div>
+          <div *ngIf="registration_fail.value" class="alert-validate">Registration has failed because email entered is already a user</div>
+          <div *ngIf="limit_exceeded.value" class="alert-validate">Registration has failed because number of users has exceeded the limit. Please contact Russell</div>
           <!-- <div *ngIf="wrong_password.value !== true && !icon_show" class="alert-validate">You have not yet registered for this web application</div> -->
           <a routerLink="/">Log In</a>
           <div class="container-signup100-form-btn">

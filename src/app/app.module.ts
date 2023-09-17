@@ -12,6 +12,7 @@ import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainComponent } from './main/main.component';
 import { SignupComponent } from './signup/signup.component';
+import { EditpasswordComponent } from './editpassword/editpassword.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { SignupComponent } from './signup/signup.component';
     ClickOutsideDirective,
     MainComponent,
     SignupComponent,
+    EditpasswordComponent,
   ],
   imports: [
     BrowserModule,

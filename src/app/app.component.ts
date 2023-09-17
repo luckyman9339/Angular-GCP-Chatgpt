@@ -22,14 +22,15 @@ export class AppComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         //Get the current router URL
         let currentUrl = this.route.url;
+        // console.log('Current URL', currentUrl);
         encoded_url = this.urlParser(currentUrl); // parse the current URL
         // Subscribe to changes in the shared data
         this.sharedService.someData$.subscribe((data) => {
           for (let i = 0; i < environment.users.length; i++) {
             const encoded_name = btoa(environment.users[i].email);
-            // console.log('This is the encoded_name', encodeURIComponent(encoded_name));
-            // console.log('This is the current url', encoded_url);
-            // console.log('Equal?', encodeURIComponent(encoded_name) === encoded_url);
+            console.log('This is the encoded_name', encodeURIComponent(encoded_name));
+            console.log('This is the current url', encoded_url);
+            console.log('Equal?', encodeURIComponent(encoded_name) === encoded_url);
             if ((data && data.isLoggedIn) || encodeURIComponent(encoded_name) === encoded_url) {
               // console.log('Entered!');
               this.isLoggedIn = true;

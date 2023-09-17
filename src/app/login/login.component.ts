@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   icon_show: boolean = false;
   loginForm: FormGroup;
   firstNames: string[] = []; // API retrieved list of user first names
+  // user: string = ''; // for changing password
 
   constructor(
     private fb: FormBuilder,
@@ -107,7 +108,10 @@ export class LoginComponent implements OnInit {
 
   // submit button
   onSubmit() {
-    const a: boolean = true;
+    if (this.loginForm.value.email.length === 0) {
+      this.email_validation.setValue(false);
+    } else {
+    // const a: boolean = true;
     this.user_validate.setValue(true);
     this.email_validation.setValue(true)
     this.password_validation.setValue(true)
@@ -123,11 +127,12 @@ export class LoginComponent implements OnInit {
     //   console.log('Authentication success!')
     //   this.onLogin(result); // result contains the name of the user
     // }
+    }
   }
 
   async logIn() {
-    const user_name = btoa(this.loginForm.value.email[0].toUpperCase() + this.loginForm.value.email.slice(1))
-    const encoded_username = encodeURIComponent(user_name);
+    const user_name = btoa(this.loginForm.value.email[0].toUpperCase() + this.loginForm.value.email.slice(1)) // firstName
+    const encoded_username = encodeURIComponent(user_name); // this isn't email, this is actually firstName
     const password = encodeURIComponent(btoa(this.loginForm.value.password));
     // console.log('First Name:', encoded_username);
     // console.log('This is the password', password);
@@ -146,6 +151,5 @@ export class LoginComponent implements OnInit {
     } else {
       console.log('Fetch request unsuccessful, please check with administrator Russell Ho');
     }
-
   }
 }
