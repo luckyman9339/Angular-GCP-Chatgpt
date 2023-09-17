@@ -14,19 +14,23 @@ export class SharedServiceService implements OnInit {
   ai = [
     {
       assistant: 'None',
-      instructions: 'Reply in concise manner, less than 50 words'
+      instructions: `Reply in a concise manner, less than 50 words`
+    },
+    {
+      assistant: '電腦',
+      instructions: `你的稱呼是電腦，若在答覆過程有提供連結請將連結與談話內容用括號分開，('https://...')，回答請限制在150字內`
     },
     {
       assistant: 'Jarvis',
-      instructions: "Please reply like Jarvis from the MCU when replying to the user's prompts, limit responses to less than 50 words"
+      instructions: "Please reply like Jarvis from the MCU when replying to the user's prompts, limit responses to less than or around 50 words"
     },
     {
       assistant: 'Edith',
-      instructions: "Please reply like Peter Parker's AI Edith (from the MCU) when replying to the user's prompts, limit responses to less than 50 words"
+      instructions: "Please reply like Peter Parker's AI Edith (from the MCU) when replying to the user's prompts, limit responses to less than or around 50 words"
     },
     {
       assistant: 'Friday',
-      instructions: "Please reply like Tony Stark's AI Friday when replying to the user's prompts, limit responses to less than 50 words"
+      instructions: "Please reply like Tony Stark's AI Friday when replying to the user's prompts, limit responses to less than or around 50 words"
     }
   ]
   constructor(private http: HttpClient) {
@@ -36,9 +40,20 @@ export class SharedServiceService implements OnInit {
   someData$ = this.someDataSubject.asObservable();
   sharedData = {
     firstName: '',
-    encoder: ''
+    email: '',
+    password: '',
+    details: '',
+    authorization: '',
+    language: '',
+    model: '',
+    voice: '',
+    speed: '',
+    pitch: ''
   };
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+
+  }
+
   open_apikey = environment.OPENAI_API_KEY;
   model: string = 'gpt-3.5-turbo';
 
@@ -69,10 +84,12 @@ export class SharedServiceService implements OnInit {
   // method for calling openaiChat
   openaiChat(prompt: string, assistant: string, model: string = this.model): Promise<any> {
     const instructions = this.modelFinder(assistant); // find corresponding prompts first
+    const nameInstructions = `Also, my name is ${this.sharedData.firstName}` // name
+    const details = `Here are some facts about me: ${this.sharedData.details}` // incorporate if need be
     const requestData = {
       model: model,
       messages: [
-        { role: 'system', content: instructions },
+        { role: 'system', content: instructions + nameInstructions },
         { role: 'user', content: prompt }
       ]
     };
@@ -97,15 +114,31 @@ export class SharedServiceService implements OnInit {
   updateData(data: any) {
     this.someDataSubject.next(data);
   }
-  // method for remembering user first name
-  updateUserName(name: string) {
-    const encodedName = btoa(name);
-    // console.log('This is the encodedName', encodedName);
-    this.sharedData = {
-      firstName: name,
-      encoder: encodedName
-    }
-  }
+  // // method for remembering user first name
+  // updateUserName(name: string) {
+  //   const encodedName = btoa(name);
+  //   // console.log('This is the encodedName', encodedName);
+  //   this.sharedData = {
+  //     firstName: name,
+  //     encoder: encodedName
+  //   }
+  // }
+
+  storeUserDetails(user_data:any) {
+    // console.log('This is the user data:', user_data.data_json);
+    this.sharedData.firstName = user_data.data_json.firstName;
+    this.sharedData.email = user_data.data_json.email;
+    this.sharedData.details = user_data.data_json.details;
+    this.sharedData.authorization = user_data.data_json.authorization;
+    this.sharedData.language = user_data.data_json.language;
+    this.sharedData.model = user_data.data_json.model;
+    this.sharedData.voice = user_data.data_json.voice;
+    this.sharedData.speed = user_data.data_json.speed;
+    this.sharedData.pitch = user_data.data_json.pitch;
+    // console.log('This is the sharedData', this.sharedData);
+  };
+
+
   // method that logs out user
   logOutUser() {
     this.userLoggedOut.next();

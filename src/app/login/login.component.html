@@ -37,9 +37,12 @@
             <!-- <a [routerLink]="[user]">Edit Password</a> -->
           </div>
           <div class="container-login100-form-btn">
-            <button class="login100-form-btn" type="submit">
+            <button class="login100-form-btn" *ngIf="!loggedIn.value" type="submit">
               Sign in
             </button>
+            <!-- <button class="login100-form-btn" *ngIf="loggedIn.value" type="submit">
+              Logged In...
+            </button> -->
           </div>
           <!-- <div class="text-center p-t-45 p-b-4">
             <span class="txt1">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { SharedServiceService } from '../shared-service.service';
 import { environment } from 'src/environments/environment';
@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   user_validate = new FormControl(true); // makes sure that user is within the list below
   wrong_password = new FormControl(true);
   icon_show: boolean = false;
+  loggedIn = new FormControl(false);
   loginForm: FormGroup;
   firstNames: string[] = []; // API retrieved list of user first names
   // user: string = ''; // for changing password
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private sharedService: SharedServiceService,
     private route: Router,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private cdr: ChangeDetectorRef,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -38,7 +40,7 @@ export class LoginComponent implements OnInit {
     this.getFirstNames();
     this.sharedService.updateData({ isLoggedIn: false });
     this.sharedService.someData$.subscribe((data) => {
-      console.log('This is the data:', data);
+      // console.log('This is the data:', data);
     })
   }
   // method for retrieving first names
@@ -97,14 +99,14 @@ export class LoginComponent implements OnInit {
     }
     return null;
   }
-  // Logging In
-  onLogin(name: string) {
-    // Update the data in the shared service
-    this.sharedService.updateData({ isLoggedIn: true }); // push logged in true
-    this.sharedService.updateUserName(name); // storing username
-    // console.log('Shared service', this.sharedService);
-    this.route.navigate(['/main/' + this.sharedService.sharedData.encoder]);
-  }
+  // // Logging In
+  // onLogin(name: string) {
+  //   // Update the data in the shared service
+  //   this.sharedService.updateData({ isLoggedIn: true }); // push logged in true
+  //   this.sharedService.updateUserName(name); // storing username
+  //   // console.log('Shared service', this.sharedService);
+  //   this.route.navigate(['/main/' + this.sharedService.sharedData.encoder]);
+  // }
 
   // submit button
   onSubmit() {
@@ -145,7 +147,10 @@ export class LoginComponent implements OnInit {
         this.wrong_password.setValue(false);
       } else {
         console.log('Success!');
-        console.log('JSON Data', data);
+        this.loggedIn.setValue(true);
+        this.cdr.detectChanges();
+        // console.log('JSON Data', data);
+        this.sharedService.storeUserDetails(data);
         this.route.navigate(['/main/' + user_name]);
       }
     } else {

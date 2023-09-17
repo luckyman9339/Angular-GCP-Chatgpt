@@ -45,8 +45,11 @@ export class MainComponent implements OnInit, OnDestroy {
   input: string = ''; // typed respone from user
   response: string = ''; // initialize response string
   recognition: any; // for speech recognition
+  audio_complete: boolean = false;
+  links: Array<string> = []; // for storing hyperlinks
+  link_flag: boolean = false;
   model_ai: string = 'Friday';
-  language: string = 'en-US'; // 'en-US' for English. Use 'zh-TW' for Taiwan Chinese.
+  language: string = 'en-gb'; // 'en-gb' for GB English; 'en-US' for US English. Use 'zh-TW' for Taiwan Chinese.
   send_command: boolean = false; // flag that decides whether or not to send command
   listenCommand: string = '';
   converter = Converter({ from: 'cn', to: 'tw' }) //  to translate from cn to tw chinese
@@ -55,7 +58,14 @@ export class MainComponent implements OnInit, OnDestroy {
   model_name: string = 'en-GB-Neural2-C' // take a look: https://cloud.google.com/text-to-speech/docs/voices
   speed = '1.3';
   pitch = '-2.0';
-
+  // function that assigns the variables on ngOnInit
+  attributeVariables() {
+    this.model_ai = this.sharedService.sharedData.model;
+    this.language = this.sharedService.sharedData.language;
+    this.model_name = this.sharedService.sharedData.voice;
+    this.speed = this.sharedService.sharedData.speed;
+    this.pitch = this.sharedService.sharedData.pitch;
+  }
   generateRandomResponse(): string {
     const responses = [
       'Ask me anything',
@@ -74,6 +84,7 @@ export class MainComponent implements OnInit, OnDestroy {
     return responses[randomIndex];
   }
   ngOnInit(): void {
+    this.attributeVariables;
     // Initialize data-placeholder attribute
     this.renderer.setAttribute(this.inputElement?.nativeElement, 'data-placeholder', 'Enter text to chat with AI');
     this.response = this.generateRandomResponse();
@@ -110,6 +121,14 @@ export class MainComponent implements OnInit, OnDestroy {
               this.chat(this.input, this.model_ai); // place this.chat here (COMMENT/UNCOMMENT)
               this.send_command = false;
             }
+            if (this.link_flag === true && this.isMuted === false && this.audio_complete === true) {
+              console.log('Links ready to open sir');
+              // console.log('Link Open transcript: ', transcript); // transcript that is final (that should be submitted to chat)
+              this.linkOpening(transcript);
+              this.link_flag = false; // set flag back to false at the end
+              this.audio_complete = false; // set flag back to false
+            }
+            // put in link opening logic here (this.response is the response from OpenAI)
           } else { // for interim transcript
             // translate to traditional (taiwan) chinese if language is chinese
             if (this.recognition.lang === 'zh-TW' || this.recognition.lang === 'zh-CN') {
@@ -132,8 +151,51 @@ export class MainComponent implements OnInit, OnDestroy {
       // Handle the error or inform the user that their browser is not supported
       console.log("Unfortunately your browser does not support Web Speech API");
     }
-
   }
+  // function to open links
+  linkOpening(command: string) {
+    if (command.trim().length !== 0) { // ensures that command is given
+      const command_ls = command.trim().split(' ').map(item => item.toLowerCase()); // for command
+      this.links = this.links.map(url => { // regex expression to remove parentheses surrounding links
+        if (url.startsWith("[") || url.startsWith("(") || url.startsWith("{")) {
+          return url.slice(1, -1).split("/")[0];
+        }
+        return url;
+      });
+      this.links = this.links.map(url => url.startsWith('https://') ? url : 'https://' + url);
+      if (this.links.length > 1) {
+        // console.log('These are the links', this.links);
+        for (let k = 0; k < command_ls.length; k++) {
+          if (command_ls[k].includes('first') || command_ls[k].includes('one') || command_ls[k].includes('一')) {
+            this.openLink(this.links[0]); // zero-based indexing
+          }
+          if (command_ls[k].includes('second') || command_ls[k].includes('two') || command_ls[k].includes('二')) {
+            this.openLink(this.links[1]); // zero-based indexing
+          }
+          if (command_ls[k].includes('third') || command_ls[k].includes('three') || command_ls[k].includes('三')) {
+            this.openLink(this.links[2]); // zero-based indexing
+          }
+          if (command_ls[k].includes('fourth') || command_ls[k].includes('four') || command_ls[k].includes('四')) {
+            this.openLink(this.links[3]); // zero-based indexing
+          }
+          if (command_ls[k].includes('fifth') || command_ls[k].includes('five') || command_ls[k].includes('五')) {
+            this.openLink(this.links[4]);
+          }
+          if (command_ls[k].includes('all') || command_ls[k].includes('every') || command_ls[k].includes('全部') || command_ls[k].includes('所有')) {
+            for (let i = 0; i < this.links.length; i++) {
+              this.openLink(this.links[i]);
+            }
+          }
+        }
+      } else { // if there is only one link on the list
+        this.openLink(this.links[0]); // open the first link
+      }
+    }
+  };
+  // function to open links
+  openLink(link: string) {
+    window.open(link, '_blank'); // specifies that link should be opened in a new tab
+  };
   // Function to simulate typing animation
   typeResponse(response: string) {
     // console.log('Response container', this.responseCardContainer)
@@ -171,16 +233,74 @@ export class MainComponent implements OnInit, OnDestroy {
       }
     }, 55); // Adjust the interval to control typing speed
   }
-
+  // function to extract URLs (Chinese)
+  extractUrls = (regex: RegExp, response_temp: string) => {
+    let match;
+    while ((match = regex.exec(response_temp)) !== null) {
+      const url = match[0].slice(0, -1);  // Remove enclosing characters
+      this.links.push(url);
+    }
+    // console.log('Links', this.links);
+  };
   // API function call
   async chat(prompt: string, ai: string) {
     const response = await this.sharedService.openaiChat(prompt, ai);
+    this.links = []; // clear links
+    let response_temp = '';
     if (this.language === 'zh-TW') {
-      this.response = this.converter(response.choices[0].message.content)
-    } else {
-      this.response = response.choices[0].message.content;
+      response_temp = this.converter(response.choices[0].message.content)
+      // chinese does not possess any spaces
+      // const bracketedRegex = /\(https:\/\/.*?\/\)/g;
+      // const quotedWithHttpRegex = /'https:\/\/.*?\/'/g; // Http
+      // const quotedWithHttpsRegex = /'https:.*?\/'/g; // Https
+      // this.extractUrls(bracketedRegex, response_temp);
+      // this.extractUrls(quotedWithHttpRegex, response_temp);
+      // this.extractUrls(quotedWithHttpsRegex, response_temp);
+
+      // // Remove all URLs from the string
+      // this.response = response_temp.replace(bracketedRegex, "")
+      //                                       .replace(quotedWithHttpRegex, "")
+      //                                       .replace(quotedWithHttpsRegex, "");
+      const regex = /https?:\/\/[^\s()<>]+?(?=[\s()<>])/g;
+      this.extractUrls(regex, response_temp);
+      // Remove all such URLs from the string
+      this.response = response_temp.replace(regex, "");
+      // flag for whether links are detected
+      await this.fetchAudio(this.response); // response from ChatGPT (and voice)
+      if (this.links.length !== 0) {
+        console.log('Links:', this.links);
+        this.link_flag = true;
+      }
+    } else { // if input spacing available
+      response_temp = response.choices[0].message.content;
+      // to parse for links
+      let response_ls = response_temp.split(' ');
+      let final_ls: Array<string> = [];
+      for (let i = 0; i < response_ls.length; i++) {
+        if (response_ls[i].startsWith('https://') || response_ls[i].startsWith('(https://') || response_ls[i].startsWith('www.') || response_ls[i].startsWith('[https://') || response_ls[i].startsWith('：https://') || response_ls[i].startsWith('(www.') || response_ls[i].startsWith('[www.')) {
+          // console.log('Response', response_ls[i]);
+          const link_ls1: Array<string> = response_ls[i].split('\n'); // split by \n new line character
+          // const link_ls2: Array<string> = link_ls1.flatMap(line => line.split('/:')); // and '/:'
+          let link = link_ls1.shift() as string; // return link and push it
+          if (link) link = link.replace(/\(|\)/g, ''); // remove parentheses if they are present
+          if (link) link = link.replace(/"/g, ''); // remove double quotes if they are present
+          if (link) link = link.replace(/'/g, ''); // remove single quotes if they are present
+          if (link) link = link.replace(/]/g, ''); // remove square parentheses if they are present
+          this.links.push(link);
+          final_ls.push(...link_ls1); // concatenate rest of list
+        } else {
+          final_ls.push(response_ls[i]);
+        }
+      }
+      this.response = final_ls.join(' ');
+      await this.fetchAudio(this.response); // response from ChatGPT (voice)
+      // flag for whether links are detected
+      if (this.links.length !== 0) {
+        console.log('Links:', this.links);
+        this.link_flag = true;
+      }
     }
-    this.fetchAudio(this.response); // response from ChatGPT (and voice)
+    // console.log('This is the response', this.response);
     // // Trigger the typing animation
     // this.typeResponse(this.response);
   }
@@ -202,6 +322,7 @@ export class MainComponent implements OnInit, OnDestroy {
   submit() {
     this.stop_typing = false; // set stop_typing to false
     // console.log('This is the input value:', this.input);
+    this.active_icon = true;
     this.chat(this.input, this.model_ai);
   }
   // switching voice inputs when user clicks on edit text button
@@ -237,29 +358,37 @@ export class MainComponent implements OnInit, OnDestroy {
     return bytes.buffer;
   }
   // fetch audio and play!
-  async fetchAudio(input: string) {
-    if (this.voice_output === true) { // if voice output is not silenced
-      const res = await fetch(`https://nodal-component-399020.wl.r.appspot.com/speak?text=${input}&languageCode=${this.language}&name=${this.model_name}&speed=${this.speed}&pitch=${this.pitch}`);
-      // const res = await fetch(`http://localhost:3000/speak?text=${input}&languageCode=${this.language}&name=${this.model_name}&speed=${this.speed}&pitch=${this.pitch}`);
-      const data = await res.json();
-      const audioBase64 = data.audioBase64;
-      // const blob = await res.blob(); // code to run on local environment
-      // Convert base64 to ArrayBuffer
-      const audioBuffer = this.base64ToArrayBuffer(audioBase64);
+  async fetchAudio(input: string): Promise<void> {
+    return new Promise(async (resolve) => {
+      if (this.voice_output === true) { // if voice output is not silenced
+        const res = await fetch(`https://nodal-component-399020.wl.r.appspot.com/speak?text=${input}&languageCode=${this.language}&name=${this.model_name}&speed=${this.speed}&pitch=${this.pitch}`);
+        // const res = await fetch(`http://localhost:3000/speak?text=${input}&languageCode=${this.language}&name=${this.model_name}&speed=${this.speed}&pitch=${this.pitch}`);
+        const data = await res.json();
+        const audioBase64 = data.audioBase64;
+        // const blob = await res.blob(); // code to run on local environment
+        // Convert base64 to ArrayBuffer
+        const audioBuffer = this.base64ToArrayBuffer(audioBase64);
 
-      // Create blob from ArrayBuffer
-      const blob = new Blob([audioBuffer], { type: 'audio/wav' });
-      const url = window.URL.createObjectURL(blob);
-      // Explicitly specify the type of 'audio' as HTMLAudioElement
-      const audio: HTMLAudioElement = document.getElementById('audioPlayer') as HTMLAudioElement;
-      // Listen for the 'play' event to know when the audio starts playing
-      audio.addEventListener('play', () => {
+        // Create blob from ArrayBuffer
+        const blob = new Blob([audioBuffer], { type: 'audio/wav' });
+        const url = window.URL.createObjectURL(blob);
+        // Explicitly specify the type of 'audio' as HTMLAudioElement
+        const audio: HTMLAudioElement = document.getElementById('audioPlayer') as HTMLAudioElement;
+        // Listen for the 'play' event to know when the audio starts playing
+        audio.addEventListener('play', () => {
+          this.typeResponse(this.response);
+        });
+
+        audio.addEventListener('ended', () => {
+          resolve();
+        });
+        audio.src = url;
+        audio.play();
+        this.audio_complete = true;
+      } else { // if voice output (speaking functionality) is silenced
         this.typeResponse(this.response);
-      });
-      audio.src = url;
-      audio.play();
-    } else { // if voice output (speaking functionality) is silenced
-      this.typeResponse(this.response);
-    }
+        resolve();
+      }
+    });
   }
 }

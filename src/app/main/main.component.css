@@ -39,6 +39,7 @@
   padding-block: 20px;
   /* Adjust padding to increase vertical spacing */
   line-height: 1.5;
+  max-width: 1200px;
   /* Adjust line height for better readability */
 }
 
