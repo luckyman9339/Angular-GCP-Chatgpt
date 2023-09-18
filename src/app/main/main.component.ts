@@ -28,6 +28,9 @@ const openai = new OpenAI({
   ]
 })
 export class MainComponent implements OnInit, OnDestroy {
+  // Declare previous handlers as class properties
+  private prevPlayHandler: any = null;
+  private prevEndedHandler: any = null;
   constructor(
     private sharedService: SharedServiceService,
     private renderer: Renderer2,
@@ -202,8 +205,11 @@ export class MainComponent implements OnInit, OnDestroy {
     this.stop_typing = false; // Initialize stop_typing to false
     this.response = ''; // Clear the response first
     let index = 0;
-
-    const typingInterval = setInterval(() => {
+    // Before calling setInterval, clear any existing intervals.
+    if (this.typingInterval) {
+      clearInterval(this.typingInterval);
+    }
+    this.typingInterval = setInterval(() => {
       this.stop_icon = true; // stop icon displayed
       if (this.stop_typing) { // check the stop_typing flag
         clearInterval(this.typingInterval); // Stops the animation
@@ -226,7 +232,7 @@ export class MainComponent implements OnInit, OnDestroy {
           }
         });
       } else {
-        clearInterval(typingInterval); // Stop the animation when done
+        clearInterval(this.typingInterval); // Stop the animation when done
         this.stop_icon = false; // stop icon removed once animation has been completed
         this.active_icon = false;
         this.cdr.detectChanges();
@@ -244,11 +250,12 @@ export class MainComponent implements OnInit, OnDestroy {
   };
   // API function call
   async chat(prompt: string, ai: string) {
-    const response = await this.sharedService.openaiChat(prompt, ai);
+    const initial_response = await this.sharedService.openaiChat(prompt, ai);
+    let complete_response = '';
     this.links = []; // clear links
     let response_temp = '';
     if (this.language === 'zh-TW') {
-      response_temp = this.converter(response.choices[0].message.content)
+      response_temp = this.converter(initial_response.choices[0].message.content)
       // chinese does not possess any spaces
       // const bracketedRegex = /\(https:\/\/.*?\/\)/g;
       // const quotedWithHttpRegex = /'https:\/\/.*?\/'/g; // Http
@@ -264,15 +271,15 @@ export class MainComponent implements OnInit, OnDestroy {
       const regex = /https?:\/\/[^\s()<>]+?(?=[\s()<>])/g;
       this.extractUrls(regex, response_temp);
       // Remove all such URLs from the string
-      this.response = response_temp.replace(regex, "");
+      complete_response = response_temp.replace(regex, "");
       // flag for whether links are detected
-      await this.fetchAudio(this.response); // response from ChatGPT (and voice)
+      await this.fetchAudio(complete_response); // response from ChatGPT (and voice)
       if (this.links.length !== 0) {
         console.log('Links:', this.links);
         this.link_flag = true;
       }
     } else { // if input spacing available
-      response_temp = response.choices[0].message.content;
+      response_temp = initial_response.choices[0].message.content;
       // to parse for links
       let response_ls = response_temp.split(' ');
       let final_ls: Array<string> = [];
@@ -292,8 +299,8 @@ export class MainComponent implements OnInit, OnDestroy {
           final_ls.push(response_ls[i]);
         }
       }
-      this.response = final_ls.join(' ');
-      await this.fetchAudio(this.response); // response from ChatGPT (voice)
+      complete_response = final_ls.join(' ');
+      await this.fetchAudio(complete_response); // response from ChatGPT (voice)
       // flag for whether links are detected
       if (this.links.length !== 0) {
         console.log('Links:', this.links);
@@ -314,6 +321,8 @@ export class MainComponent implements OnInit, OnDestroy {
   // Stop text generation
   stop() {
     this.stop_typing = true;
+    this.stop_icon = false;
+    this.active_icon = false;
     if (this.typingInterval) {
       clearInterval(this.typingInterval);
     }
@@ -359,6 +368,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
   // fetch audio and play!
   async fetchAudio(input: string): Promise<void> {
+    // console.log('This is the input:', input);
     return new Promise(async (resolve) => {
       if (this.voice_output === true) { // if voice output is not silenced
         const res = await fetch(`https://nodal-component-399020.wl.r.appspot.com/speak?text=${input}&languageCode=${this.language}&name=${this.model_name}&speed=${this.speed}&pitch=${this.pitch}`);
@@ -375,18 +385,55 @@ export class MainComponent implements OnInit, OnDestroy {
         // Explicitly specify the type of 'audio' as HTMLAudioElement
         const audio: HTMLAudioElement = document.getElementById('audioPlayer') as HTMLAudioElement;
         // Listen for the 'play' event to know when the audio starts playing
-        audio.addEventListener('play', () => {
-          this.typeResponse(this.response);
-        });
-
-        audio.addEventListener('ended', () => {
+        if (this.prevPlayHandler) {
+          audio.removeEventListener('play', this.prevPlayHandler);
+        }
+        if (this.prevEndedHandler) {
+          audio.removeEventListener('ended', this.prevEndedHandler);
+        }
+        let stopInterval: any;
+        this.prevPlayHandler = () => {
+          // Setting up an interval to check 'this.stop_typing' periodically
+          stopInterval = setInterval(() => {
+            if (this.stop_typing === true) {
+              console.log('Sound stop');
+              audio.pause();
+              audio.currentTime = 0;
+              clearInterval(stopInterval);
+            }
+          }, 100); // Check every 100 milliseconds
+        };
+        this.prevEndedHandler = () => {
           resolve();
-        });
+          if (stopInterval) {
+            clearInterval(stopInterval);
+          }
+        };
+        audio.addEventListener('play', this.prevPlayHandler);
+        audio.addEventListener('ended', this.prevEndedHandler);
+        // audio.addEventListener('play', () => {
+        //   this.typeResponse(input);
+        // });
+        // audio.addEventListener('ended', () => {
+        //   resolve();
+        // });
         audio.src = url;
+        this.typeResponse(input); // invoke type response here instead of within play handler (because it can be called multiple times)
         audio.play();
+        // // Check whether to stop the audio
+        // if (this.stop_typing === true) {
+        //   console.log('This has been entered');
+        //   audio.pause();
+        //   audio.currentTime = 0;
+        //   resolve(); // Resolve the promise as audio was intentionally stopped
+        // }
+        // else {
+        //   audio.src = url;
+        //   audio.play();
+        // }
         this.audio_complete = true;
       } else { // if voice output (speaking functionality) is silenced
-        this.typeResponse(this.response);
+        this.typeResponse(input);
         resolve();
       }
     });

@@ -1,0 +1,17 @@
+# App.yaml file for building on Google SDK
+runtime: python39 # Can use any supported runtime; we're just serving static files
+instance_class: F1  # Choose the instance class that suits your needs
+automatic_scaling:  # You can also use manual or basic scaling
+  target_cpu_utilization: 0.65
+  min_instances: 1
+
+handlers:
+# Routing for index.html
+- url: /
+  static_files: dist/friday/index.html
+  upload: dist/friday/index.html
+
+# Routing for other static files
+- url: /(.*)
+  static_files: dist/friday/\1
+  upload: dist/friday/(.*)
