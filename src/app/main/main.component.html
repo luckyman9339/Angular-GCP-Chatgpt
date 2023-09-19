@@ -12,12 +12,16 @@
       </div>
     </mat-card>
     <div style="margin-bottom:30px" class="input-container">
-      <button *ngIf="isMuted" mat-raised-button style="padding: 10px; height:40px" (click)="mute_off()">
-        <mat-icon style="padding:10px; margin-left:8px">mic_off</mat-icon>
+      <button *ngIf="isMuted" mat-raised-button class="custom-button" (click)="mute_off()">
+        <div class="center-icon">
+          <mat-icon>mic_off</mat-icon>
+        </div>
       </button>
-      <button *ngIf="!isMuted" mat-raised-button style="padding: 10px; height:40px" (click)="mute()">
-        <mat-icon *ngIf="voice_input" style="padding:10px; margin-left:8px">mic</mat-icon>
-        <mat-icon *ngIf="!voice_input" style="padding:10px; margin-left:8px">settings_voice</mat-icon>
+      <button *ngIf="!isMuted" mat-raised-button class="custom-button" (click)="mute()">
+        <div class="center-icon">
+          <mat-icon *ngIf="voice_input">mic</mat-icon>
+          <mat-icon *ngIf="!voice_input">settings_voice</mat-icon>
+        </div>
       </button>
       <div class="input-field">
         <div class="input-text" 

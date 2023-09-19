@@ -10,7 +10,7 @@ import { SharedServiceService } from './shared-service.service';
 })
 export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
-
+  // for reference by auth.guard.ts
   get isLoggedIn() {
     return this.loggedIn.asObservable();
   }
@@ -35,7 +35,7 @@ export class AuthService {
       if (res === false) { // act on promise
         console.log('Wrong Password!');
         // Handle wrong password case
-        return false;
+        this.loggedIn.next(false);
       } else {
         // console.log('Success!');
         this.loggedIn.next(true);
@@ -44,7 +44,6 @@ export class AuthService {
         this.router.navigate(['/main/' + user_name]);
         return true;
       }
-
     } catch (err) {
       // Handle errors here
       console.error(err);
@@ -56,4 +55,5 @@ export class AuthService {
     this.loggedIn.next(false);
     this.router.navigate(['/']);
   }
+  
 }
