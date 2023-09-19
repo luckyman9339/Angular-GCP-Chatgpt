@@ -4,6 +4,7 @@ import { SharedServiceService } from '../shared-service.service';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
     private route: Router,
     private httpClient: HttpClient,
     private cdr: ChangeDetectorRef,
+    private authService: AuthService,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -113,48 +115,41 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.value.email.length === 0) {
       this.email_validation.setValue(false);
     } else {
-    // const a: boolean = true;
-    this.user_validate.setValue(true);
-    this.email_validation.setValue(true)
-    this.password_validation.setValue(true)
-    this.wrong_password.setValue(true);
-    // console.log(this.loginForm.value)
-    this.logIn();
-    // const result = this.validation()
-    // if (result === null) {
-    //   this.user_validate.setValue(false);
-    // } else if (result === false) {
-    //   console.log('Authentication failed');
-    // } else {
-    //   console.log('Authentication success!')
-    //   this.onLogin(result); // result contains the name of the user
-    // }
+      // const a: boolean = true;
+      this.user_validate.setValue(true);
+      this.email_validation.setValue(true)
+      this.password_validation.setValue(true)
+      this.wrong_password.setValue(true);
+      // console.log(this.loginForm.value)
+      this.toLogin();
+      // const result = this.validation()
+      // if (result === null) {
+      //   this.user_validate.setValue(false);
+      // } else if (result === false) {
+      //   console.log('Authentication failed');
+      // } else {
+      //   console.log('Authentication success!')
+      //   this.onLogin(result); // result contains the name of the user
+      // }
     }
   }
 
-  async logIn() {
-    const user_name = btoa(this.loginForm.value.email[0].toUpperCase() + this.loginForm.value.email.slice(1)) // firstName
-    const encoded_username = encodeURIComponent(user_name); // this isn't email, this is actually firstName
-    const password = encodeURIComponent(btoa(this.loginForm.value.password));
-    // console.log('First Name:', encoded_username);
+  async toLogin() {
+    const user = this.loginForm.value.email[0].toUpperCase() + this.loginForm.value.email.slice(1) // firstName
+    const password = this.loginForm.value.password;
+    // console.log('First Name:', user);
     // console.log('This is the password', password);
-    const res = await fetch(`https://nodal-component-399020.wl.r.appspot.com/getUserData?encoded_firstName=${encoded_username}&encoded_password=${password}`);
-    // const res = await fetch(`http://localhost:3000/getUserData?encoded_firstName=${encoded_username}&encoded_password=${password}`);
-    if (res.ok) {
-      const data = await res.json();
-      if (data === false) {
-        console.log('Wrong Password!');
-        this.wrong_password.setValue(false);
-      } else {
-        console.log('Success!');
-        this.loggedIn.setValue(true);
-        this.cdr.detectChanges();
-        // console.log('JSON Data', data);
-        this.sharedService.storeUserDetails(data);
-        this.route.navigate(['/main/' + user_name]);
-      }
+    const result = await this.authService.login(user, password); // result is Promise <boolean>
+    if (result) { // if user loggedin successfully
+      console.log('Success!');
+      this.loggedIn.setValue(true);
+      this.cdr.detectChanges();
     } else {
-      console.log('Fetch request unsuccessful, please check with administrator Russell Ho');
+      console.log('Wrong Password!');
+      this.wrong_password.setValue(false);
+      // console.log('JSON Data', data);
+      // this.sharedService.storeUserDetails(data);
+      // this.route.navigate(['/main/' + user_name]);    }
     }
   }
 }

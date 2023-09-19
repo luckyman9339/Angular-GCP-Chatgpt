@@ -5,6 +5,7 @@ import { ClickOutsideDirective } from 'src/app/clickoutsidedirective';
 import { AppUiModule } from './app-ui.module';
 import { SharedServiceService } from './shared-service.service';
 import { HttpClientModule } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainComponent } from './main/main.component';
 import { SignupComponent } from './signup/signup.component';
 import { EditpasswordComponent } from './editpassword/editpassword.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { EditpasswordComponent } from './editpassword/editpassword.component';
     MainComponent,
     SignupComponent,
     EditpasswordComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +33,8 @@ import { EditpasswordComponent } from './editpassword/editpassword.component';
     FormsModule,
     BrowserAnimationsModule,
     AppUiModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSnackBarModule
   ],
   providers: [SharedServiceService],
   bootstrap: [AppComponent]

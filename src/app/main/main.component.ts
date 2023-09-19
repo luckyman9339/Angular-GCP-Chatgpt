@@ -221,7 +221,7 @@ export class MainComponent implements OnInit, OnDestroy {
         this.response += response.charAt(index);
         index++;
 
-        // Use NgZone to make sure the UI gets updated
+        // Use NgZone to make sure the UI gets updated (for scrolling)
         this.ngZone.run(() => {
           if (this.responseCardContainer) {
             const containerElement = this.responseCardContainer.nativeElement;

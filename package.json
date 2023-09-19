@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
     "@types/webspeechapi": "^0.0.29",
+    "bootstrap": "^5.3.2",
     "https-browserify": "^1.0.0",
     "ibm-watson": "^8.0.0",
     "openai": "^4.6.0",

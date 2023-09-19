@@ -84,7 +84,7 @@ export class SharedServiceService implements OnInit {
   // method for calling openaiChat
   openaiChat(prompt: string, assistant: string, model: string = this.model): Promise<any> {
     const instructions = this.modelFinder(assistant); // find corresponding prompts first
-    const nameInstructions = `Also, my name is ${this.sharedData.firstName}` // name
+    const nameInstructions = `Also, my name is ${this.sharedData.firstName}` // incorporate name within application
     const details = `Here are some facts about me: ${this.sharedData.details}` // incorporate if need be
     const requestData = {
       model: model,
