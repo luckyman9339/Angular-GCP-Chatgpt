@@ -48,9 +48,12 @@ export class SharedServiceService implements OnInit {
     model: '',
     voice: '',
     speed: '',
-    pitch: ''
+    pitch: '',
+    prompt: '', // convert to number
+    completion: '', // convert to number
+    total: '', // conver to number
   };
-  ngOnInit(): void { 
+  ngOnInit(): void {
 
   }
 
@@ -99,6 +102,44 @@ export class SharedServiceService implements OnInit {
         (response) => {
           // Handle the successful response here
           // console.log('OpenAI Response:', response);
+          
+          // first create an interface for openAIResponse (so it can be recognized as an object with specific properties here)
+          interface OpenAIResponse {
+            model: string, // gpt-3.5-turbo-0613
+            object: string, // chat.completion
+            usage: {
+              prompt_tokens: number,
+              completion_tokens: number,
+              total_tokens: number
+            }
+          }
+          const response_obj = response as OpenAIResponse;
+          // first read current usage
+          const current_prompt = this.sharedData.prompt; // String
+          const current_completion = this.sharedData.completion; // String
+          const current_total = this.sharedData.total; // String
+          const prompt_usage = parseInt(current_prompt, 10) + response_obj.usage.prompt_tokens
+          const completion_usage = parseInt(current_completion, 10) + response_obj.usage.completion_tokens
+          const total_usage = parseInt(current_total, 10) + response_obj.usage.total_tokens
+          const prompt_str = prompt_usage.toString(); // convert back into string
+          const completion_str = completion_usage.toString(); // convert back into string
+          const total_str = total_usage.toString(); // convert back into string
+          // construct json to update usage
+          const usage = {
+            email: this.sharedData.email,
+            prompt: prompt_str,
+            completion: completion_str,
+            total: total_str
+          };
+          // call backend API
+          this.http.post<boolean>('https://nodal-component-399020.wl.r.appspot.com/modifyData', usage)
+          .subscribe({
+            next: result => {
+              if (!result) {
+                console.log('Something went wrong in modifyData, the returned response was not true');
+              }
+            }
+          })
           resolve(response); // signals that response was successful
         },
         (error) => {
@@ -124,7 +165,12 @@ export class SharedServiceService implements OnInit {
   //   }
   // }
 
-  storeUserDetails(user_data:any) {
+  // function to get user details
+  getUserDetails() {
+    return this.sharedData;
+  };
+
+  storeUserDetails(user_data: any) {
     // console.log('This is the user data:', user_data.data_json);
     this.sharedData.firstName = user_data.data_json.firstName;
     this.sharedData.email = user_data.data_json.email;
@@ -135,6 +181,9 @@ export class SharedServiceService implements OnInit {
     this.sharedData.voice = user_data.data_json.voice;
     this.sharedData.speed = user_data.data_json.speed;
     this.sharedData.pitch = user_data.data_json.pitch;
+    this.sharedData.prompt = user_data.data_json.prompt;
+    this.sharedData.completion = user_data.data_json.completion;
+    this.sharedData.total = user_data.data_json.total;
     // console.log('This is the sharedData', this.sharedData);
   };
 

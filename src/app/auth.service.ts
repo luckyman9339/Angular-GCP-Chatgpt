@@ -40,6 +40,7 @@ export class AuthService {
         // console.log('Success!');
         this.loggedIn.next(true);
         // this.cdr.detectChanges();
+        // console.log('This is the user data', res);
         this.sharedService.storeUserDetails(res); // if false then store returned json object within sharedService
         this.router.navigate(['/main/' + user_name]);
         return true;

@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef, Renderer2, NgZone, OnDestroy,
 import { environment } from 'src/environments/environment';
 import { Converter } from 'opencc-js'; // for translation purposes (china to taiwan)
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+import { Router, NavigationEnd } from '@angular/router';
 import { SharedServiceService } from '../shared-service.service';
 import { OpenAI } from 'openai'; // request openai
 
@@ -31,11 +33,14 @@ export class MainComponent implements OnInit, OnDestroy {
   // Declare previous handlers as class properties
   private prevPlayHandler: any = null;
   private prevEndedHandler: any = null;
+  private routerSubscription: Subscription = new Subscription();
+  private isRecognitionInitialized = false;
   constructor(
     private sharedService: SharedServiceService,
     private renderer: Renderer2,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
+    private router: Router,
   ) { }
   @ViewChild('responseCardContainer', { static: false }) responseCardContainer?: ElementRef;
   @ViewChild('inputText', { static: true }) inputElement?: ElementRef; // for placeholder
@@ -62,12 +67,12 @@ export class MainComponent implements OnInit, OnDestroy {
   speed = '1.3';
   pitch = '-2.0';
   // function that assigns the variables on ngOnInit
-  attributeVariables() {
-    this.model_ai = this.sharedService.sharedData.model;
-    this.language = this.sharedService.sharedData.language;
-    this.model_name = this.sharedService.sharedData.voice;
-    this.speed = this.sharedService.sharedData.speed;
-    this.pitch = this.sharedService.sharedData.pitch;
+  attributeVariables(user_details: any) {
+    this.model_ai = user_details.model;
+    this.language = user_details.language;
+    this.model_name = user_details.voice;
+    this.speed = user_details.speed;
+    this.pitch = user_details.pitch;
   }
   generateRandomResponse(): string {
     const responses = [
@@ -86,8 +91,14 @@ export class MainComponent implements OnInit, OnDestroy {
     const randomIndex = Math.floor(Math.random() * responses.length);
     return responses[randomIndex];
   }
-  ngOnInit(): void {
-    this.attributeVariables;
+  // Method that encapsulates initializing speech recognition
+  initializeSpeechRecognition() {
+    if (this.isRecognitionInitialized) {
+      return;
+    }
+    const user_details = this.sharedService.getUserDetails();
+    // console.log('User details', user_details);
+    this.attributeVariables(user_details);
     // Initialize data-placeholder attribute
     this.renderer.setAttribute(this.inputElement?.nativeElement, 'data-placeholder', 'Enter text to chat with AI');
     this.response = this.generateRandomResponse();
@@ -100,13 +111,13 @@ export class MainComponent implements OnInit, OnDestroy {
       // Restart the recognition service when it ends
       this.recognition.onend = () => {
         if (!this.isMuted) {
-          // console.log('Recognition service cycle ended, restarting...');
+          console.log('Recognition service cycle ended, restarting...');
           this.recognition.start();
         }
       };
       this.recognition.onresult = (event: any) => {
+        let transcript = '';
         for (let i = event.resultIndex; i < event.results.length; i++) {
-          let transcript = '';
           if (event.results[i].isFinal) { // for final transcript
             // translate to traditional (taiwan) chinese if language is chinese
             if (this.recognition.lang === 'zh-TW' || this.recognition.lang === 'zh-CN') {
@@ -124,9 +135,8 @@ export class MainComponent implements OnInit, OnDestroy {
               this.chat(this.input, this.model_ai); // place this.chat here (COMMENT/UNCOMMENT)
               this.send_command = false;
             }
-            if (this.link_flag === true && this.isMuted === false && this.audio_complete === true) {
-              console.log('Links ready to open sir');
-              // console.log('Link Open transcript: ', transcript); // transcript that is final (that should be submitted to chat)
+            if (this.link_flag === true && this.isMuted === false && this.audio_complete === true && transcript !== '') { // audio_complete
+              console.log('Link Open transcript: ', transcript); // transcript that is final (that should be submitted to chat)
               this.linkOpening(transcript);
               this.link_flag = false; // set flag back to false at the end
               this.audio_complete = false; // set flag back to false
@@ -150,10 +160,23 @@ export class MainComponent implements OnInit, OnDestroy {
         }
       };
       this.recognition.start();
+      // Mark the recognition service as initialized
+      this.isRecognitionInitialized = true;
     } else {
       // Handle the error or inform the user that their browser is not supported
       console.log("Unfortunately your browser does not support Web Speech API");
     }
+  };
+
+  ngOnInit(): void {
+    // console.log("ngOnInit called");
+    this.initializeSpeechRecognition(); // Initialize it once
+
+    this.routerSubscription = this.router.events.subscribe((event: any) => {
+      if (event instanceof NavigationEnd) {
+        this.initializeSpeechRecognition(); // Re-initialize recognition service
+      }
+    });
   }
   // function to open links
   linkOpening(command: string) {
@@ -169,7 +192,7 @@ export class MainComponent implements OnInit, OnDestroy {
       if (this.links.length > 1) {
         // console.log('These are the links', this.links);
         for (let k = 0; k < command_ls.length; k++) {
-          if (command_ls[k].includes('first') || command_ls[k].includes('one') || command_ls[k].includes('一')) {
+          if (command_ls[k].includes('first') || command_ls[k].includes('number one') || command_ls[k].includes('一')) {
             this.openLink(this.links[0]); // zero-based indexing
           }
           if (command_ls[k].includes('second') || command_ls[k].includes('two') || command_ls[k].includes('二')) {
@@ -183,6 +206,11 @@ export class MainComponent implements OnInit, OnDestroy {
           }
           if (command_ls[k].includes('fifth') || command_ls[k].includes('five') || command_ls[k].includes('五')) {
             this.openLink(this.links[4]);
+          }
+          if (command_ls[k].includes('both') || command_ls[k].includes('兩')) {
+            for (let i = 0; i < 2; i++) {
+              this.openLink(this.links[i]);
+            }
           }
           if (command_ls[k].includes('all') || command_ls[k].includes('every') || command_ls[k].includes('全部') || command_ls[k].includes('所有')) {
             for (let i = 0; i < this.links.length; i++) {
@@ -273,9 +301,15 @@ export class MainComponent implements OnInit, OnDestroy {
       // Remove all such URLs from the string
       complete_response = response_temp.replace(regex, "");
       // flag for whether links are detected
-      await this.fetchAudio(complete_response); // response from ChatGPT (and voice)
+      await this.fetchAudio(complete_response, false); // response from ChatGPT (and voice)
       if (this.links.length !== 0) {
         console.log('Links:', this.links);
+        console.log('Links ready to open sir');
+        if (this.links.length === 1) {
+          this.fetchAudio('需要我幫您打開這個連結嗎?', true);
+        } else {
+          this.fetchAudio('需要我幫您打開這些連結嗎?', true);
+        }
         this.link_flag = true;
       }
     } else { // if input spacing available
@@ -300,10 +334,16 @@ export class MainComponent implements OnInit, OnDestroy {
         }
       }
       complete_response = final_ls.join(' ');
-      await this.fetchAudio(complete_response); // response from ChatGPT (voice)
+      await this.fetchAudio(complete_response, false); // response from ChatGPT (voice)
       // flag for whether links are detected
       if (this.links.length !== 0) {
         console.log('Links:', this.links);
+        console.log('Links ready to open sir');
+        if (this.links.length === 1) {
+          this.fetchAudio('Would you like me to open this link for you?', true);
+        } else {
+          this.fetchAudio('Would you like me to open these links for you?', true);
+        }
         this.link_flag = true;
       }
     }
@@ -332,6 +372,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.stop_typing = false; // set stop_typing to false
     // console.log('This is the input value:', this.input);
     this.active_icon = true;
+    this.cdr.detectChanges();
     this.chat(this.input, this.model_ai);
   }
   // switching voice inputs when user clicks on edit text button
@@ -340,8 +381,16 @@ export class MainComponent implements OnInit, OnDestroy {
   }
   // Destroy the speech recognition element
   ngOnDestroy(): void {
-    this.recognition.stop();
+    // console.log("Component destroyed");
+    this.routerSubscription.unsubscribe();
+    if (this.recognition) {
+      this.recognition.onresult = null; // Remove event listener
+      this.recognition.onend = null; // Remove event listener
+      this.recognition.stop(); // Stop the recognition service
+      this.isRecognitionInitialized = false; // Reset the flag
+    }
   }
+
 
   // mute button function
   mute() {
@@ -367,7 +416,7 @@ export class MainComponent implements OnInit, OnDestroy {
     return bytes.buffer;
   }
   // fetch audio and play!
-  async fetchAudio(input: string): Promise<void> {
+  async fetchAudio(input: string, link: boolean): Promise<void> {
     // console.log('This is the input:', input);
     return new Promise(async (resolve) => {
       if (this.voice_output === true) { // if voice output is not silenced
@@ -418,7 +467,9 @@ export class MainComponent implements OnInit, OnDestroy {
         //   resolve();
         // });
         audio.src = url;
-        this.typeResponse(input); // invoke type response here instead of within play handler (because it can be called multiple times)
+        if (!link) {
+          this.typeResponse(input); // invoke type response here instead of within play handler (because it can be called multiple times)
+        }
         audio.play();
         // // Check whether to stop the audio
         // if (this.stop_typing === true) {
