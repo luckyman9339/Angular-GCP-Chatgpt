@@ -29,7 +29,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   total = '';
   speed: number = -1;
   pitch: number = -1;
-  f_ls = ['edith', 'christine', 'olivia', 'yin', 'maggie'];
+  f_ls = ['edith', 'christine', 'olivia', 'wen', 'valerie', 'fiona', 'yin', 'maggie'];
   f_flag: boolean = false;
   // For dropdown menu
   languageTypes: string[] = ['English', 'Chinese'];
@@ -46,7 +46,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   invalid_email = false;
   // function for finding out which model language user is currently using
   modelToLang(current_language: string) {
-    if (current_language.trim().toLowerCase() === 'zh-TW') {
+    if (current_language.trim().toLowerCase() === 'zh-tw') {
       this.selectedLanguageType = 'Chinese';
     } else {
       this.selectedLanguageType = 'English';

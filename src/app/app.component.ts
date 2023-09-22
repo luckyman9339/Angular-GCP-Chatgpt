@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
       this.isLoggedIn = true;
     } else {
       this.isLoggedIn = false;
+      this.cdr.detectChanges();
       let encoded_url: any;
       let firstName: any;
       // Subscribe to changes in active URL

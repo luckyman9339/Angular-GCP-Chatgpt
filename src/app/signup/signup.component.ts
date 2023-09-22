@@ -60,7 +60,7 @@ export class SignupComponent {
     .subscribe({
       next: response => {
         // Do something with the response (true or false)
-        if (response) {
+        if (response === true) {
           console.log("Successfully registered.", response);
           const email_payload = {
             firstName: first_name,
@@ -82,6 +82,7 @@ export class SignupComponent {
           this.registration_fail.setValue(true);
         } else {
           console.log("Registration failed/15 person limit reached.");
+          this.registration_fail.setValue(false);
           this.limit_exceeded.setValue(true);
         }
       },

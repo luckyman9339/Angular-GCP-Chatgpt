@@ -128,13 +128,14 @@ export class MainComponent implements OnInit, OnDestroy {
       this.recognition.onresult = (event: any) => {
         let transcript = '';
         for (let i = event.resultIndex; i < event.results.length; i++) {
+          // translate to traditional (taiwan) chinese if language is chinese
+          if (this.recognition.lang === 'zh-TW' || this.recognition.lang === 'zh-CN') {
+            transcript = this.converter(event.results[i][0].transcript.trim());
+          } else {
+            transcript = event.results[i][0].transcript.trim();
+          }
           if (event.results[i].isFinal) { // for final transcript
-            // translate to traditional (taiwan) chinese if language is chinese
-            if (this.recognition.lang === 'zh-TW' || this.recognition.lang === 'zh-CN') {
-              transcript = this.converter(event.results[i][0].transcript.trim());
-            } else {
-              transcript = event.results[i][0].transcript.trim();
-            }
+            // English requires the added in command of splitting the transcript and taking the first word
             if (((this.recognition.lang === 'en-US' || this.recognition.lang === 'en-gb') && this.send_command === true && this.model_ai.toLowerCase() === transcript.split(" ")[0].toLowerCase()) || (this.recognition.lang === 'zh-TW' && this.send_command === true)) {
               this.active_icon = true;
               this.voice_input = true;
@@ -152,12 +153,6 @@ export class MainComponent implements OnInit, OnDestroy {
             }
             // put in link opening logic here (this.response is the response from OpenAI)
           } else { // for interim transcript
-            // translate to traditional (taiwan) chinese if language is chinese
-            if (this.recognition.lang === 'zh-TW' || this.recognition.lang === 'zh-CN') {
-              transcript = this.converter(event.results[i][0].transcript.trim());
-            } else {
-              transcript = event.results[i][0].transcript.trim();
-            }
             // this.listenCommand = transcript;
             if (this.model_ai.toLowerCase() === transcript.toLowerCase()) { // if value is equal to name of model_ai then respond
               console.log('AI model word detected within speech');
@@ -283,8 +278,14 @@ export class MainComponent implements OnInit, OnDestroy {
   extractUrls = (regex: RegExp, response_temp: string) => {
     let match;
     while ((match = regex.exec(response_temp)) !== null) {
-      const url = match[0].slice(0, -1);  // Remove enclosing characters
-      this.links.push(url);
+      let url = match[0];
+      // Check if the matched URl starts directly with http:// or https://
+      if (url.startsWith('http://') || url.startsWith('https://')) {
+        this.links.push(url);
+      } else { // For URLs containing enclosing characters
+        url = match[0].slice(0, -1);  // Remove enclosing characters
+        this.links.push(url);
+      }
     }
     // console.log('Links', this.links);
   };
@@ -308,7 +309,8 @@ export class MainComponent implements OnInit, OnDestroy {
       // this.response = response_temp.replace(bracketedRegex, "")
       //                                       .replace(quotedWithHttpRegex, "")
       //                                       .replace(quotedWithHttpsRegex, "");
-      const regex = /https?:\/\/[^\s()<>]+?(?=[\s()<>])/g;
+      // const regex = /https?:\/\/[^\s()<>]+?(?=[\s()<>])/g;
+      const regex = /https?:\/\/[^\s()<>]+?(?=[\s()<>])|\(https?:\/\/.*?\)\/|'https?:\/\/.*?'\/|'https:.*?'\/|'https?:\/\/.*?'/g;
       this.extractUrls(regex, response_temp);
       // Remove all such URLs from the string
       complete_response = response_temp.replace(regex, "");
