@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { SharedServiceService } from '../shared-service.service';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { NavigationError, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -38,12 +38,43 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log('Log in page reached');
-    this.getFirstNames();
-    this.sharedService.updateData({ isLoggedIn: false });
-    this.sharedService.someData$.subscribe((data) => {
-      // console.log('This is the data:', data);
-    })
+    let firstName: string;
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      // console.log('This is token:', token);
+      const payload = {
+        code: token
+      };
+      this.httpClient.post<any>('https://nodal-component-399020.wl.r.appspot.com/securityHandshake', payload)
+        .subscribe({
+          next: response => {
+            // console.log('Token here:', token);
+            if (response !== false) {
+              firstName = response.firstName;
+              const user_name = encodeURIComponent(btoa(firstName));
+              // console.log('This is the URL', encodeURIComponent(btoa(firstName)));
+              this.route.navigate(['/main/' + user_name])
+              // this.route.events.subscribe((event) => {
+              //   if (event instanceof NavigationError) {
+              //     console.error('Navigation error occurred:', event.error);
+              //   }
+              // });
+            } else {
+              console.log('Something went wrong during the security handshake API')
+            }
+          },
+          error: error => {
+            console.log('Backend appeared to encounter an error:', error);
+          }
+        })
+    } else {
+      console.log('Log in page reached');
+      this.getFirstNames();
+      this.sharedService.updateData({ isLoggedIn: false });
+      this.sharedService.someData$.subscribe((data) => {
+        // console.log('This is the data:', data);
+      })
+    }
   }
   // method for retrieving first names
   getFirstNames(): void {
@@ -140,7 +171,7 @@ export class LoginComponent implements OnInit {
     // console.log('First Name:', user);
     // console.log('This is the password', password);
     const result = await this.authService.login(user, password); // result is Promise <boolean>
-    if (result) { // if user loggedin successfully
+    if (result !== false) { // if user loggedin successfully
       console.log('Success!');
       this.loggedIn.setValue(true);
       this.cdr.detectChanges();

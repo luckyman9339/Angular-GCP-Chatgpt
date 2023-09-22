@@ -15,6 +15,7 @@ import { MainComponent } from './main/main.component';
 import { SignupComponent } from './signup/signup.component';
 import { EditpasswordComponent } from './editpassword/editpassword.component';
 import { AboutComponent } from './about/about.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { AboutComponent } from './about/about.component';
     SignupComponent,
     EditpasswordComponent,
     AboutComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

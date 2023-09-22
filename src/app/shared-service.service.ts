@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, firstValueFrom } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
@@ -36,12 +36,15 @@ export class SharedServiceService implements OnInit {
   constructor(private http: HttpClient) {
     // this.aiObject=<JSON>this.ai;
   }
+  // data for about and profile page
+  total_tokens = 2500000;
+  max_signup = 15;
   private someDataSubject = new BehaviorSubject<any>(false); // sharedData across all pages
   someData$ = this.someDataSubject.asObservable();
   sharedData = {
     firstName: '',
     email: '',
-    password: '',
+    // password: '',
     details: '',
     authorization: '',
     language: '',
@@ -102,7 +105,7 @@ export class SharedServiceService implements OnInit {
         (response) => {
           // Handle the successful response here
           // console.log('OpenAI Response:', response);
-          
+
           // first create an interface for openAIResponse (so it can be recognized as an object with specific properties here)
           interface OpenAIResponse {
             model: string, // gpt-3.5-turbo-0613
@@ -133,13 +136,13 @@ export class SharedServiceService implements OnInit {
           };
           // call backend API
           this.http.post<boolean>('https://nodal-component-399020.wl.r.appspot.com/modifyData', usage)
-          .subscribe({
-            next: result => {
-              if (!result) {
-                console.log('Something went wrong in modifyData, the returned response was not true');
+            .subscribe({
+              next: result => {
+                if (!result) {
+                  console.log('Something went wrong in modifyData, the returned response was not true');
+                }
               }
-            }
-          })
+            })
           resolve(response); // signals that response was successful
         },
         (error) => {
@@ -164,10 +167,57 @@ export class SharedServiceService implements OnInit {
   //     encoder: encodedName
   //   }
   // }
-
-  // function to get user details
-  getUserDetails() {
+  // function to call whenever a new page requires data from database
+  async initializeUserDetails(encoded_email: string): Promise<any> {
+    const payload = { email: encoded_email };
+    try {
+      const observable = this.http.post<any>('https://nodal-component-399020.wl.r.appspot.com/retrieveUserDetails', payload);
+      const response = await firstValueFrom(observable); // use await for Promise variables
+      if (response !== false) {
+        // console.log('Print out the returned data', response);
+        this.sharedData.firstName = response.firstName;
+        this.sharedData.email = response.email;
+        this.sharedData.details = response.details;
+        this.sharedData.authorization = response.authorization;
+        this.sharedData.language = response.language;
+        this.sharedData.model = response.model;
+        this.sharedData.voice = response.voice;
+        this.sharedData.speed = response.speed;
+        this.sharedData.pitch = response.pitch;
+        this.sharedData.prompt = response.prompt;
+        this.sharedData.completion = response.completion;
+        this.sharedData.total = response.total;
+        // console.log('This is the shared Data', this.sharedData);
+        return this.sharedData; // return object as promise
+      } else {
+        // Handle the case where response is false
+        throw new Error("Response is false"); // or return an alternative value or object
+      };
+    } catch (error) {
+      console.error('Error in initializeUserDetails:', error);
+      throw error; // or return a fallback value or object
+    }
+  };
+  // function to retrieve user details (use for every page requiring user data)
+  retrieveUserDetails(token:string) {
+    this.getUserDetails(token);
     return this.sharedData;
+  };
+  // function to get user details
+  async getUserDetails(token:string) {
+    const user_details = await this.initializeUserDetails(token);
+    this.sharedData.firstName = user_details.firstName;
+    this.sharedData.email = user_details.email;
+    this.sharedData.details = user_details.details;
+    this.sharedData.authorization = user_details.authorization;
+    this.sharedData.language = user_details.language;
+    this.sharedData.model = user_details.model;
+    this.sharedData.voice = user_details.voice;
+    this.sharedData.speed = user_details.speed;
+    this.sharedData.pitch = user_details.pitch;
+    this.sharedData.prompt = user_details.prompt;
+    this.sharedData.completion = user_details.completion;
+    this.sharedData.total = user_details.total;
   };
 
   storeUserDetails(user_data: any) {
@@ -191,5 +241,6 @@ export class SharedServiceService implements OnInit {
   // method that logs out user
   logOutUser() {
     this.userLoggedOut.next();
+    
   }
 }

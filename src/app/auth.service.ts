@@ -41,6 +41,10 @@ export class AuthService {
         this.loggedIn.next(true);
         // this.cdr.detectChanges();
         // console.log('This is the user data', res);
+        const encoded_email = btoa(res.data_json.email);
+        // console.log('This is the first name', res.data_json.firstName)
+        // console.log('This is the encoded email (token):', encoded_email);
+        localStorage.setItem('auth_token', encoded_email);
         this.sharedService.storeUserDetails(res); // if false then store returned json object within sharedService
         this.router.navigate(['/main/' + user_name]);
         return true;
@@ -54,6 +58,7 @@ export class AuthService {
   // Method for handling log out
   logout() {
     this.loggedIn.next(false);
+    localStorage.removeItem('auth_token');
     this.router.navigate(['/']);
   }
   

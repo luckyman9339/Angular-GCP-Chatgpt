@@ -1,0 +1,247 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container-whole {
+    max-height: 80vh;
+}
+
+
+.card-whole {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    animation: slideInUp 1s ease-out;
+}
+
+/* .blue-snackbar {
+    background: #ff0000 !important;
+    color: rgb(143, 2, 2) !important;
+} */
+.header-text {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.icon-column {
+    display: flex;
+    fill:#007bff;
+    justify-content: space-between;
+    margin-top:2px;
+};
+.edit-icon {
+    justify-content:end;
+    align-content:end;
+}
+.button-row {
+    outline: 2px solid rgba(189, 189, 189, 0.2); /* 50% opacity for the black outline */
+    padding: 5px; 
+    margin: 10px 0; 
+    border-radius: 10px;
+}
+.button-container {
+    display:flex;
+    align-items:flex-end;
+    flex-direction: column;
+}
+.incremental-up {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:10px 15px;
+    max-width:30px;
+    margin: 3px 0; /* Add some vertical margin between buttons */
+    max-height:25px;
+}
+.incremental-down {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:10px 15px;
+    max-width:30px;
+    margin: 3px 0; /* Add some vertical margin between buttons */
+    max-height:25px;
+}
+
+.input-text:empty:before {
+    content: attr(data-placeholder);
+    color: #ccc;
+}
+
+.input-text-firstName:focus {
+    background-color: #f2f2f2;
+    outline: none;
+}
+
+.input-text-firstName {
+    max-width: 100px;
+    justify-content: center;
+    align-content: center;
+    color: #000000;
+    /* Set text color to black */
+    /* box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2); */
+    border: 0px solid #ffffff;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.input-text-email:focus {
+    background-color: #f2f2f2;
+    outline: none;
+}
+
+.input-text-email {
+    max-width: 300px;
+    justify-content: center;
+    align-content: center;
+    color: #000000;
+    /* Set text color to black */
+    /* box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2); */
+    border: 0px solid #ffffff;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.input-text-model:focus {
+    background-color: #f2f2f2;
+    outline: none;
+}
+
+.input-text-model {
+    max-width: 70px;
+    justify-content: center;
+    align-content: center;
+    color: #000000;
+    /* Set text color to black */
+    /* box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2); */
+    border: 0px solid #ffffff;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.input-text-details:focus {
+    background-color: #f2f2f2;
+    outline: none;
+}
+
+.input-text-details {
+    /* height:10px; */
+    color: #000000;
+    /* Set text color to black */
+    /* box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2); */
+    border: 0px solid #ffffff;
+    border-radius: 5px;
+    padding: 10px;
+    /* Add a smooth transition effect for the border color */
+
+    /* Add more styles for the background, text color, and other properties as needed */
+}
+
+.user-icon {
+    padding: 20px;
+    margin-left: 95px;
+    display: flex;
+    justify-content: center;
+    font-size: 150px;
+    fill: rgb(20, 34, 129);
+}
+
+.user-icon-f {
+    padding: 20px;
+    margin-left: 95px;
+    display: flex;
+    justify-content: center;
+    font-size: 150px;
+    fill: rgb(176, 47, 168);
+}
+
+.linkedIn-icon {
+    font-size: 14px;
+    fill: rgb(21, 98, 165);
+    margin-left: 1px;
+}
+
+.gitHub-icon {
+    font-size: 15px;
+    fill: rgb(32, 32, 111);
+    margin-left: 2px;
+}
+
+.email-icon {
+    font-size: 21px;
+    fill: rgb(3, 0, 45);
+    margin-left: 3px;
+}
+
+.fontawesomesvg {
+    width: 1em;
+    height: 1em;
+    vertical-align: -.125em;
+}
+
+.label {
+    font-weight: bold;
+    padding: 20px;
+}
+
+.profile-icon {
+    padding: 20px;
+    margin-left: 95px;
+    display: flex;
+    justify-content: center;
+    font-size: 150px;
+    fill: rgb(215, 101, 39);
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.link-buttons:hover {
+    color: #007bff;
+}
+
+/* Add your custom styles here */
+.rounded-3 {
+    border-radius: 1rem !important;
+}
+
+.text-warning {
+    color: #ffc107 !important;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.font-italic {
+    font-style: italic !important;
+}
+
+.progress {
+    background-color: #e9ecef !important;
+}
+
+.progress-bar {
+    background-color: #007bff !important;
+    transition: width 1.5s ease-in-out;
+}
+
+.list-group-item {
+    background-color: #fff !important;
+}

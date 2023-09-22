@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/co
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SharedServiceService } from '../shared-service.service';
 interface usageData {
   prompt: Array<number>,
   completion: Array<number>,
@@ -20,10 +21,11 @@ export class AboutComponent implements OnInit, AfterViewInit {
     private httpClient: HttpClient,
     private snackBar: MatSnackBar,
     private cdr: ChangeDetectorRef,
+    private sharedService: SharedServiceService
   ) { }
   russ_data: any = {}; // Initialize Russell's data object
-  token_total: number = 2500000; // total tokens
-  max_signup: number = 15;
+  token_total: number = this.sharedService.total_tokens; // total tokens 2500000
+  max_signup: number = this.sharedService.max_signup;
   firstNames:Array<string> = [];
   prompt_sum: number = -1;
   completion_sum: number = -1;

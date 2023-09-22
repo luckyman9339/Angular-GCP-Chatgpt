@@ -91,16 +91,26 @@ export class MainComponent implements OnInit, OnDestroy {
     const randomIndex = Math.floor(Math.random() * responses.length);
     return responses[randomIndex];
   }
+  // async function to retrieve userDetails
+  async retrieveUserDetails(token: string): Promise<any> {
+    try {
+      const data = await this.sharedService.initializeUserDetails(token);
+      // console.log("Received data:", data);
+      return data;
+    } catch (error) {
+      console.error("Error occurred:", error);
+    }
+  }
   // Method that encapsulates initializing speech recognition
-  initializeSpeechRecognition() {
+  async initializeSpeechRecognition(token: string) {
     if (this.isRecognitionInitialized) {
       return;
     }
-    const user_details = this.sharedService.getUserDetails();
+    const user_details = await this.retrieveUserDetails(token);
     // console.log('User details', user_details);
     this.attributeVariables(user_details);
     // Initialize data-placeholder attribute
-    this.renderer.setAttribute(this.inputElement?.nativeElement, 'data-placeholder', 'Enter text to chat with AI');
+    this.renderer.setAttribute(this.inputElement?.nativeElement, 'data-placeholder', `Enter text to chat with ${this.model_ai} or say "${this.model_ai} how are you doing today?"`);
     this.response = this.generateRandomResponse();
     // Initialize speech recognition
     if ('webkitSpeechRecognition' in window) {
@@ -134,8 +144,7 @@ export class MainComponent implements OnInit, OnDestroy {
               this.cdr.detectChanges(); // force update in HTML
               this.chat(this.input, this.model_ai); // place this.chat here (COMMENT/UNCOMMENT)
               this.send_command = false;
-            }
-            if (this.link_flag === true && this.isMuted === false && this.audio_complete === true && transcript !== '') { // audio_complete
+            } else if (this.link_flag === true && this.isMuted === false && transcript !== '') { // audio_complete
               console.log('Link Open transcript: ', transcript); // transcript that is final (that should be submitted to chat)
               this.linkOpening(transcript);
               this.link_flag = false; // set flag back to false at the end
@@ -169,14 +178,17 @@ export class MainComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit(): void {
-    // console.log("ngOnInit called");
-    this.initializeSpeechRecognition(); // Initialize it once
+    console.log("ngOnInit called");
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      this.initializeSpeechRecognition(token); // Initialize it once
 
-    this.routerSubscription = this.router.events.subscribe((event: any) => {
-      if (event instanceof NavigationEnd) {
-        this.initializeSpeechRecognition(); // Re-initialize recognition service
-      }
-    });
+      this.routerSubscription = this.router.events.subscribe((event: any) => {
+        if (event instanceof NavigationEnd) {
+          this.initializeSpeechRecognition(token); // Re-initialize recognition service
+        }
+      });
+    };
   }
   // function to open links
   linkOpening(command: string) {
@@ -305,12 +317,12 @@ export class MainComponent implements OnInit, OnDestroy {
       if (this.links.length !== 0) {
         console.log('Links:', this.links);
         console.log('Links ready to open sir');
+        this.link_flag = true;
         if (this.links.length === 1) {
           this.fetchAudio('需要我幫您打開這個連結嗎?', true);
         } else {
           this.fetchAudio('需要我幫您打開這些連結嗎?', true);
         }
-        this.link_flag = true;
       }
     } else { // if input spacing available
       response_temp = initial_response.choices[0].message.content;
@@ -339,12 +351,12 @@ export class MainComponent implements OnInit, OnDestroy {
       if (this.links.length !== 0) {
         console.log('Links:', this.links);
         console.log('Links ready to open sir');
+        this.link_flag = true;
         if (this.links.length === 1) {
           this.fetchAudio('Would you like me to open this link for you?', true);
         } else {
           this.fetchAudio('Would you like me to open these links for you?', true);
         }
-        this.link_flag = true;
       }
     }
     // console.log('This is the response', this.response);
