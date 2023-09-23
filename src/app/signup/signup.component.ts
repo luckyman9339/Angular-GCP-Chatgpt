@@ -56,7 +56,7 @@ export class SignupComponent {
     }
     // make the POST request
     // const response = await this.httpClient.post<boolean>('http://localhost:3000/registerData', payload).toPromise();
-    this.httpClient.post<boolean>('https://nodal-component-399020.wl.r.appspot.com/registerData', payload)
+    this.httpClient.post<boolean>('https://backend-dot-nodal-component-399020.wl.r.appspot.com/registerData', payload)
     .subscribe({
       next: response => {
         // Do something with the response (true or false)
@@ -66,7 +66,7 @@ export class SignupComponent {
             firstName: first_name,
             email: email
           };
-          this.httpClient.post<boolean>('https://nodal-component-399020.wl.r.appspot.com/send-email', email_payload)
+          this.httpClient.post<boolean>('https://backend-dot-nodal-component-399020.wl.r.appspot.com/send-email', email_payload)
           .subscribe({
             next: email_response => {
               console.log('Email sent?', email_response);

@@ -1,4 +1,5 @@
 # App.yaml file for building on Google SDK
+service: frontend
 runtime: python39 # Can use any supported runtime; we're just serving static files
 instance_class: F1  # Choose the instance class that suits your needs
 automatic_scaling:  # You can also use manual or basic scaling

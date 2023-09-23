@@ -28,7 +28,7 @@ export class AuthService {
     const encoded_password = encodeURIComponent(btoa(password));
     try {
       const observable = this.httpClient.get<any>(
-        `https://nodal-component-399020.wl.r.appspot.com/getUserData?encoded_firstName=${encoded_username}&encoded_password=${encoded_password}`
+        `https://backend-dot-nodal-component-399020.wl.r.appspot.com/getUserData?encoded_firstName=${encoded_username}&encoded_password=${encoded_password}`
       );
       const res = await firstValueFrom(observable); // use firstValueFrom to convert the Observable returned by the API call into a Promise
       // res here is a promise

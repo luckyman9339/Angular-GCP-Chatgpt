@@ -209,7 +209,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     };
     // Call the API
     try {
-      const observable = this.httpClient.post<boolean>('https://nodal-component-399020.wl.r.appspot.com/modifyData', payload);
+      const observable = this.httpClient.post<boolean>('https://backend-dot-nodal-component-399020.wl.r.appspot.com/modifyData', payload);
       const result = await firstValueFrom(observable);
       if (!result) {
         console.log('Something went wrong in modifyData, the returned response was not true');

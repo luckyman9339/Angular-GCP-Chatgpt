@@ -434,7 +434,7 @@ export class MainComponent implements OnInit, OnDestroy {
     // console.log('This is the input:', input);
     return new Promise(async (resolve) => {
       if (this.voice_output === true) { // if voice output is not silenced
-        const res = await fetch(`https://nodal-component-399020.wl.r.appspot.com/speak?text=${input}&languageCode=${this.language}&name=${this.model_name}&speed=${this.speed}&pitch=${this.pitch}`);
+        const res = await fetch(`https://backend-dot-nodal-component-399020.wl.r.appspot.com/speak?text=${input}&languageCode=${this.language}&name=${this.model_name}&speed=${this.speed}&pitch=${this.pitch}`);
         // const res = await fetch(`http://localhost:3000/speak?text=${input}&languageCode=${this.language}&name=${this.model_name}&speed=${this.speed}&pitch=${this.pitch}`);
         const data = await res.json();
         const audioBase64 = data.audioBase64;

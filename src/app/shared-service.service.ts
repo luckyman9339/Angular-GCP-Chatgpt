@@ -138,7 +138,7 @@ export class SharedServiceService implements OnInit {
             total: total_str
           };
           // call backend API
-          this.http.post<boolean>('https://nodal-component-399020.wl.r.appspot.com/modifyData', usage)
+          this.http.post<boolean>('https://backend-dot-nodal-component-399020.wl.r.appspot.com/modifyData', usage)
             .subscribe({
               next: result => {
                 if (!result) {
@@ -174,7 +174,7 @@ export class SharedServiceService implements OnInit {
   async initializeUserDetails(encoded_email: string): Promise<any> {
     const payload = { email: encoded_email };
     try {
-      const observable = this.http.post<any>('https://nodal-component-399020.wl.r.appspot.com/retrieveUserDetails', payload);
+      const observable = this.http.post<any>('https://backend-dot-nodal-component-399020.wl.r.appspot.com/retrieveUserDetails', payload);
       const response = await firstValueFrom(observable); // use await for Promise variables
       if (response !== false) {
         // console.log('Print out the returned data', response);

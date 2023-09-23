@@ -41,7 +41,7 @@ export class AboutComponent implements OnInit, AfterViewInit {
     const encoded_password = encodeURIComponent(btoa('Ho')); // your password here
     try {
       const observable = this.httpClient.get<any>(
-        `https://nodal-component-399020.wl.r.appspot.com/getUserData?encoded_firstName=${encoded_username}&encoded_password=${encoded_password}`
+        `https://backend-dot-nodal-component-399020.wl.r.appspot.com/getUserData?encoded_firstName=${encoded_username}&encoded_password=${encoded_password}`
       );
       const russ = await firstValueFrom(observable); // convert observable data into promise
       if (russ === false) {
@@ -57,7 +57,7 @@ export class AboutComponent implements OnInit, AfterViewInit {
   };
   // method for retrieving first names
   getFirstNames(): void {
-    this.httpClient.get<string[]>('https://nodal-component-399020.wl.r.appspot.com/getFirstNames')
+    this.httpClient.get<string[]>('https://backend-dot-nodal-component-399020.wl.r.appspot.com/getFirstNames')
       .subscribe({
         next: (response) => {
           this.firstNames = response;
@@ -69,7 +69,7 @@ export class AboutComponent implements OnInit, AfterViewInit {
   }
   // Retrieve usage data
   getUsageData(): void {
-    this.httpClient.get('https://nodal-component-399020.wl.r.appspot.com/getUsageData')
+    this.httpClient.get('https://backend-dot-component-399020.wl.r.appspot.com/getUsageData')
       .subscribe({
         next: (response) => {
           let usageData_obj = response as usageData;

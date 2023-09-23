@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
       const payload = {
         code: token
       };
-      this.httpClient.post<any>('https://nodal-component-399020.wl.r.appspot.com/securityHandshake', payload)
+      this.httpClient.post<any>('https://backend-dot-nodal-component-399020.wl.r.appspot.com/securityHandshake', payload)
         .subscribe({
           next: response => {
             // console.log('Token here:', token);
@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
   }
   // method for retrieving first names
   getFirstNames(): void {
-    this.httpClient.get<string[]>('https://nodal-component-399020.wl.r.appspot.com/getFirstNames')
+    this.httpClient.get<string[]>('https://backend-dot-nodal-component-399020.wl.r.appspot.com/getFirstNames')
       .subscribe({
         next: (response) => {
           this.firstNames = response;

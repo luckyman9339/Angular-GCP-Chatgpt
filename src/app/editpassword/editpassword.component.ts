@@ -40,7 +40,7 @@ export class EditpasswordComponent implements OnInit{
       email: email,
       password: password
     };
-    this.httpClient.post<boolean>('https://nodal-component-399020.wl.r.appspot.com/modifyPassword', payload)
+    this.httpClient.post<boolean>('https://backend-dot-nodal-component-399020.wl.r.appspot.com/modifyPassword', payload)
     .subscribe({
       next: response => {
         if (response) {
