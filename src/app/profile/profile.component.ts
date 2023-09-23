@@ -41,7 +41,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   selectedVoiceType: string = 'en-GB-Neural2-C';
 
   modelLanguage = ''; // Because model languages are in the format of 'en-gb' for GB English; 'en-US' for US English & 'zh-TW' for Taiwan Chinese
-
+  // For member upgrade to pro
+  proEnabled:boolean = false;
   // For invalid inputs
   invalid_email = false;
   // function for finding out which model language user is currently using
@@ -59,6 +60,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.firstName = userDetails.firstName;
     this.email = userDetails.email;
     this.authorization = userDetails.authorization;
+    this.proEnabled = false;
+    if (this.authorization === 'Pro' || this.authorization === 'Premium' || this.authorization === 'Admin') {
+      this.proEnabled = true;
+    };
     this.prompt = userDetails.prompt;
     this.complete = userDetails.completion;
     this.total = userDetails.total;
@@ -193,6 +198,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     // construct the payload
     const payload = {
       email: this.email, // required for payload!
+      authorization: this.authorization,
       firstName: this.firstName,
       details: this.details,
       language: this.modelLanguage,
@@ -223,6 +229,20 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       console.log('Something went wrong with saving the modified data', error);
     }
   }
+  // function for toggling member to pro upgrade
+  togglePro () {
+    // Do not need to toggle this.proEnabled here because ngModel is already bound to the variable
+    // console.log('Do you have pro enabled?', this.proEnabled);
+    if (this.proEnabled && this.authorization === 'Member') {
+      this.authorization = 'Pro';
+    } else if (!this.proEnabled && this.authorization === 'Pro') { // remove && this.authorization === 'Pro' if you want to be anonymous to AI
+      this.authorization = 'Member';
+    } else if (this.proEnabled && this.authorization === 'Anonymous') {
+      this.authorization = 'Admin'; // backdoor for yourself
+    } else if (!this.proEnabled && this.authorization === 'Admin') {
+      this.authorization = 'Anonymous';
+    }
+  };
   // function to log out
   logOut() {
     this.sharedService.logOutUser();

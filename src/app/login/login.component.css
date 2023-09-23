@@ -140,3 +140,16 @@ body {
 .txt2:hover {
   text-decoration: underline;
 }
+
+/* watermark style */
+.watermark {
+  justify-items:start;
+  align-items: start;
+  margin-top:50px;
+  bottom: 10px;     /* Position it at the bottom of the page */
+  right: 10px;      /* Position it slightly away from the right edge for aesthetics */
+  opacity: 0.5;     /* Set the opacity (you can adjust this value as per your requirements) */
+  font-size: 12px;  /* Smaller font size to make it look like a watermark */
+  color: #000;      /* The color of the watermark text */
+  z-index: 1000;    /* High z-index to make sure it appears above other elements */
+}

@@ -91,11 +91,14 @@ export class SharedServiceService implements OnInit {
   openaiChat(prompt: string, assistant: string, model: string = this.model): Promise<any> {
     const instructions = this.modelFinder(assistant); // find corresponding prompts first
     const nameInstructions = `Also, my name is ${this.sharedData.firstName}` // incorporate name within application
-    const details = `Here are some facts about me: ${this.sharedData.details}` // incorporate if need be
+    let details = '';
+    if (this.sharedData.authorization !== 'User' && this.sharedData.authorization !== 'Member' && this.sharedData.authorization !== 'Anonymous') {
+      details = `Here are some facts about me: ${this.sharedData.details}` // incorporate user authorization is 'Pro', 'Admin' etc
+    }
     const requestData = {
       model: model,
       messages: [
-        { role: 'system', content: instructions + nameInstructions },
+        { role: 'system', content: instructions + nameInstructions + details },
         { role: 'user', content: prompt }
       ]
     };
@@ -199,12 +202,12 @@ export class SharedServiceService implements OnInit {
     }
   };
   // function to retrieve user details (use for every page requiring user data)
-  retrieveUserDetails(token:string) {
+  retrieveUserDetails(token: string) {
     this.getUserDetails(token);
     return this.sharedData;
   };
   // function to get user details
-  async getUserDetails(token:string) {
+  async getUserDetails(token: string) {
     const user_details = await this.initializeUserDetails(token);
     this.sharedData.firstName = user_details.firstName;
     this.sharedData.email = user_details.email;
@@ -241,6 +244,6 @@ export class SharedServiceService implements OnInit {
   // method that logs out user
   logOutUser() {
     this.userLoggedOut.next();
-    
+
   }
 }

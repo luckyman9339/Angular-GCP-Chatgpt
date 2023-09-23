@@ -55,15 +55,25 @@
                                     <path
                                         d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
                                 </svg>
-                                <svg *ngIf="authorization === 'Premium' && !f_flag" class="user-icon"
+                                <svg *ngIf="authorization === 'Member' && !f_flag" class="user-icon"
+                                    xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512">
+                                    <path
+                                        d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
+                                </svg>
+                                <svg *ngIf="authorization === 'Pro' && !f_flag" class="user-icon"
                                     xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
                                     <path
                                         d="M370.7 96.1C346.1 39.5 289.7 0 224 0S101.9 39.5 77.3 96.1C60.9 97.5 48 111.2 48 128v64c0 16.8 12.9 30.5 29.3 31.9C101.9 280.5 158.3 320 224 320s122.1-39.5 146.7-96.1c16.4-1.4 29.3-15.1 29.3-31.9V128c0-16.8-12.9-30.5-29.3-31.9zM336 144v16c0 53-43 96-96 96H208c-53 0-96-43-96-96V144c0-26.5 21.5-48 48-48H288c26.5 0 48 21.5 48 48zM189.3 162.7l-6-21.2c-.9-3.3-3.9-5.5-7.3-5.5s-6.4 2.2-7.3 5.5l-6 21.2-21.2 6c-3.3 .9-5.5 3.9-5.5 7.3s2.2 6.4 5.5 7.3l21.2 6 6 21.2c.9 3.3 3.9 5.5 7.3 5.5s6.4-2.2 7.3-5.5l6-21.2 21.2-6c3.3-.9 5.5-3.9 5.5-7.3s-2.2-6.4-5.5-7.3l-21.2-6zM112.7 316.5C46.7 342.6 0 407 0 482.3C0 498.7 13.3 512 29.7 512H128V448c0-17.7 14.3-32 32-32H288c17.7 0 32 14.3 32 32v64l98.3 0c16.4 0 29.7-13.3 29.7-29.7c0-75.3-46.7-139.7-112.7-165.8C303.9 338.8 265.5 352 224 352s-79.9-13.2-111.3-35.5zM176 448c-8.8 0-16 7.2-16 16v48h32V464c0-8.8-7.2-16-16-16zm96 32a16 16 0 1 0 0-32 16 16 0 1 0 0 32z" />
                                 </svg>
-                                <svg *ngIf="authorization === 'Premium' && f_flag" class="user-icon-f"
+                                <svg *ngIf="authorization === 'Pro' && f_flag" class="user-icon-f"
                                     xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
                                     <path
                                         d="M370.7 96.1C346.1 39.5 289.7 0 224 0S101.9 39.5 77.3 96.1C60.9 97.5 48 111.2 48 128v64c0 16.8 12.9 30.5 29.3 31.9C101.9 280.5 158.3 320 224 320s122.1-39.5 146.7-96.1c16.4-1.4 29.3-15.1 29.3-31.9V128c0-16.8-12.9-30.5-29.3-31.9zM336 144v16c0 53-43 96-96 96H208c-53 0-96-43-96-96V144c0-26.5 21.5-48 48-48H288c26.5 0 48 21.5 48 48zM189.3 162.7l-6-21.2c-.9-3.3-3.9-5.5-7.3-5.5s-6.4 2.2-7.3 5.5l-6 21.2-21.2 6c-3.3 .9-5.5 3.9-5.5 7.3s2.2 6.4 5.5 7.3l21.2 6 6 21.2c.9 3.3 3.9 5.5 7.3 5.5s6.4-2.2 7.3-5.5l6-21.2 21.2-6c3.3-.9 5.5-3.9 5.5-7.3s-2.2-6.4-5.5-7.3l-21.2-6zM112.7 316.5C46.7 342.6 0 407 0 482.3C0 498.7 13.3 512 29.7 512H128V448c0-17.7 14.3-32 32-32H288c17.7 0 32 14.3 32 32v64l98.3 0c16.4 0 29.7-13.3 29.7-29.7c0-75.3-46.7-139.7-112.7-165.8C303.9 338.8 265.5 352 224 352s-79.9-13.2-111.3-35.5zM176 448c-8.8 0-16 7.2-16 16v48h32V464c0-8.8-7.2-16-16-16zm96 32a16 16 0 1 0 0-32 16 16 0 1 0 0 32z" />
+                                </svg>
+                                <svg *ngIf="authorization === 'Anonymous'" class="user-icon"
+                                    xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                                    <path
+                                        d="M224 16c-6.7 0-10.8-2.8-15.5-6.1C201.9 5.4 194 0 176 0c-30.5 0-52 43.7-66 89.4C62.7 98.1 32 112.2 32 128c0 14.3 25 27.1 64.6 35.9c-.4 4-.6 8-.6 12.1c0 17 3.3 33.2 9.3 48H45.4C38 224 32 230 32 237.4c0 1.7 .3 3.4 1 5l38.8 96.9C28.2 371.8 0 423.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7c0-58.5-28.2-110.4-71.7-143L415 242.4c.6-1.6 1-3.3 1-5c0-7.4-6-13.4-13.4-13.4H342.7c6-14.8 9.3-31 9.3-48c0-4.1-.2-8.1-.6-12.1C391 155.1 416 142.3 416 128c0-15.8-30.7-29.9-78-38.6C324 43.7 302.5 0 272 0c-18 0-25.9 5.4-32.5 9.9c-4.8 3.3-8.8 6.1-15.5 6.1zm56 208H267.6c-16.5 0-31.1-10.6-36.3-26.2c-2.3-7-12.2-7-14.5 0c-5.2 15.6-19.9 26.2-36.3 26.2H168c-22.1 0-40-17.9-40-40V169.6c28.2 4.1 61 6.4 96 6.4s67.8-2.3 96-6.4V184c0 22.1-17.9 40-40 40zm-88 96l16 32L176 480 128 288l64 32zm128-32L272 480 240 352l16-32 64-32z" />
                                 </svg>
                                 <svg *ngIf="authorization === 'Admin'" class="user-icon"
                                     xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
@@ -76,12 +86,33 @@
                                 <p class="text-muted mb-4">{{ details }}</p>
                                 <div class="d-flex justify-content-center mb-2">
                                     <button type="button" class="btn btn-primary" (click)="logOut()">Log Out</button>
-                                    <button type="button" class="btn btn-outline-primary ms-1" (click)="save()">Save</button>
+                                    <button type="button" class="btn btn-outline-primary ms-1"
+                                        (click)="save()">Save</button>
                                 </div>
                             </div>
                         </div>
                         <div class="card mb-4 mb-lg-0">
                             <div class="card-body p-0">
+                                <div *ngIf="authorization !== 'User'" class="membership">
+                                    <h3>Further Customize your Personal Assistant</h3>
+                                    <p>As a member, you have the opportunity to further customize your personal
+                                        assistant</p>
+                                    <br>
+                                    <!-- Modern Switch -->
+                                    <div class="switch-wrapper">
+                                        <label class="switch">
+                                            <input type="checkbox" [(ngModel)]="proEnabled" (change)="togglePro()">
+                                            <span class="slider"></span>
+                                        </label>
+                                        <span>Enable Customization</span>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <div class="fine-print">By flipping this switch above you are agreeing to provide
+                                        your details entered above to
+                                        OpenAI, further tailoring its responses to suit your personal needs</div>
+                                </div>
                                 <!-- <ul class="list-group list-group-flush rounded-3">
                                     <button (click)="copyText('ho224purdue@gmail.com')"
                                         class="link-buttons list-group-item d-flex justify-content-between align-items-center p-3">
@@ -120,11 +151,16 @@
                                 <div class="row">
                                     <div class="col-sm-3 icon-column">
                                         <p class="mb-0 header-text">First Name</p>
-                                        <svg class="edit-icon" style="margin-top:10px" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z"/></svg>
+                                        <svg class="edit-icon" style="margin-top:10px"
+                                            xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                                            <path
+                                                d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z" />
+                                        </svg>
                                     </div>
                                     <div class="col-sm-9">
                                         <div class="text-muted mb-0 input-text-firstName" contenteditable="true"
-                                        type="text" (input)="firstNameInput($event)" [textContent]="firstName"></div>
+                                            type="text" (input)="firstNameInput($event)" [textContent]="firstName">
+                                        </div>
                                     </div>
                                 </div>
                                 <hr>
@@ -135,29 +171,38 @@
                                     </div>
                                     <div class="col-sm-9">
                                         <div class="text-muted mb-0 input-text-email" contenteditable="false"
-                                        type="text" (input)="emailInput($event)" [textContent]="email"></div>
+                                            type="text" (input)="emailInput($event)" [textContent]="email"></div>
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3 icon-column">
                                         <p class="mb-0 header-text" style="margin-top:10px">Model Name</p>
-                                        <svg class="edit-icon" style="margin-top:10px" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z"/></svg>
+                                        <svg class="edit-icon" style="margin-top:10px"
+                                            xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                                            <path
+                                                d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z" />
+                                        </svg>
                                     </div>
                                     <div class="col-sm-9">
-                                        <div class="text-muted mb-0 input-text-model" contenteditable="true"
-                                        type="text" (input)="modelInput($event)" [textContent]="model"></div>
+                                        <div class="text-muted mb-0 input-text-model" contenteditable="true" type="text"
+                                            (input)="modelInput($event)" [textContent]="model"></div>
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3 icon-column">
                                         <p class="mb-0 header-text" style="margin-top:10px">Details</p>
-                                        <svg class="edit-icon" style="margin-top:10px" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z"/></svg>
+                                        <svg class="edit-icon" style="margin-top:10px"
+                                            xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                                            <path
+                                                d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z" />
+                                        </svg>
                                     </div>
                                     <div class="col-sm-9">
-                                        <div class="text-muted mb-4 input-text-details" #inputText contenteditable="true"
-                                            type="text" (input)="detailsInput($event)" [textContent]="details">
+                                        <div class="text-muted mb-4 input-text-details" #inputText
+                                            contenteditable="true" type="text" (input)="detailsInput($event)"
+                                            [textContent]="details">
                                         </div>
                                     </div>
                                 </div>
@@ -185,8 +230,11 @@
                                             <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Select Language for Model Details
                                             </button> -->
-                                            <select class="form-select" [(ngModel)]="selectedLanguageType" (change)="onLanguageTypeChange($event)" aria-labelledby="dropdownMenuButton">
-                                                <option *ngFor="let type of languageTypes" [value]="type">{{ type }}</option>
+                                            <select class="form-select" [(ngModel)]="selectedLanguageType"
+                                                (change)="onLanguageTypeChange($event)"
+                                                aria-labelledby="dropdownMenuButton">
+                                                <option *ngFor="let type of languageTypes" [value]="type">{{ type }}
+                                                </option>
                                             </select>
                                         </div>
                                         <br>
@@ -196,8 +244,11 @@
                                             <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Select Language for Model Details
                                             </button> -->
-                                            <select class="form-select" [(ngModel)]="selectedVoiceType" (change)="onVoiceTypeChange($event)" aria-labelledby="dropdownMenuButton">
-                                                <option *ngFor="let type of voiceTypes.English" [value]="type">{{ type }}</option>
+                                            <select class="form-select" [(ngModel)]="selectedVoiceType"
+                                                (change)="onVoiceTypeChange($event)"
+                                                aria-labelledby="dropdownMenuButton">
+                                                <option *ngFor="let type of voiceTypes.English" [value]="type">{{ type
+                                                    }}</option>
                                             </select>
                                         </div>
                                         <!-- For Chinese Models -->
@@ -206,35 +257,45 @@
                                             <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Select Language for Model Details
                                             </button> -->
-                                            <select class="form-select" [(ngModel)]="selectedVoiceType" (change)="onVoiceTypeChange($event)" aria-labelledby="dropdownMenuButton">
-                                                <option *ngFor="let type of voiceTypes.Chinese" [value]="type">{{ type }}</option>
+                                            <select class="form-select" [(ngModel)]="selectedVoiceType"
+                                                (change)="onVoiceTypeChange($event)"
+                                                aria-labelledby="dropdownMenuButton">
+                                                <option *ngFor="let type of voiceTypes.Chinese" [value]="type">{{ type
+                                                    }}</option>
                                             </select>
                                         </div>
                                         <br>
                                         <div>
-                                            <h3>Enter Model Speed</h3>
+                                            <h3>Enter Voice Speed</h3>
                                             <div class="row button-row">
-                                                <div class="text-muted mb-4 input-text-model col-sm-2" #inputText contenteditable="true" 
-                                                type="text" (input)="speedInput($event)" [textContent]="speed" style="margin-left:10px; margin-top:10px"></div>
+                                                <div class="text-muted mb-4 input-text-model col-sm-2" #inputText
+                                                    contenteditable="true" type="text" (input)="speedInput($event)"
+                                                    [textContent]="speed" style="margin-left:10px; margin-top:10px">
+                                                </div>
                                                 <div class="col-sm-9 button-container">
-                                                    <button (click)="adjustSpeed(0.1)" class="btn btn-outline-secondary incremental-up">+</button>
-                                                    <button (click)="adjustSpeed(-0.1)" class="btn btn-outline-secondary incremental-down">-</button>    
+                                                    <button (click)="adjustSpeed(0.1)"
+                                                        class="btn btn-outline-secondary incremental-up">+</button>
+                                                    <button (click)="adjustSpeed(-0.1)"
+                                                        class="btn btn-outline-secondary incremental-down">-</button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div>
-                                            <h3>Enter Model Pitch</h3>
+                                            <h3>Enter Voice Pitch</h3>
                                             <div class="row button-row">
-                                                <div class="text-muted mb-4 input-text-model col-sm-2" #inputText contenteditable="true" 
-                                                    type="text" (input)="pitchInput($event)" [textContent]="pitch" style="margin-left:10px; margin-top:10px">
+                                                <div class="text-muted mb-4 input-text-model col-sm-2" #inputText
+                                                    contenteditable="true" type="text" (input)="pitchInput($event)"
+                                                    [textContent]="pitch" style="margin-left:10px; margin-top:10px">
                                                 </div>
                                                 <div class="col-sm-9 button-container">
-                                                    <button (click)="adjustPitch(0.1)" class="btn btn-outline-secondary incremental-up">+</button>
-                                                    <button (click)="adjustPitch(-0.1)" class="btn btn-outline-secondary incremental-down">-</button>
+                                                    <button (click)="adjustPitch(0.1)"
+                                                        class="btn btn-outline-secondary incremental-up">+</button>
+                                                    <button (click)="adjustPitch(-0.1)"
+                                                        class="btn btn-outline-secondary incremental-down">-</button>
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -243,7 +304,7 @@
                                     <div class="card-body">
                                         <p class="mb-4"><span class="text-primary font-italic me-1">{{ firstName
                                                 }}</span>
-                                            Model Usage
+                                            Model Personal Usage
                                         </p>
                                         <p class="mb-1" style="font-size: .77rem;">Prompt Tokens</p>
                                         <div class="progress rounded" style="height: 5px;">
