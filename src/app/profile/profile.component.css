@@ -146,8 +146,10 @@ body {
 
 .user-icon {
     padding: 20px;
-    margin-left: 95px;
-    display: flex;
+    display: block;
+    margin-left:auto;
+    margin-right:auto;
+    height:auto;
     justify-content: center;
     font-size: 150px;
     fill: rgb(20, 34, 129);
@@ -155,8 +157,10 @@ body {
 
 .user-icon-f {
     padding: 20px;
-    margin-left: 95px;
-    display: flex;
+    display: block;
+    margin-left:auto;
+    margin-right:auto;
+    height:auto;
     justify-content: center;
     font-size: 150px;
     fill: rgb(176, 47, 168);

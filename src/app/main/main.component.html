@@ -11,6 +11,7 @@
         <div class="loading-dot"></div>
       </div>
     </mat-card>
+
     <div style="margin-bottom:30px" class="input-container">
       <button *ngIf="isMuted" mat-raised-button class="custom-button" (click)="mute_off()">
         <div class="center-icon">
@@ -35,7 +36,7 @@
       </div>
       <button *ngIf="!stop_icon" mat-raised-button style = "padding: 20px" (click)="submit()">Submit</button>
       <button *ngIf="stop_icon" mat-raised-button style = "padding: 20px" (click)="stop()">Stop</button>
-    </div>
+  </div>
   </div>
   <audio id="audioPlayer" class="hidden" controls></audio>
   <!-- <button (click)="fetchAudio()">Fetch Audio</button>   -->
