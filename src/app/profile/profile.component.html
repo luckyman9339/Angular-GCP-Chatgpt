@@ -158,9 +158,11 @@
                                         </svg>
                                     </div>
                                     <div class="col-sm-9">
-                                        <div class="text-muted mb-0 input-text-firstName" contenteditable="true"
+                                        <!-- <div class="text-muted mb-0 input-text-firstName" contenteditable="true"
                                             type="text" (input)="firstNameInput($event)" [textContent]="firstName">
-                                        </div>
+                                        </div> -->
+                                        <input class="text-muted mb-0 input-text-firstName"
+                                            type="text" (input)="firstNameInput($event)" [(ngModel)]="firstName">
                                     </div>
                                 </div>
                                 <hr>
@@ -172,6 +174,8 @@
                                     <div class="col-sm-9">
                                         <div class="text-muted mb-0 input-text-email" contenteditable="false"
                                             type="text" (input)="emailInput($event)" [textContent]="email"></div>
+                                            <!-- <input class="text-muted mb-0 input-text-email"
+                                            type="text" (input)="emailInput($event)" [(ngModel)]="email"> -->
                                     </div>
                                 </div>
                                 <hr>
@@ -185,8 +189,10 @@
                                         </svg>
                                     </div>
                                     <div class="col-sm-9">
-                                        <div class="text-muted mb-0 input-text-model" contenteditable="true" type="text"
-                                            (input)="modelInput($event)" [textContent]="model"></div>
+                                        <!-- <div class="text-muted mb-0 input-text-model" contenteditable="true" type="text"
+                                            (input)="modelInput($event)" [textContent]="model"></div> -->
+                                            <input class="text-muted mb-0 input-text-model" type="text"
+                                            (input)="modelInput($event)" [(ngModel)]="model">
                                     </div>
                                 </div>
                                 <hr>
@@ -200,10 +206,14 @@
                                         </svg>
                                     </div>
                                     <div class="col-sm-9">
-                                        <div class="text-muted mb-4 input-text-details" #inputText
+                                        <!-- <div class="text-muted mb-4 input-text-details" #inputText
                                             contenteditable="true" type="text" (input)="detailsInput($event)"
                                             [textContent]="details">
-                                        </div>
+                                        </div> -->
+                                        <!-- <input class="text-muted mb-4 input-text-details" #inputText
+                                           type="text" (input)="detailsInput($event)" [(ngModel)]="details"> -->
+                                           <textarea class="input-text-details" #inputText 
+                                           rows="5" (input)="detailsInput($event)" [(ngModel)]="details"></textarea>                                 
                                     </div>
                                 </div>
                                 <!-- <div class="row">
@@ -268,11 +278,16 @@
                                         <div>
                                             <h3>Enter Voice Speed</h3>
                                             <div class="row button-row">
-                                                <div class="text-muted mb-4 input-text-model col-sm-2" #inputText
+                                                <!-- <div class="text-muted mb-4 input-text-model col-sm-2" #inputText
                                                     contenteditable="true" type="text" (input)="speedInput($event)"
                                                     [textContent]="speed" style="margin-left:10px; margin-top:10px">
-                                                </div>
-                                                <div class="col-sm-9 button-container">
+                                                </div> -->
+                                                <input class="text-muted mb-4 input-text-model col-sm-2" #inputText
+                                                     type="text" (input)="speedInput($event)" [(ngModel)]="speed" 
+                                                     style="margin-left:10px; margin-top:10px">
+                                                     <div *ngIf="!speedInvalid" class="col-sm-8" style="margin-block:5%" ></div>
+                                                     <div *ngIf="speedInvalid" class="col-sm-8" style="margin-block:5%; color:red">Value must be a number!</div>
+                                                <div class="col-sm-1 button-container">
                                                     <button (click)="adjustSpeed(0.1)"
                                                         class="btn btn-outline-secondary incremental-up">+</button>
                                                     <button (click)="adjustSpeed(-0.1)"
@@ -283,11 +298,16 @@
                                         <div>
                                             <h3>Enter Voice Pitch</h3>
                                             <div class="row button-row">
-                                                <div class="text-muted mb-4 input-text-model col-sm-2" #inputText
+                                                <!-- <div class="text-muted mb-4 input-text-model col-sm-2" #inputText
                                                     contenteditable="true" type="text" (input)="pitchInput($event)"
                                                     [textContent]="pitch" style="margin-left:10px; margin-top:10px">
-                                                </div>
-                                                <div class="col-sm-9 button-container">
+                                                </div> -->
+                                                <input class="text-muted mb-4 input-text-model col-sm-2" #inputText
+                                                    type="text" (input)="pitchInput($event)" [(ngModel)]="pitch" 
+                                                    style="margin-left:10px; margin-top:10px">
+                                                    <div *ngIf="!pitchInvalid" class="col-sm-8" style="margin-block:5%" ></div>
+                                                    <div *ngIf="pitchInvalid" class="col-sm-8" style="margin-block:5%; color:red">Value must be a number!</div>
+                                                <div class="col-sm-1 button-container">
                                                     <button (click)="adjustPitch(0.1)"
                                                         class="btn btn-outline-secondary incremental-up">+</button>
                                                     <button (click)="adjustPitch(-0.1)"

@@ -11,11 +11,11 @@
 .response-card {
   position: relative;
   margin-top: 25px;
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   align-items: center;
   width: 95vw;
-  height: 70vh;
+  height: 81vh;
   margin-bottom: 20px;
   padding: 20px;
   background-color: #ffffff;
@@ -24,7 +24,7 @@
 }
 
 .response-text {
-  max-height: 70vh;
+  max-height: 81vh;
   overflow-y: auto;
   color: black;
   /* Enable scrolling when content overflows */
@@ -75,27 +75,26 @@
 }
 
 
-.input-text:empty:before {
+/* .input-text:empty:before {
   content: attr(data-placeholder);
   color: #ccc;
-}
+} */
 
 .input-text {
-  color: #000000; /* Set text color to black */
-  display:flex;
-  max-width: 73vw;
+  color: #000000;
+  display: flex;
+  width: 66vw;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
-  border: 2px solid #ffffff;
-  /* Add a blue border */
+  border-width: 2px;
+  border-style: solid;
+  border-color: #ffffff; /* Specify color separately */
   padding: 10px;
-  margin-inline:3%;
+  margin-inline: 2vw;
   font-size: 16px;
   border-radius: 5px;
   transition: border-color 0.3s;
-  /* Add a smooth transition effect for the border color */
-
-  /* Add more styles for the background, text color, and other properties as needed */
 }
+
 
 /* Style the input when it's focused (selected) */
 .input-text:focus {

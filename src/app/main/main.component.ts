@@ -60,6 +60,7 @@ export class MainComponent implements OnInit, OnDestroy {
   language: string = 'en-gb'; // 'en-gb' for GB English; 'en-US' for US English. Use 'zh-TW' for Taiwan Chinese.
   send_command: boolean = false; // flag that decides whether or not to send command
   listenCommand: string = '';
+  dynamicPlaceholder: string = '';
   converter = Converter({ from: 'cn', to: 'tw' }) //  to translate from cn to tw chinese
   voice_output: boolean = true;
   // variables for voice en-GB-Neural2-C cmn-TW-Wavenet-A
@@ -110,7 +111,8 @@ export class MainComponent implements OnInit, OnDestroy {
     // console.log('User details', user_details);
     this.attributeVariables(user_details);
     // Initialize data-placeholder attribute
-    this.renderer.setAttribute(this.inputElement?.nativeElement, 'data-placeholder', `Enter text to chat with ${this.model_ai} or say "${this.model_ai} how are you doing today?"`);
+    // this.renderer.setAttribute(this.inputElement?.nativeElement, 'data-placeholder', `Enter text to chat with ${this.model_ai} or say "${this.model_ai} how are you doing today?"`);
+    this.dynamicPlaceholder = `Enter text to chat with ${this.model_ai} or say "${this.model_ai} how are you doing today?"`;
     this.response = this.generateRandomResponse();
     // Initialize speech recognition
     if ('webkitSpeechRecognition' in window) {
@@ -368,7 +370,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   // Chatbox for OpenAI
   chatInput(event: Event) {
-    this.input = (event.target as HTMLInputElement).textContent || '';
+    this.input = (event.target as HTMLInputElement).value || '';
     // console.log('This is the input value', this.input);
   }
 
@@ -377,6 +379,13 @@ export class MainComponent implements OnInit, OnDestroy {
     this.stop_typing = true;
     this.stop_icon = false;
     this.active_icon = false;
+    if (this.isMobile()) { // only applies to mobile
+      this.recognition.stop();
+      setTimeout(() => {
+        this.recognition.start();
+      }, 100);
+
+    }
     if (this.typingInterval) {
       clearInterval(this.typingInterval);
     }
@@ -467,6 +476,13 @@ export class MainComponent implements OnInit, OnDestroy {
           }, 100); // Check every 100 milliseconds
         };
         this.prevEndedHandler = () => {
+          if (this.isMobile()) {
+            console.log('This only applies to mobile');
+            this.recognition.stop(); // Stop the recognition if mobile detected
+            setTimeout(() => { // Use a timeout to ensure stop is fully executed before starting again
+              this.recognition.start(); // Restart the recognition
+            }, 100);
+          }
           resolve();
           if (stopInterval) {
             clearInterval(stopInterval);
@@ -499,8 +515,30 @@ export class MainComponent implements OnInit, OnDestroy {
         this.audio_complete = true;
       } else { // if voice output (speaking functionality) is silenced
         this.typeResponse(input);
+        if (this.isMobile()) { // only applies to mobile
+          this.recognition.stop();
+          setTimeout(() => {
+            this.recognition.start();
+          }, 100);
+        }
         resolve();
       }
     });
   }
+
+  // Function for detecting whether user is on mobile
+  isMobile(): boolean {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  }
+  // // Function to reload the entire component if user is on mobile
+  // reloadComponent() {
+  //   // Store the current URL
+  //   let currentUrl = this.router.url;
+
+  //   // Use a 'trick' to force a refresh: navigate to an empty path and then navigate back
+  //   this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+  //     this.router.navigate([currentUrl]);
+  //   });
+  // }
+
 }

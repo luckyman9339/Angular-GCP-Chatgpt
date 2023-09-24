@@ -45,6 +45,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   proEnabled:boolean = false;
   // For invalid inputs
   invalid_email = false;
+  speedInvalid:boolean = false;
+  pitchInvalid:boolean = false;
   // function for finding out which model language user is currently using
   modelToLang(current_language: string) {
     if (current_language.trim().toLowerCase() === 'zh-tw') {
@@ -152,11 +154,11 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   // For input of firstName
   firstNameInput(event: Event) {
-    this.firstName = (event.target as HTMLInputElement).textContent || '';
+    this.firstName = (event.target as HTMLInputElement).value || '';
   };
   // For input of email
   emailInput(event: Event) {
-    this.email = (event.target as HTMLInputElement).textContent || '';
+    this.email = (event.target as HTMLInputElement).value || '';
     if (this.email.includes('@')) {
       this.invalid_email = true;
     } else {
@@ -166,11 +168,11 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   };
   // For input of model
   modelInput(event: Event) {
-    this.model = (event.target as HTMLInputElement).textContent || '';
+    this.model = (event.target as HTMLInputElement).value || '';
   };
   // For input of details
   detailsInput(event: Event) {
-    this.details = (event.target as HTMLInputElement).textContent || '';
+    this.details = (event.target as HTMLInputElement).value || '';
     // console.log('This is the input value', this.input);
   };
   // Incremental adjustments
@@ -183,15 +185,33 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.pitch = parseFloat((this.pitch + value).toFixed(1)); // Using Math.max to ensure pitch is not negative.
     // You can also add further constraints if needed.
   }
+  // Function for checking if inputted text is a float or integer
+  isFloat(txt:string) {
+    return /^-?\d*(\.\d+)?$/.test(txt);
+  };
+
   // For input of speed
   speedInput(event: Event) {
-    let inputSpeed = parseFloat((event.target as HTMLInputElement).textContent || '');
-    this.speed = parseFloat(inputSpeed.toFixed(1));
+    const speedInput = (event.target as HTMLInputElement).value || String(0);
+    const result = this.isFloat(speedInput);
+    if (result) {
+      this.speedInvalid = false;
+      let inputSpeed = parseFloat(speedInput);
+      this.speed = parseFloat(inputSpeed.toFixed(1));
+    } else {
+      this.speedInvalid = true; // if invalid is saved, then original speed is not altered
+    }
   };
   // For input of pitch
   pitchInput(event: Event) {
-    let inputPitch = parseFloat((event.target as HTMLInputElement).textContent || '');
-    this.pitch = parseFloat(inputPitch.toFixed(1));
+    const result = this.isFloat((event.target as HTMLInputElement).value || String(0));
+    if (result) {
+      this.pitchInvalid = false;
+      let inputPitch = parseFloat((event.target as HTMLInputElement).value || String(0));
+      this.pitch = parseFloat(inputPitch.toFixed(1));
+    } else {
+      this.pitchInvalid = true; // same here
+    }
   }
   // function to save
   async save() {

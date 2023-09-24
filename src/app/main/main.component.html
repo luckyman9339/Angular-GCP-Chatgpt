@@ -1,42 +1,45 @@
 <div class="container">
-    <mat-card class="response-card">
-      <div class="response-text" #responseCardContainer>
-        <span class="typing-text" [@fadeInOut]>{{ response }}</span>
-      </div>
-      <button class="left-bottom" (click)="silence()">
-        <mat-icon *ngIf="voice_output">volume_up</mat-icon>
-        <mat-icon *ngIf="!voice_output">volume_off</mat-icon>
-      </button>
-      <div *ngIf="active_icon" class="drawing" id="loading">
-        <div class="loading-dot"></div>
-      </div>
-    </mat-card>
+  <mat-card class="response-card">
+    <div class="response-text" #responseCardContainer>
+      <span class="typing-text" [@fadeInOut]>{{ response }}</span>
+    </div>
+    <button class="left-bottom" (click)="silence()">
+      <mat-icon *ngIf="voice_output">volume_up</mat-icon>
+      <mat-icon *ngIf="!voice_output">volume_off</mat-icon>
+    </button>
+    <div *ngIf="active_icon" class="drawing" id="loading">
+      <div class="loading-dot"></div>
+    </div>
+  </mat-card>
 
-    <div style="margin-bottom:30px" class="input-container">
-      <button *ngIf="isMuted" mat-raised-button class="custom-button" (click)="mute_off()">
-        <div class="center-icon">
-          <mat-icon>mic_off</mat-icon>
-        </div>
-      </button>
-      <button *ngIf="!isMuted" mat-raised-button class="custom-button" (click)="mute()">
-        <div class="center-icon">
-          <mat-icon *ngIf="voice_input">mic</mat-icon>
-          <mat-icon *ngIf="!voice_input">settings_voice</mat-icon>
-        </div>
-      </button>
-      <div class="input-field">
-        <div class="input-text" 
+  <div style="margin-bottom:30px" class="input-container">
+    <button *ngIf="isMuted" mat-raised-button class="custom-button" (click)="mute_off()">
+      <div class="center-icon">
+        <mat-icon>mic_off</mat-icon>
+      </div>
+    </button>
+    <button *ngIf="!isMuted" mat-raised-button class="custom-button" (click)="mute()">
+      <div class="center-icon">
+        <mat-icon *ngIf="voice_input">mic</mat-icon>
+        <mat-icon *ngIf="!voice_input">settings_voice</mat-icon>
+      </div>
+    </button>
+    <div class="input-field">
+      <!-- <div class="input-text" 
             #inputText
             contenteditable="true"
             type="text" 
             (input)="chatInput($event)" 
             [textContent]="input"
             (click)="inputSwitch()">
-        </div>
-      </div>
-      <button *ngIf="!stop_icon" mat-raised-button style = "padding: 20px" (click)="submit()">Submit</button>
-      <button *ngIf="stop_icon" mat-raised-button style = "padding: 20px" (click)="stop()">Stop</button>
+        </div> -->
+      <input class="input-text" #inputText type="text" (input)="chatInput($event)" [(ngModel)]="input"
+      [attr.placeholder]="dynamicPlaceholder" (click)="inputSwitch()">
+
+    </div>
+    <button *ngIf="!stop_icon" mat-raised-button style="padding: 20px" (click)="submit()">Submit</button>
+    <button *ngIf="stop_icon" mat-raised-button style="padding: 20px" (click)="stop()">Stop</button>
   </div>
-  </div>
-  <audio id="audioPlayer" class="hidden" controls></audio>
-  <!-- <button (click)="fetchAudio()">Fetch Audio</button>   -->
+</div>
+<audio id="audioPlayer" class="hidden" controls></audio>
+<!-- <button (click)="fetchAudio()">Fetch Audio</button>   -->
