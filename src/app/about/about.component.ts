@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { first, firstValueFrom } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SharedServiceService } from '../shared-service.service';
 interface usageData {
@@ -26,7 +26,7 @@ export class AboutComponent implements OnInit, AfterViewInit {
   russ_data: any = {}; // Initialize Russell's data object
   token_total: number = this.sharedService.total_tokens; // total tokens 2500000
   max_signup: number = this.sharedService.max_signup;
-  firstNames:Array<string> = [];
+  firstNames: Array<string> = [];
   prompt_sum: number = -1;
   completion_sum: number = -1;
   total_sum: number = -1;
@@ -68,28 +68,42 @@ export class AboutComponent implements OnInit, AfterViewInit {
       });
   }
   // Retrieve usage data
-  getUsageData(): void {
-    this.httpClient.get('https://backend-dot-component-399020.wl.r.appspot.com/getUsageData')
-      .subscribe({
-        next: (response) => {
-          let usageData_obj = response as usageData;
-          const prompt_array: Array<number> = usageData_obj.prompt.map(Number);
-          const complete_array: Array<number> = usageData_obj.completion.map(Number);
-          const total_array: Array<number> = usageData_obj.total.map(Number);
-          // console.log('Type', typeof(total_array[0]))
-          this.prompt_sum = prompt_array.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-          this.completion_sum = complete_array.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-          this.total_sum = total_array.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  async getUsageData() {
+    const user_name = btoa('Russell'); // encode user firstName
+    const encoded_username = encodeURIComponent(user_name);
+    const observable = this.httpClient.get<any>(`https://backend-dot-nodal-component-399020.wl.r.appspot.com/getUsageData?encoded_firstName=${encoded_username}`);
+    const response = await firstValueFrom(observable);
+    if (response) {
+      let usageData_obj = response as usageData;
+      const prompt_array: Array<number> = usageData_obj.prompt.map(Number);
+      const complete_array: Array<number> = usageData_obj.completion.map(Number);
+      const total_array: Array<number> = usageData_obj.total.map(Number);
+      // console.log('Type', typeof(total_array[0]))
+      this.prompt_sum = prompt_array.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+      this.completion_sum = complete_array.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+      this.total_sum = total_array.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
-          this.prompt_value = (this.prompt_sum / (this.token_total / 2))*100;
-          this.complete_value = (this.completion_sum / (this.token_total / 2))*100;
-          this.total_value = (this.total_sum / (this.token_total))*100;
-          this.cdr.detectChanges();
-        },
-        error: (error) => {
-          console.error('Error fetching usage data:', error);
-        }
-      });
+      this.prompt_value = (this.prompt_sum / (this.token_total / 2)) * 100;
+      this.complete_value = (this.completion_sum / (this.token_total / 2)) * 100;
+      this.total_value = (this.total_sum / (this.token_total)) * 100;
+      this.cdr.detectChanges();
+      const notification_value = parseFloat(this.total_value.toFixed(2)); // round value to 2 decimal places
+      const usage_left = 100 - notification_value;
+      if (usage_left === 20.00 || usage_left === 10.00) { // send notification when usage amount at 20% or 10%
+        const usage_payload = {
+          firstName: encoded_username,
+          usageLeft: usage_left
+        };
+        // Call API to send email
+        const email_observable = this.httpClient.post<boolean>('https://backend-dot-nodal-component-399020.wl.r.appspot.com/send-notification', usage_payload);
+        const email_response = await firstValueFrom(email_observable);
+        // if (email_response) {
+        //   console.log('Notification email sent!');
+        // }
+      }
+    } else { // if response is equal to false
+      throw new Error("getUsageData API returned false to front end");
+    }
   }
   // Get Russell data
   ngOnInit(): void {
@@ -126,7 +140,7 @@ export class AboutComponent implements OnInit, AfterViewInit {
       // console.log('Total sum:', this.total_sum);
 
       // For signup
-      const signup_value = (this.firstNames.length + 1)/this.max_signup;
+      const signup_value = (this.firstNames.length + 1) / this.max_signup;
       this.setProgressBar(progressBarList, 8, signup_value * 100)
 
       // Animate the rest of the progress bars

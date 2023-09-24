@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: '', component: LoginComponent},
   { path: 'main/:user', component: MainComponent, canActivate: [authGuardFunction]}, // 'main/:user'
   { path: 'signup', component: SignupComponent},
-  { path: 'editpassword/:user', component: EditpasswordComponent, canActivate: [authGuardFunction]},
+  { path: 'editpassword/:user', component: EditpasswordComponent}, //, canActivate: [authGuardFunction] include once previous URL solved
   { path: 'about', component: AboutComponent, canActivate: [authGuardFunction]}, // 
   { path: 'profile', component: ProfileComponent, canActivate: [authGuardFunction]}
 ];

@@ -29,7 +29,7 @@ export class EditpasswordComponent implements OnInit{
         // console.log('Current URL:', encoded_email);
         const decoded_email = atob(decodeURIComponent(encoded_email));
         this.email = decoded_email;
-        console.log('This is the user email:', this.email);
+        // console.log('This is the user email:', this.email);
       })
   }
   // function for modifying password

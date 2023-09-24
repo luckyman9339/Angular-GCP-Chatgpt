@@ -7,12 +7,13 @@ automatic_scaling:  # You can also use manual or basic scaling
   min_instances: 1
 
 handlers:
-# Routing for index.html
-- url: /
-  static_files: dist/friday/index.html
-  upload: dist/friday/index.html
+  # Route for static assets, adjust regex accordingly
+  - url: /(.*\.(css|js|map|jpg|png|svg|woff|woff2|ttf|eot))$
+    static_files: dist/friday/\1
+    upload: dist/friday/.*\.(css|js|map|jpg|png|svg|woff|woff2|ttf|eot)$
 
-# Routing for other static files
-- url: /(.*)
-  static_files: dist/friday/\1
-  upload: dist/friday/(.*)
+  # All other routes should redirect to index.html
+  - url: /.*
+    static_files: dist/friday/index.html
+    upload: dist/friday/index.html
+
