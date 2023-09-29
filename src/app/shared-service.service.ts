@@ -92,7 +92,7 @@ export class SharedServiceService implements OnInit {
   }
 
   // method for calling openaiChat
-  openaiChat(prompt: string, assistant: string, model: string = this.model): Promise<any> {
+  async openaiChat(prompt: string, assistant: string, model: string = this.model): Promise<any> {
     const instructions = this.modelFinder(assistant); // find corresponding prompts first
     const nameInstructions = `Also, my name is ${this.sharedData.firstName}` // incorporate name within application
     let details = '';
@@ -107,9 +107,13 @@ export class SharedServiceService implements OnInit {
       ]
     };
     // make the post request by returning promise (signaling API request completion)
-    return new Promise<any>((resolve, reject) => {
-      this.http.post(this.apiUrl, requestData, this.openaioptions).subscribe(
-        (response) => {
+    // const observable = this.http.post<any>('https://localhost:3000/talk', requestData);
+    const observable = this.http.post<any>('https://backend-dot-nodal-component-399020.wl.r.appspot.com/talk', requestData);
+    const response = await firstValueFrom(observable);
+
+    // return new Promise<any>((resolve, reject) => {
+      // this.http.post(this.apiUrl, requestData, this.openaioptions).subscribe(
+        // (response) => {
           // Handle the successful response here
           // console.log('OpenAI Response:', response);
 
@@ -141,6 +145,7 @@ export class SharedServiceService implements OnInit {
             completion: completion_str,
             total: total_str
           };
+          
           // call backend API
           this.http.post<boolean>('https://backend-dot-nodal-component-399020.wl.r.appspot.com/modifyData', usage)
             .subscribe({
@@ -150,15 +155,17 @@ export class SharedServiceService implements OnInit {
                 }
               }
             })
-          resolve(response); // signals that response was successful
-        },
-        (error) => {
+            return response; // return the response so that main can read it
+
+          // resolve(response); // signals that response was successful
+        // },
+        // (error) => {
           // Handle any errors that occurred during the request
-          console.error('Error making OpenAI request:', error);
-          reject(error); // signals that response was not successful
-        }
-      );
-    });
+          // console.error('Error making OpenAI request:', error);
+          // reject(error); // signals that response was not successful
+        // }
+      // );
+    // });
   }
 
   // specifically for showing hamburger menu after logging in
