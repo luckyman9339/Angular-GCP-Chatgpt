@@ -334,11 +334,16 @@ export class MainComponent implements OnInit, OnDestroy {
       let response_ls = response_temp.split(' ');
       let final_ls: Array<string> = [];
       for (let i = 0; i < response_ls.length; i++) {
-        if (response_ls[i].startsWith('https://') || response_ls[i].startsWith('(https://') || response_ls[i].startsWith('www.') || response_ls[i].startsWith('[https://') || response_ls[i].startsWith('：https://') || response_ls[i].startsWith('(www.') || response_ls[i].startsWith('[www.')) {
+        if (response_ls[i].startsWith('https://') || response_ls[i].startsWith('(https://') || response_ls[i].startsWith('www.') || response_ls[i].startsWith('[https://') || response_ls[i].startsWith('：https://') || response_ls[i].startsWith('(www.') || response_ls[i].startsWith('[www.') || response_ls[i].startsWith('"https://') || response_ls[i].startsWith("'https://")) {
           // console.log('Response', response_ls[i]);
           const link_ls1: Array<string> = response_ls[i].split('\n'); // split by \n new line character
           // const link_ls2: Array<string> = link_ls1.flatMap(line => line.split('/:')); // and '/:'
           let link = link_ls1.shift() as string; // return link and push it
+          link_ls1.map(element => element + '\n'); // add back new line characters
+          // Check if the link starts with '：https://' and remove the unwanted colon
+          if (link && link.startsWith('：https://')) {
+            link = link.substring(1); // This will remove the first ':' character
+          }
           if (link) link = link.replace(/\(|\)/g, ''); // remove parentheses if they are present
           if (link) link = link.replace(/"/g, ''); // remove double quotes if they are present
           if (link) link = link.replace(/'/g, ''); // remove single quotes if they are present
