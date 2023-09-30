@@ -35,22 +35,28 @@ export class AppComponent implements OnInit {
           encoded_url = this.urlParser(currentUrl); // parse the current URL
           // Subscribe to changes in the shared data for logging out
           this.sharedService.someData$.subscribe((data) => {
-            for (let i = 0; i < environment.users.length; i++) {
-              const encoded_name = btoa(environment.users[i].email);
-              // console.log('This is the encoded_name', encodeURIComponent(encoded_name));
-              // console.log('This is the current url', encoded_url);
-              // console.log('Equal?', encodeURIComponent(encoded_name) === encoded_url);
-              if ((data && data.isLoggedIn) || encodeURIComponent(encoded_name) === encoded_url) {
-                // console.log('Entered!');
-                this.isLoggedIn = true;
-                break
-              }
+            // console.log('Logged in?', data);
+            if (data.isLoggedIn === true) {
+              this.isLoggedIn = true;
+              this.cdr.detectChanges();
             }
+            // for (let i = 0; i < environment.users.length; i++) {
+            //   const encoded_name = btoa(environment.users[i].email);
+            //   // console.log('This is the encoded_name', encodeURIComponent(encoded_name));
+            //   // console.log('This is the current url', encoded_url);
+            //   // console.log('Equal?', encodeURIComponent(encoded_name) === encoded_url);
+            //   if ((data && data.isLoggedIn) || encodeURIComponent(encoded_name) === encoded_url) {
+            //     // console.log('Entered!');
+            //     this.isLoggedIn = true;
+            //     break
+            //   }
+            // }
           });
         }
       })
       this.sharedService.userLoggedOut$.subscribe(() => {
         this.isLoggedIn = false;
+        // this.cdr.detectChanges();
       });
     }
   }

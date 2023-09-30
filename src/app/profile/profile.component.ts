@@ -267,5 +267,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   logOut() {
     this.sharedService.logOutUser();
     this.authService.logout();
+    this.sharedService.updateData({ isLoggedIn: false });
   };
 }

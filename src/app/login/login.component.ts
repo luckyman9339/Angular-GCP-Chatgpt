@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
     } else {
       console.log('Log in page reached');
       this.getFirstNames();
-      this.sharedService.updateData({ isLoggedIn: false });
+      // this.sharedService.updateData({ isLoggedIn: false });
       this.sharedService.someData$.subscribe((data) => {
         // console.log('This is the data:', data);
       })
@@ -173,6 +173,7 @@ export class LoginComponent implements OnInit {
     const result = await this.authService.login(user, password); // result is Promise <boolean>
     if (result !== false) { // if user loggedin successfully
       console.log('Success!');
+      this.sharedService.updateData({ isLoggedIn: true });
       this.loggedIn.setValue(true);
       this.cdr.detectChanges();
     } else {
