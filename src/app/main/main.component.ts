@@ -338,8 +338,8 @@ export class MainComponent implements OnInit, OnDestroy {
           // console.log('Response', response_ls[i]);
           const link_ls1: Array<string> = response_ls[i].split('\n'); // split by \n new line character
           // const link_ls2: Array<string> = link_ls1.flatMap(line => line.split('/:')); // and '/:'
-          let link = link_ls1.shift() as string; // return link and push it
-          link_ls1.map(element => element + '\n'); // add back new line characters
+          let link = link_ls1.shift() as string; // remove first element containing link
+          link_ls1.map(element => element + '\n'); // add back new line characters to rest of list
           // Check if the link starts with '：https://' and remove the unwanted colon
           if (link && link.startsWith('：https://')) {
             link = link.substring(1); // This will remove the first ':' character
