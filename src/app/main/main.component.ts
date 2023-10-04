@@ -135,7 +135,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.attributeVariables(user_details);
     // Initialize data-placeholder attribute
     // this.renderer.setAttribute(this.inputElement?.nativeElement, 'data-placeholder', `Enter text to chat with ${this.model_ai} or say "${this.model_ai} how are you doing today?"`);
-    console.log('Print out chinese?', this.chinese);
+    // console.log('Print out chinese?', this.chinese);
     if (this.chinese) {
       this.dynamicPlaceholder = `請在這邊輸入跟 ${this.model_ai} 講話! 或者你也可以說 "${this.model_ai} 你今天過的怎麼樣?"`;
     } else {
