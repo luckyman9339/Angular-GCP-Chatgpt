@@ -46,6 +46,12 @@ export class MainComponent implements OnInit, OnDestroy {
     sharedService.data$.subscribe(data => { // for when the language button has been clicked
       this.chinese = data;
       // console.log('Chinese?', this.chinese);
+      if (this.chinese) {
+        this.dynamicPlaceholder = `請在這邊輸入跟 ${this.model_ai} 講話! 或者你也可以說 "${this.model_ai} 你今天過的怎麼樣?"`;
+      } else {
+        this.dynamicPlaceholder = `Enter text to chat with ${this.model_ai} or say "${this.model_ai} how are you doing today?"`;
+      }
+      this.response = this.generateRandomResponse(this.chinese);
       this.cdr.markForCheck();
     })
   }

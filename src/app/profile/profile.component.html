@@ -271,7 +271,7 @@
                                         </div>
                                         <br>
                                         <!-- For English Models -->
-                                        <div *ngIf="selectedLanguageType === 'English'" class="dropdown">
+                                        <div *ngIf="selectedLanguageType === 'English' && !chinese" class="dropdown">
                                             <h3>Select Model Voice</h3>
                                             <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Select Language for Model Details
@@ -284,8 +284,34 @@
                                             </select>
                                         </div>
                                         <!-- For Chinese Models -->
-                                        <div *ngIf="selectedLanguageType === 'Chinese'" class="dropdown">
-                                            <h3>選擇聲音</h3>
+                                        <div *ngIf="selectedLanguageType === 'Chinese' && !chinese" class="dropdown">
+                                            <h3>Select Model Voice</h3>
+                                            <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Select Language for Model Details
+                                            </button> -->
+                                            <select class="form-select" [(ngModel)]="selectedVoiceType"
+                                                (change)="onVoiceTypeChange($event)"
+                                                aria-labelledby="dropdownMenuButton">
+                                                <option *ngFor="let type of voiceTypes.Chinese" [value]="type">{{ type
+                                                    }}</option>
+                                            </select>
+                                        </div>
+                                        <!-- For English Models -->
+                                        <div *ngIf="selectedLanguageType === 'English' && chinese" class="dropdown">
+                                            <h3>選擇 AI 聲音</h3>
+                                            <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Select Language for Model Details
+                                            </button> -->
+                                            <select class="form-select" [(ngModel)]="selectedVoiceType"
+                                                (change)="onVoiceTypeChange($event)"
+                                                aria-labelledby="dropdownMenuButton">
+                                                <option *ngFor="let type of voiceTypes.English" [value]="type">{{ type
+                                                    }}</option>
+                                            </select>
+                                        </div>
+                                        <!-- For Chinese Models -->
+                                        <div *ngIf="selectedLanguageType === 'Chinese' && chinese" class="dropdown">
+                                            <h3>選擇 AI 聲音</h3>
                                             <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Select Language for Model Details
                                             </button> -->
