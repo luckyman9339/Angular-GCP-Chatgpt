@@ -46,7 +46,8 @@
                                         d="M224 256A128 128 0 1 1 224 0a128 128 0 1 1 0 256zM209.1 359.2l-18.6-31c-6.4-10.7 1.3-24.2 13.7-24.2H224h19.7c12.4 0 20.1 13.6 13.7 24.2l-18.6 31 33.4 123.9 36-146.9c2-8.1 9.8-13.4 17.9-11.3c70.1 17.6 121.9 81 121.9 156.4c0 17-13.8 30.7-30.7 30.7H285.5c-2.1 0-4-.4-5.8-1.1l.3 1.1H168l.3-1.1c-1.8 .7-3.8 1.1-5.8 1.1H30.7C13.8 512 0 498.2 0 481.3c0-75.5 51.9-138.9 121.9-156.4c8.1-2 15.9 3.3 17.9 11.3l36 146.9 33.4-123.9z" />
                                 </svg>
                                 <h5 class="my-3">{{russ_data.firstName}}</h5>
-                                <p class="text-muted mb-1">AI/ML Software Engineer</p>
+                                <p *ngIf="!chinese" class="text-muted mb-1">AI/ML Software Engineer</p>
+                                <p *ngIf="chinese" class="text-muted mb-1">AI/ML 軟體工程師</p>
                                 <p class="text-muted mb-4">Purdue, West Lafayette, Indiana</p>
                                 <!-- <div class="d-flex justify-content-center mb-2">
                                     <button type="button" class="btn btn-primary">Follow</button>
@@ -60,17 +61,20 @@
                                     <button (click)="copyText('ho224purdue@gmail.com')"
                                         class="link-buttons list-group-item d-flex justify-content-between align-items-center p-3">
                                         <svg class="email-icon" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
-                                        <p class="mb-0">Shoot Me an Email</p>
+                                        <p *ngIf="!chinese" class="mb-0">Shoot Me an Email</p>
+                                        <p *ngIf="chinese" class="mb-0">我的email</p>
                                     </button>
                                     <button (click)="openLink('https://www.linkedin.com/in/russellkyho')" 
                                     class="link-buttons list-group-item d-flex justify-content-between align-items-center p-3">
                                         <svg class="linkedIn-icon" xmlns="http://www.w3.org/2000/svg" height="2em" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
-                                        <p class="mb-0">Connect with Me</p>
+                                        <p *ngIf="!chinese" class="mb-0">Connect with Me</p>
+                                        <p *ngIf="chinese" class="mb-0">歡迎在 LinkedIn 上加我</p>
                                     </button>
                                     <button (click)="openLink('https://github.com/Russolves')" 
                                     class="link-buttons list-group-item d-flex justify-content-between align-items-center p-3">
                                         <svg class="gitHub-icon" xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
-                                        <p class="mb-0">Find out what I'm up to</p>
+                                        <p *ngIf="!chinese" class="mb-0">Find out what I'm up to</p>
+                                        <p *ngIf="chinese" class="mb-0">看看我最近都在做什麼</p>
                                     </button>
                                 </ul>
                             </div>
@@ -81,10 +85,12 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <p class="mb-0">Full Name</p>
+                                        <p *ngIf="!chinese" class="mb-0">Full Name</p>
+                                        <p *ngIf="chinese" class="mb-0">全名</p>
                                     </div>
                                     <div class="col-sm-9">
-                                        <p class="text-muted mb-0">Russell Ho</p>
+                                        <p *ngIf="!chinese" class="text-muted mb-0">Russell Ho</p>
+                                        <p *ngIf="chinese" class="text-muted mb-0">何冠毅</p>
                                     </div>
                                 </div>
                                 <hr>
@@ -99,7 +105,8 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <p class="mb-0">Address</p>
+                                        <p *ngIf="!chinese" class="mb-0">Address</p>
+                                        <p *ngIf="chinese" class="mb-0">地址</p>
                                     </div>
                                     <div class="col-sm-9">
                                         <p class="text-muted mb-0">Purdue University, West Lafayette, IN</p>
@@ -108,10 +115,12 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <p class="mb-0">Details</p>
+                                        <p *ngIf="!chinese" class="mb-0">Details</p>
+                                        <p *ngIf="chinese" class="mb-0">我的個人簡介</p>
                                     </div>
                                     <div class="col-sm-9">
-                                        <p class="text-muted mb-0">{{russ_data.details}}</p>
+                                        <p *ngIf="!chinese" class="text-muted mb-0">{{russ_data.details}}</p>
+                                        <p *ngIf="chinese" class="text-muted mb-0">哈囉我是 Russell！我目前在 IBM 擔任軟體工程師實習生，同時也是美國普渡大學的醫學工程/電腦工程研究生，我的專長是全棧開發和 AI模型工程，在醫學生物工程方面我擅長信號處理演算法和基因學的電腦資料分析統計。我閒暇時喜歡閱讀、看經典好萊塢電影。在運動方面，我喜歡打網球和游泳。請多多指教！</p>
                                     </div>
                                 </div>
                                 <!-- <div class="row">
@@ -129,25 +138,32 @@
                             <div class="col-md-6">
                                 <div class="card mb-4 mb-md-0">
                                     <div class="card-body">
-                                        <p class="mb-4"><span class="text-primary font-italic me-1">FrontEnd</span>
+                                        <p *ngIf="!chinese" class="mb-4"><span class="text-primary font-italic me-1">FrontEnd</span>
                                             Application Usage
                                         </p>
-                                        <p class="mb-1" style="font-size: .77rem;">Prompt Tokens</p>
+                                        <p *ngIf="chinese" class="mb-4"><span class="text-primary font-italic me-1">前端</span>
+                                            使用量
+                                        </p>
+                                        <p *ngIf="!chinese" class="mb-1" style="font-size: .77rem;">Prompt Tokens</p>
+                                        <p *ngIf="chinese" class="mb-1" style="font-size: .77rem;">使用者 Tokens 使用量</p>
                                         <div class="progress rounded" style="height: 5px;">
                                             <div class="progress-bar" role="progressbar" [style.width]="prompt_value + '%'"
                                                 [attr.aria-valuenow]="prompt_value" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Completion Tokens</p>
+                                        <p *ngIf="!chinese" class="mt-4 mb-1" style="font-size: .77rem;">Completion Tokens</p>
+                                        <p *ngIf="chinese" class="mt-4 mb-1" style="font-size: .77rem;">AI 回覆 Tokens 使用量</p>
                                         <div class="progress rounded" style="height: 5px;">
                                             <div class="progress-bar" role="progressbar" [style.width]="complete_value + '%'"
                                                 [attr.aria-valuenow]="complete_value" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Total Tokens</p>
+                                        <p *ngIf="!chinese" class="mt-4 mb-1" style="font-size: .77rem;">Total Tokens</p>
+                                        <p *ngIf="chinese" class="mt-4 mb-1" style="font-size: .77rem;">Tokens總和使用量</p>
                                         <div class="progress rounded" style="height: 5px;">
                                             <div class="progress-bar" role="progressbar" [style.width]="total_value + '%'"
                                                 [attr.aria-valuenow]="total_value" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Google Speech API</p>
+                                        <p *ngIf="!chinese" class="mt-4 mb-1" style="font-size: .77rem;">Google Speech API</p>
+                                        <p *ngIf="chinese" class="mt-4 mb-1" style="font-size: .77rem;">Google Speech API 使用量</p>
                                         <div class="progress rounded" style="height: 5px;">
                                             <div class="progress-bar" role="progressbar" style="width: 0%"
                                                 aria-valuenow="2" aria-valuemin="0" aria-valuemax="100"></div>
@@ -163,8 +179,11 @@
                             <div class="col-md-6">
                                 <div class="card mb-4 mb-md-0">
                                     <div class="card-body">
-                                        <p class="mb-4"><span class="text-primary font-italic me-1">Backend</span>
+                                        <p *ngIf="!chinese" class="mb-4"><span class="text-primary font-italic me-1">Backend</span>
                                             Server API Usage
+                                        </p>
+                                        <p *ngIf="chinese" class="mb-4"><span class="text-primary font-italic me-1">後端</span>
+                                            使用量
                                         </p>
                                         <p class="mb-1" style="font-size: .77rem;">GET Requests</p>
                                         <div class="progress rounded" style="height: 5px;">
@@ -176,7 +195,8 @@
                                             <div class="progress-bar" role="progressbar" style="width: 0%"
                                                 aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Signup Capacity</p>
+                                        <p *ngIf="!chinese" class="mt-4 mb-1" style="font-size: .77rem;">Signup Capacity</p>
+                                        <p *ngIf="chinese" class="mt-4 mb-1" style="font-size: .77rem;">使用者登記人數上限</p>
                                         <div class="progress rounded" style="height: 5px;">
                                             <div class="progress-bar" role="progressbar" style="width: 0%"
                                                 aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
@@ -186,27 +206,27 @@
                                             <div class="progress-bar" role="progressbar" style="width: 0%"
                                                 aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Server.js Traffic</p>
+                                        <p *ngIf="!chinese" class="mt-4 mb-1" style="font-size: .77rem;">Server.js Traffic</p>
+                                        <p *ngIf="chinese" class="mt-4 mb-1" style="font-size: .77rem;">伺服器流量</p>
                                         <div class="progress rounded mb-2" style="height: 5px;">
                                             <div class="progress-bar" role="progressbar" style="width: 0%"
-                                                aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+                                                aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card" style="padding:20px; margin-top: 70px; max-width: 88vw">
-                        <h2>A Note from the Developer</h2>
-                        <p>Hello user,</p>
-                        <br>
-                        <p>I am Russell, the developer behind this personal virtual assistant application. I wanted to personally greet you and thank you for using my application. What started out as an idea I had on a business trip train ride came into fruition after hours spent researching the possibility of integrating different services/products of different companies within a framework that I was previously unfamiliar with. I have always been interested in the idea of having a customizable personal assistant, one who is tailored to the user's preferences while being able to conversate in an all natural manner, be it for learning, browsing or just as a companion.</p>
-                        <p>Given the aspects of unfamiliarity in engineering this application, I was initially hesitant at first; considering the prospect of having to juggle school work and an internship (at the time of building this project) simultaneously. However, someone once told me that taking the time to invest in yourself is worth far more in the long run. I hope that one day, as I look back on this project I will be reminded of this statement and remember what it takes to be an engineer.</p>
-                        <br>
-                        <h2>開發者的話</h2>
-                        <p>你好用戶,</p>
-                        <p>我是何冠毅，是這個虛擬助手應用程式的開發者。我想用這個時間跟你打個招呼並且感謝你使用我的應用程式。開發這個應用程式的想法始於我身為實習生在一趟高鐵出差的時候。當時為了工作，電腦放在桌子上，一隻手拿著手機，一隻手拿著吃到一半的水果。一邊需要回覆主管、一邊需要上網搜尋資料做確認。當初想，若有一個智能 AI 能透過我的聲音提供我所需要的訊息，那我就能同時進行多項工作，大幅的提升我工作的效率。除此之外，這項技術還可以應用在很多其他人身上，像身障人士以及老年人使用，有效的提升人跟人工智能的互動。經過一番研究，我將這個想法實現了。我一直以來都對擁有一個可客製化的 AI 助手這項概念感興趣，一個能夠根據用戶的偏好並以自然的方式進行對話的人工智能，不論是用於學習或是瀏覽網路上的訊息。鑒於在開發這個應用程式時我將會需要用到很多之前沒有碰過的架構，一開始我對是否要從事這個 project 感到有些猶豫；畢竟同時應對學業和實習並不容易。然而，有人曾經告訴我，投資自己是最值得的。希望有一天，當我回顧這個項目時，我能想起這句話，並且記得成為一名工程師代表著什麼。</p>
-                        <p>希望您享受使用這個應用程式，並感到愉快。如果您有任何建議或反饋，請隨時與我聯繫。謝謝您的支持！</p>
+                    <div class="card" style="padding:20px; margin-top: 60px; max-width: 88vw">
+                        <h2 *ngIf="!chinese">A Note from the Developer</h2>
+                        <p *ngIf="!chinese">Hello user,</p>
+                        <br *ngIf="!chinese">
+                        <p *ngIf="!chinese">I am Russell, the developer behind this personal virtual assistant application. I wanted to personally greet you and thank you for using my application. What started out as an idea I had on a business trip train ride came into fruition after hours spent researching the possibility of integrating different services/products of different companies within a framework that I was previously unfamiliar with. I have always been interested in the idea of having a customizable personal assistant, one who is tailored to the user's preferences while being able to conversate in an all natural manner, be it for learning, browsing or just as a companion.</p>
+                        <p *ngIf="!chinese">Given the aspects of unfamiliarity in engineering this application, I was initially hesitant at first; considering the prospect of having to juggle school work and an internship (at the time of building this project) simultaneously. However, someone once told me that taking the time to invest in yourself is worth far more in the long run. I hope that one day, as I look back on this project I will be reminded of this statement and remember what it takes to be an engineer.</p>
+                        <h2 *ngIf="chinese">開發者的話</h2>
+                        <p *ngIf="chinese">你好用戶,</p>
+                        <p *ngIf="chinese">我是何冠毅，是這個虛擬助手應用程式的開發者。我想用這個時間跟你打個招呼並且感謝你使用我的應用程式。開發這個應用程式的想法始於我身為實習生在一趟高鐵出差的時候。當時為了工作，電腦放在桌子上，一隻手拿著手機，一隻手拿著吃到一半的水果。一邊需要回覆主管、一邊需要上網搜尋資料做確認。當初想，若有一個智能 AI 能透過我的聲音提供我所需要的訊息，那我就能同時進行多項工作，大幅的提升我工作的效率。除此之外，這項技術還可以應用在很多其他人身上，像身障人士以及老年人使用，有效的提升人跟人工智能的互動。經過一番研究，我將這個想法實現了。我一直以來都對擁有一個可客製化的 AI 助手這項概念感興趣，一個能夠根據用戶的偏好並以自然的方式進行對話的人工智能，不論是用於學習或是瀏覽網路上的訊息。鑒於在開發這個應用程式時我將會需要用到很多之前沒有碰過的架構，一開始我對是否要從事這個 project 感到有些猶豫；畢竟同時應對學業和實習並不容易。然而，有人曾經告訴我，投資自己是最值得的。希望有一天，當我回顧這個項目時，我能想起這句話，並且記得成為一名工程師代表著什麼。</p>
+                        <p *ngIf="chinese">希望您享受使用這個應用程式，並感到愉快。如果您有任何建議或反饋，請隨時與我聯繫。謝謝您的支持！</p>
                     </div>
                 </div>
             </div>

@@ -16,13 +16,19 @@ interface usageData {
 })
 
 export class AboutComponent implements OnInit, AfterViewInit {
-
+  chinese: boolean = false; // initialize chinese as false
   constructor(
     private httpClient: HttpClient,
     private snackBar: MatSnackBar,
     private cdr: ChangeDetectorRef,
     private sharedService: SharedServiceService
-  ) { }
+  ) {
+    sharedService.data$.subscribe(data => { // for when the language button has been clicked
+      this.chinese = data;
+      // console.log('Chinese?', this.chinese);
+      this.cdr.markForCheck();
+    })
+  }
   russ_data: any = {}; // Initialize Russell's data object
   token_total: number = this.sharedService.total_tokens; // total tokens 2500000
   max_signup: number = this.sharedService.max_signup;
@@ -105,11 +111,28 @@ export class AboutComponent implements OnInit, AfterViewInit {
       throw new Error("getUsageData API returned false to front end");
     }
   }
+  // async function for retrieving language
+  async retrieveUserDetails(token: string): Promise<any> {
+    try {
+      const data = await this.sharedService.initializeUserDetails(token);
+      // console.log("Received data:", data);
+      if (data.language === 'zh-TW') {
+        this.chinese = true;
+      }
+      // this.sharedService.setData(this.chinese);
+    } catch (error) {
+      console.error("Error occurred at retrieving user details through shared service:", error);
+    }
+  };
   // Get Russell data
   ngOnInit(): void {
     this.getRussellData();
     this.getUsageData();
     this.getFirstNames();
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      this.retrieveUserDetails(token);
+    }
   }
   // function for setting progress bar
   setProgressBar(progressBarList: any, position: number, new_value: number) {
@@ -157,16 +180,29 @@ export class AboutComponent implements OnInit, AfterViewInit {
     // Use the clipbaord API to copy the text
     navigator.clipboard.writeText(text).then(() => {
       // Show notificatio when the text has been copied
-      this.snackBar.open(
-        'Copied!',
-        'Close',
-        {
-          duration: 1000,
-          verticalPosition: 'bottom', // 'top' | 'bottom'
-          horizontalPosition: 'center', // 'start' | 'center' | 'end'
-          // panelClass: ['blue-snackbar'],
-        }
-      );
+      if (this.chinese) {
+        this.snackBar.open(
+          '複製!',
+          '關閉',
+          {
+            duration: 1000,
+            verticalPosition: 'bottom', // 'top' | 'bottom'
+            horizontalPosition: 'center', // 'start' | 'center' | 'end'
+            // panelClass: ['blue-snackbar'],
+          }
+        );
+      } else {
+        this.snackBar.open(
+          'Copied!',
+          'Close',
+          {
+            duration: 1000,
+            verticalPosition: 'bottom', // 'top' | 'bottom'
+            horizontalPosition: 'center', // 'start' | 'center' | 'end'
+            // panelClass: ['blue-snackbar'],
+          }
+        );
+      }
     }).catch((err) => {
       console.log('Could not copy email!', err);
     });

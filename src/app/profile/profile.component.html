@@ -81,22 +81,29 @@
                                         d="M224 256c-57.2 0-105.6-37.5-122-89.3c-1.1 1.3-2.2 2.6-3.5 3.8c-15.8 15.8-38.8 20.7-53.6 22.1c-8.1 .8-14.6-5.7-13.8-13.8c1.4-14.7 6.3-37.8 22.1-53.6c5.8-5.8 12.6-10.1 19.6-13.4c-7-3.2-13.8-7.6-19.6-13.4C37.4 82.7 32.6 59.7 31.1 44.9c-.8-8.1 5.7-14.6 13.8-13.8c14.7 1.4 37.8 6.3 53.6 22.1c4.8 4.8 8.7 10.4 11.7 16.1C131.4 28.2 174.4 0 224 0c70.7 0 128 57.3 128 128s-57.3 128-128 128zM0 482.3C0 399.5 56.4 330 132.8 309.9c6-1.6 12.2 .9 15.9 5.8l62.5 83.3c6.4 8.5 19.2 8.5 25.6 0l62.5-83.3c3.7-4.9 9.9-7.4 15.9-5.8C391.6 330 448 399.5 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM160 96c-8.8 0-16 7.2-16 16s7.2 16 16 16H288c8.8 0 16-7.2 16-16s-7.2-16-16-16H160z" />
                                 </svg>
                                 <h5 class="my-3">{{ firstName }}</h5>
-                                <p class="text-muted mb-1">Authorization: {{ authorization }}</p>
+                                <p *ngIf="!chinese" class="text-muted mb-1">Authorization: {{ authorization }}</p>
+                                <p *ngIf="chinese" class="text-muted mb-1">權限: {{ authorization }}</p>
                                 <br>
                                 <p class="text-muted mb-4">{{ details }}</p>
                                 <div class="d-flex justify-content-center mb-2">
-                                    <button type="button" class="btn btn-primary" (click)="logOut()">Log Out</button>
-                                    <button type="button" class="btn btn-outline-primary ms-1"
+                                    <button *ngIf="!chinese" type="button" class="btn btn-primary" (click)="logOut()">Log Out</button>
+                                    <button *ngIf="chinese" type="button" class="btn btn-primary" (click)="logOut()">登出</button>
+                                    <button *ngIf="!chinese" type="button" class="btn btn-outline-primary ms-1"
                                         (click)="save()">Save</button>
+                                    <button *ngIf="chinese" type="button" class="btn btn-outline-primary ms-1"
+                                    (click)="save()">儲存</button>
                                 </div>
                             </div>
                         </div>
                         <div class="card mb-4 mb-lg-0">
                             <div class="card-body p-0">
                                 <div *ngIf="authorization !== 'User'" class="membership">
-                                    <h3>Further Customize your Personal Assistant</h3>
-                                    <p>As a member, you have the opportunity to further customize your personal
+                                    <h3 *ngIf="!chinese">Further Customize your Personal Assistant</h3>
+                                    <p *ngIf="!chinese">As a member, you have the opportunity to further customize your personal
                                         assistant</p>
+                                    <h3 *ngIf="chinese">進一步定制您的 AI 個人助理</h3>
+                                    <p *ngIf="chinese">作為會員，您有機會進一步定制您的個人助理，讓他更聊解你並以更個人化的方式回答你的問題!</p>
+
                                     <br>
                                     <!-- Modern Switch -->
                                     <div class="switch-wrapper">
@@ -104,14 +111,16 @@
                                             <input type="checkbox" [(ngModel)]="proEnabled" (change)="togglePro()">
                                             <span class="slider"></span>
                                         </label>
-                                        <span>Enable Customization</span>
+                                        <span *ngIf="!chinese">Enable Customization</span>
+                                        <span *ngIf="chinese">啟動客製化</span>
                                     </div>
                                     <br>
                                     <br>
                                     <br>
-                                    <div class="fine-print">By flipping this switch above you are agreeing to provide
+                                    <div *ngIf="!chinese" class="fine-print">By flipping this switch above you are agreeing to provide
                                         your details entered above to
                                         OpenAI, further tailoring its responses to suit your personal needs</div>
+                                    <div *ngIf="chinese" class="fine-print">通過切換上方的開關，您同意將您以上輸入的詳細資料提供給OpenAI，從而更加貼合您的個人需求進行回應</div>
                                 </div>
                                 <!-- <ul class="list-group list-group-flush rounded-3">
                                     <button (click)="copyText('ho224purdue@gmail.com')"
@@ -150,7 +159,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-3 icon-column">
-                                        <p class="mb-0 header-text">First Name</p>
+                                        <p *ngIf="!chinese" class="mb-0 header-text">First Name</p>
+                                        <p *ngIf="chinese" class="mb-0 header-text">名字</p>
                                         <svg class="edit-icon" style="margin-top:10px"
                                             xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
                                             <path
@@ -181,7 +191,8 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3 icon-column">
-                                        <p class="mb-0 header-text" style="margin-top:10px">Model Name</p>
+                                        <p *ngIf="!chinese" class="mb-0 header-text" style="margin-top:10px">Model Name</p>
+                                        <p *ngIf="chinese" class="mb-0 header-text" style="margin-top:10px">AI 稱呼 (呼喚指令)</p>
                                         <svg class="edit-icon" style="margin-top:10px"
                                             xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
                                             <path
@@ -198,7 +209,8 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3 icon-column">
-                                        <p class="mb-0 header-text" style="margin-top:10px">Details</p>
+                                        <p *ngIf="!chinese" class="mb-0 header-text" style="margin-top:10px">Details</p>
+                                        <p *ngIf="chinese" class="mb-0 header-text" style="margin-top:10px">詳細資料</p>
                                         <svg class="edit-icon" style="margin-top:10px"
                                             xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
                                             <path
@@ -231,19 +243,29 @@
                             <div class="col-md-6">
                                 <div class="card mb-4 mb-md-0">
                                     <div class="card-body">
-                                        <p class="mb-4"><span class="text-primary font-italic me-1">Edit</span>
+                                        <p *ngIf="!chinese" class="mb-4"><span class="text-primary font-italic me-1">Edit</span>
                                             Model Details
+                                        </p>
+                                        <p *ngIf="chinese" class="mb-4"><span class="text-primary font-italic me-1">編輯</span>
+                                            AI 詳細資料
                                         </p>
                                         <!-- insert model options here -->
                                         <div class="dropdown">
-                                            <h3>Select Model Language</h3>
+                                            <h3 *ngIf="!chinese">Select Model Language</h3>
+                                            <h3 *ngIf="chinese">選擇你的 AI 語言</h3>
                                             <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Select Language for Model Details
                                             </button> -->
-                                            <select class="form-select" [(ngModel)]="selectedLanguageType"
+                                            <select *ngIf="!chinese" class="form-select" [(ngModel)]="selectedLanguageType"
                                                 (change)="onLanguageTypeChange($event)"
                                                 aria-labelledby="dropdownMenuButton">
                                                 <option *ngFor="let type of languageTypes" [value]="type">{{ type }}
+                                                </option>
+                                            </select>
+                                            <select *ngIf="chinese" class="form-select" [(ngModel)]="selectedLanguageType"
+                                                (change)="onLanguageTypeChange($event)"
+                                                aria-labelledby="dropdownMenuButton">
+                                                <option *ngFor="let key of objectKeys(chineseLanguageTypes)" [value]="chineseLanguageTypes[key]">{{ key }}
                                                 </option>
                                             </select>
                                         </div>
@@ -263,7 +285,7 @@
                                         </div>
                                         <!-- For Chinese Models -->
                                         <div *ngIf="selectedLanguageType === 'Chinese'" class="dropdown">
-                                            <h3>Select Model Voice</h3>
+                                            <h3>選擇聲音</h3>
                                             <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Select Language for Model Details
                                             </button> -->
@@ -276,7 +298,8 @@
                                         </div>
                                         <br>
                                         <div>
-                                            <h3>Enter Voice Speed</h3>
+                                            <h3 *ngIf="!chinese">Enter Voice Speed</h3>
+                                            <h3 *ngIf="chinese">選擇聲音輸出速度</h3>
                                             <div class="row button-row">
                                                 <!-- <div class="text-muted mb-4 input-text-model col-sm-2" #inputText
                                                     contenteditable="true" type="text" (input)="speedInput($event)"
@@ -296,7 +319,8 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <h3>Enter Voice Pitch</h3>
+                                            <h3 *ngIf="!chinese">Enter Voice Pitch</h3>
+                                            <h3 *ngIf="chinese">選擇聲音頻率</h3>
                                             <div class="row button-row">
                                                 <!-- <div class="text-muted mb-4 input-text-model col-sm-2" #inputText
                                                     contenteditable="true" type="text" (input)="pitchInput($event)"
@@ -322,31 +346,38 @@
                             <div class="col-md-6">
                                 <div class="card mb-4 mb-md-0">
                                     <div class="card-body">
-                                        <p class="mb-4"><span class="text-primary font-italic me-1">{{ firstName
-                                                }}</span>
+                                        <p *ngIf="!chinese" class="mb-4"><span class="text-primary font-italic me-1">{{ firstName }}</span>
                                             Model Personal Usage
                                         </p>
-                                        <p class="mb-1" style="font-size: .77rem;">Prompt Tokens</p>
+                                        <p *ngIf="chinese" class="mb-4"><span class="text-primary font-italic me-1">{{ firstName }}</span>
+                                            模型個人使用量
+                                        </p>
+                                        <p *ngIf="!chinese" class="mb-1" style="font-size: .77rem;">Prompt Tokens</p>
+                                        <p *ngIf="chinese" class="mb-1" style="font-size: .77rem;">使用者 Tokens 使用量</p>
                                         <div class="progress rounded" style="height: 5px;">
                                             <div class="progress-bar" role="progressbar" style="width: 0%"
                                                 aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Complete Tokens</p>
+                                        <p *ngIf="!chinese" class="mt-4 mb-1" style="font-size: .77rem;">Complete Tokens</p>
+                                        <p *ngIf="chinese" class="mt-4 mb-1" style="font-size: .77rem;">AI 回覆 Tokens 使用量</p>
                                         <div class="progress rounded" style="height: 5px;">
                                             <div class="progress-bar" role="progressbar" style="width: 0%"
                                                 aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Total Tokens</p>
+                                        <p *ngIf="!chinese" class="mt-4 mb-1" style="font-size: .77rem;">Total Tokens</p>
+                                        <p *ngIf="chinese" class="mt-4 mb-1" style="font-size: .77rem;">Tokens總和使用量</p>
                                         <div class="progress rounded" style="height: 5px;">
                                             <div class="progress-bar" role="progressbar" style="width: 0%"
                                                 aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Google Bucket Storage</p>
+                                        <p *ngIf="!chinese" class="mt-4 mb-1" style="font-size: .77rem;">Google Bucket Storage</p>
+                                        <p *ngIf="chinese" class="mt-4 mb-1" style="font-size: .77rem;">Google 儲存容量使用</p>
                                         <div class="progress rounded mb-2" style="height: 5px;">
                                             <div class="progress-bar" role="progressbar" style="width: 0%"
                                                 aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Google Speech API</p>
+                                        <p *ngIf="!chinese" class="mt-4 mb-1" style="font-size: .77rem;">Google Speech API</p>
+                                        <p *ngIf="chinese" class="mt-4 mb-1" style="font-size: .77rem;">Google Speech API 使用量</p>
                                         <div class="progress rounded mb-2" style="height: 5px;">
                                             <div class="progress-bar" role="progressbar" style="width: 0%"
                                                 aria-valuenow="2" aria-valuemin="0" aria-valuemax="100"></div>
@@ -356,17 +387,20 @@
                                             <div class="progress-bar" role="progressbar" style="width: 0%"
                                                 aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Server.js Traffic</p>
+                                        <p *ngIf="!chinese" class="mt-4 mb-1" style="font-size: .77rem;">Server.js Traffic</p>
+                                        <p *ngIf="chinese" class="mt-4 mb-1" style="font-size: .77rem;">伺服器流量</p>
                                         <div class="progress rounded mb-2" style="height: 5px;">
                                             <div class="progress-bar" role="progressbar" style="width: 0%"
                                                 aria-valuenow="31" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Traffic Efficiency</p>
+                                        <p *ngIf="!chinese" class="mt-4 mb-1" style="font-size: .77rem;">Traffic Efficiency</p>
+                                        <p *ngIf="chinese" class="mt-4 mb-1" style="font-size: .77rem;">流量效率</p>
                                         <div class="progress rounded mb-2" style="height: 5px;">
                                             <div class="progress-bar" role="progressbar" style="width: 0%"
                                                 aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="mt-4 mb-1" style="font-size: .77rem;">Database Usage</p>
+                                        <p *ngIf="!chinese" class="mt-4 mb-1" style="font-size: .77rem;">Database Usage</p>
+                                        <p *ngIf="chinese" class="mt-4 mb-1" style="font-size: .77rem;">後端資料庫使用率</p>
                                         <div class="progress rounded mb-2" style="height: 5px;">
                                             <div class="progress-bar" role="progressbar" style="width: 0%"
                                                 aria-valuenow="9" aria-valuemin="0" aria-valuemax="100"></div>

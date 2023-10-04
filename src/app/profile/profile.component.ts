@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { SharedServiceService } from '../shared-service.service';
 import { AuthService } from '../auth.service';
 import { first, firstValueFrom } from 'rxjs';
@@ -11,13 +11,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit, AfterViewInit {
+  chinese: boolean = false; // initialize default language (english)
   @ViewChild('inputText', { static: true }) inputElement?: ElementRef; // for placeholder
   constructor(
     private sharedService: SharedServiceService,
     private authService: AuthService,
     private httpClient: HttpClient,
     private snackBar: MatSnackBar,
-  ) { }
+    private cdr: ChangeDetectorRef
+  ) { 
+    sharedService.data$.subscribe(data => { // for when the language button has been clicked
+      this.chinese = data;
+      // console.log('Chinese?', this.chinese);
+      this.cdr.markForCheck();
+    })
+  }
   individual_totaltokens = this.sharedService.total_tokens / this.sharedService.max_signup;
   firstName: string = '';
   email: string = '';
@@ -33,6 +41,11 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   f_flag: boolean = false;
   // For dropdown menu
   languageTypes: string[] = ['English', 'Chinese'];
+  chineseLanguageTypes: { [key: string]: string } = {
+    '英文': 'English',
+    '中文': 'Chinese'
+  };
+  objectKeys = Object.keys; // for HTML
   selectedLanguageType: string = 'English';
   voiceTypes = {
     English: ['en-GB-Neural2-A', 'en-GB-Neural2-B', 'en-GB-Neural2-C', 'en-GB-Neural2-D', 'en-GB-Neural2-F', 'en-GB-News-G', 'en-GB-News-H', 'en-GB-News-I', 'en-GB-Wavenet-A', 'en-GB-Wavenet-B', 'en-GB-Wavenet-C', 'en-GB-Wavenet-D', 'en-GB-Wavenet-F', 'en-US-Neural2-A', 'en-US-Neural2-B', 'en-US-Neural2-C', 'en-US-Neural2-D', 'en-US-Neural2-E', 'en-US-Neural2-F', 'en-US-Neural2-G', 'en-US-Neural2-H', 'en-US-Neural2-I', 'en-US-Neural2-J', 'en-US-Neural2-K', 'en-US-Neural2-L', 'en-US-Neural2-M', 'en-US-Neural2-N', 'en-US-Studio-M', 'en-US-Studio-O', 'en-US-Wavenet-A', 'en-US-Wavenet-B', 'en-US-Wavenet-C', 'en-US-Wavenet-D', 'en-US-Wavenet-E', 'en-US-Wavenet-F', 'en-US-Wavenet-G', 'en-US-Wavenet-H', 'en-US-Wavenet-I', 'en-US-Wavenet-J'],
@@ -75,6 +88,9 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     this.pitch = parseFloat(userDetails.pitch);
     this.selectedVoiceType = userDetails.voice;
     this.modelLanguage = userDetails.language; // en-gb, en-US, zh-TW...
+    if (userDetails.language === 'zh-TW') {
+      this.chinese = true
+    }
     this.modelToLang(userDetails.language);
     if (this.f_ls.includes(this.firstName.trim().toLowerCase())) {
       this.f_flag = true;
@@ -234,17 +250,37 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       if (!result) {
         console.log('Something went wrong in modifyData, the returned response was not true');
       } else {
-        this.snackBar.open(
-          'User details saved!',
-          'Close',
-          {
-            duration: 1000,
-            verticalPosition: 'bottom', // 'top' | 'bottom'
-            horizontalPosition: 'center', // 'start' | 'center' | 'end'
-            // panelClass: ['blue-snackbar'],
-          }
-        );
+        if (this.chinese) {
+          this.snackBar.open(
+            '使用者資料儲存!',
+            '關閉',
+            {
+              duration: 1000,
+              verticalPosition: 'bottom', // 'top' | 'bottom'
+              horizontalPosition: 'center', // 'start' | 'center' | 'end'
+              // panelClass: ['blue-snackbar'],
+            }
+          );
+        } else {
+          this.snackBar.open(
+            'User details saved!',
+            'Close',
+            {
+              duration: 1000,
+              verticalPosition: 'bottom', // 'top' | 'bottom'
+              horizontalPosition: 'center', // 'start' | 'center' | 'end'
+              // panelClass: ['blue-snackbar'],
+            }
+          );
+        }
       }
+      // Change the language afterwards
+      if (this.modelLanguage === 'zh-TW') {
+        this.chinese = true;
+      } else {
+        this.chinese = false;
+      }
+      this.sharedService.setData(this.chinese);
     } catch (error) {
       console.log('Something went wrong with saving the modified data', error);
     }

@@ -25,8 +25,11 @@
       <button mat-button class="menu-button" (click)="sidenav.toggle()">
         <mat-icon>{{ isMenuOpen ? 'menu_open' : 'menu' }}</mat-icon>
       </button>
-      <a routerLink="/">
+      <a *ngIf="!chinese" routerLink="/">
         <span class="app-title">AI Personal Assistant</span>
+      </a>
+      <a *ngIf="chinese" routerLink="/">
+        <span class="app-title">AI 個人助手</span>
       </a>
     </div>
   </header>
@@ -39,10 +42,15 @@
   class="sidenav" 
   (click)="onSidenavClick()"
   >
-    <a mat-button style="padding-block: 30px" routerLink="/main/+[encodedURL]">Virtual Assistant</a>
-    <a mat-button style="padding-block: 30px" routerLink="/about">About</a>
-    <a mat-button style="padding-block: 30px" routerLink="/profile">My Profile</a>
-    <a mat-button style="padding-block: 30px" routerLink="/">Language Button</a>
+    <a *ngIf="!chinese" mat-button style="padding-block: 30px" routerLink="/main/+[encodedURL]">Virtual Assistant</a>
+    <a *ngIf="chinese" mat-button style="padding-block: 30px" routerLink="/main/+[encodedURL]">AI 助手</a>
+
+    <a *ngIf="chinese" mat-button style="padding-block: 30px" routerLink="/about">關於這個應用程式</a>
+    <a *ngIf="!chinese" mat-button style="padding-block: 30px" routerLink="/about">About</a>
+    <a *ngIf="!chinese" mat-button style="padding-block: 30px" routerLink="/profile">My Profile</a>
+    <a *ngIf="chinese" mat-button style="padding-block: 30px" routerLink="/profile">我的個人檔案</a>
+    <a *ngIf="!chinese" mat-button style="padding-block: 30px" (click)="changeLanguage()">繁體中文</a>
+    <a *ngIf="chinese" mat-button style="padding-block: 30px" (click)="changeLanguage()">English</a>
   </mat-sidenav>
   <mat-sidenav-content class="content">
     <router-outlet></router-outlet>

@@ -30,6 +30,7 @@ const openai = new OpenAI({
   ]
 })
 export class MainComponent implements OnInit, OnDestroy {
+  chinese: boolean = false; // initialize language boolean variable
   // Declare previous handlers as class properties
   private prevPlayHandler: any = null;
   private prevEndedHandler: any = null;
@@ -41,7 +42,13 @@ export class MainComponent implements OnInit, OnDestroy {
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     private router: Router,
-  ) { }
+  ) {
+    sharedService.data$.subscribe(data => { // for when the language button has been clicked
+      this.chinese = data;
+      // console.log('Chinese?', this.chinese);
+      this.cdr.markForCheck();
+    })
+  }
   @ViewChild('responseCardContainer', { static: false }) responseCardContainer?: ElementRef;
   @ViewChild('inputText', { static: true }) inputElement?: ElementRef; // for placeholder
   typingInterval: any; // Declare a class property to store interval ID
@@ -71,23 +78,39 @@ export class MainComponent implements OnInit, OnDestroy {
   attributeVariables(user_details: any) {
     this.model_ai = user_details.model;
     this.language = user_details.language;
+    if (user_details.language === 'zh-TW') { // change language
+      this.chinese = true;
+    }
     this.model_name = user_details.voice;
     this.speed = user_details.speed;
     this.pitch = user_details.pitch;
   }
-  generateRandomResponse(): string {
-    const responses = [
-      'Ask me anything',
-      'What would you like to know?',
-      'I\'m here to help! Ask me anything.',
-      'How can I assist you today?',
-      'Feel free to ask me anything.',
-      'What are you curious about today?',
-      'Is there something specific you\'d like to know?',
-      'What can I help you with today?',
-      'Hi! What would you like to ask?'
-    ];
-
+  generateRandomResponse(chinese: boolean): string {
+    let responses = []
+    if (chinese) {
+      responses = [
+        '你今天想知道什麼?',
+        '嗨!請問你想問我什麼呢?',
+        '我今天可以怎麼幫你呢?',
+        '請問你今天有對什麼東西感到好奇嗎?',
+        '歡迎問我任何問題!',
+        '有什麼你想知道的嗎?',
+        '你好! 我是你的 AI 助手!歡迎問我任何問題!',
+        '你的 AI 助手在此為你服務，歡迎問我任何問題!'
+      ];
+    } else {
+      responses = [
+        'Ask me anything',
+        'What would you like to know?',
+        'I\'m here to help! Ask me anything.',
+        'How can I assist you today?',
+        'Feel free to ask me anything.',
+        'What are you curious about today?',
+        'Is there something specific you\'d like to know?',
+        'What can I help you with today?',
+        'Hi! What would you like to ask?'
+      ];
+    }
     // Pick a random response from the array
     const randomIndex = Math.floor(Math.random() * responses.length);
     return responses[randomIndex];
@@ -112,8 +135,14 @@ export class MainComponent implements OnInit, OnDestroy {
     this.attributeVariables(user_details);
     // Initialize data-placeholder attribute
     // this.renderer.setAttribute(this.inputElement?.nativeElement, 'data-placeholder', `Enter text to chat with ${this.model_ai} or say "${this.model_ai} how are you doing today?"`);
-    this.dynamicPlaceholder = `Enter text to chat with ${this.model_ai} or say "${this.model_ai} how are you doing today?"`;
-    this.response = this.generateRandomResponse();
+    console.log('Print out chinese?', this.chinese);
+    if (this.chinese) {
+      this.dynamicPlaceholder = `請在這邊輸入跟 ${this.model_ai} 講話! 或者你也可以說 "${this.model_ai} 你今天過的怎麼樣?"`;
+    } else {
+      this.dynamicPlaceholder = `Enter text to chat with ${this.model_ai} or say "${this.model_ai} how are you doing today?"`;
+    }
+    this.response = this.generateRandomResponse(this.chinese);
+    this.cdr.detectChanges();
     // Initialize speech recognition
     if ('webkitSpeechRecognition' in window) {
       this.recognition = new (window as any).webkitSpeechRecognition();

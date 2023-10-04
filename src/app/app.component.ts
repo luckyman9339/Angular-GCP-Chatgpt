@@ -15,12 +15,21 @@ export class AppComponent implements OnInit {
   title = 'friday';
   isMenuOpen: boolean = false;
   isLoggedIn: boolean = false;
+  userLanguage: string = 'en-gb';
+  chinese: boolean = false; // true if user language is chinese
 
-  constructor(private httpClient: HttpClient, private sharedService: SharedServiceService, private route: Router, private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef) { }
+  constructor(private httpClient: HttpClient, private sharedService: SharedServiceService, private route: Router, private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef) {
+    sharedService.data$.subscribe(data => {
+      // console.log('Chinese?', data);
+      this.chinese = data;
+      this.cdr.markForCheck();
+    })
+   }
   ngOnInit(): void {
     const token = localStorage.getItem('auth_token');
     if (token) {
       this.isLoggedIn = true;
+      this.retrieveUserDetails(token);
     } else {
       this.isLoggedIn = false;
       this.cdr.detectChanges();
@@ -39,6 +48,10 @@ export class AppComponent implements OnInit {
             if (data.isLoggedIn === true) {
               this.isLoggedIn = true;
               this.cdr.detectChanges();
+              const token = localStorage.getItem('auth_token'); // retrieve token upon logging in
+              if (token) {
+                this.retrieveUserDetails(token);
+              }
             }
             // for (let i = 0; i < environment.users.length; i++) {
             //   const encoded_name = btoa(environment.users[i].email);
@@ -60,7 +73,27 @@ export class AppComponent implements OnInit {
       });
     }
   }
+  // function that changes UI into Chinese (but does not change model language)
+  changeLanguage () {
+    this.chinese = !this.chinese;
+    this.sharedService.setData(this.chinese);
+  };
 
+  // async function to retrieve user details (for language)
+  async retrieveUserDetails(token: string): Promise <any> {
+    try {
+      const data = await this.sharedService.initializeUserDetails(token);
+      // console.log("Received data:", data);
+      this.userLanguage = data.language;
+      // console.log('This is the language', this.userLanguage);
+      if (this.userLanguage === 'zh-TW') {
+        this.chinese = true;
+      }
+      // this.sharedService.setData(this.chinese);
+    } catch (error) {
+      console.error("Error occurred at retrieving user details through shared service:", error);
+    }
+  };
   // // method to log out user
   // logout() {
   //     this.sharedService.logOutUser();
