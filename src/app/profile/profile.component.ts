@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     private httpClient: HttpClient,
     private snackBar: MatSnackBar,
     private cdr: ChangeDetectorRef
-  ) { 
+  ) {
     sharedService.data$.subscribe(data => { // for when the language button has been clicked
       this.chinese = data;
       // console.log('Chinese?', this.chinese);
@@ -55,11 +55,11 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   modelLanguage = ''; // Because model languages are in the format of 'en-gb' for GB English; 'en-US' for US English & 'zh-TW' for Taiwan Chinese
   // For member upgrade to pro
-  proEnabled:boolean = false;
+  proEnabled: boolean = false;
   // For invalid inputs
   invalid_email = false;
-  speedInvalid:boolean = false;
-  pitchInvalid:boolean = false;
+  speedInvalid: boolean = false;
+  pitchInvalid: boolean = false;
   // function for finding out which model language user is currently using
   modelToLang(current_language: string) {
     if (current_language.trim().toLowerCase() === 'zh-tw') {
@@ -202,7 +202,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     // You can also add further constraints if needed.
   }
   // Function for checking if inputted text is a float or integer
-  isFloat(txt:string) {
+  isFloat(txt: string) {
     return /^-?\d*(\.\d+)?$/.test(txt);
   };
 
@@ -229,64 +229,105 @@ export class ProfileComponent implements OnInit, AfterViewInit {
       this.pitchInvalid = true; // same here
     }
   }
+  // function to differentiate between English and Chinese
+  detectLanguage(input: string) {
+    for (let i = 0; i < input.length; i++) {
+      const charCode = input.charCodeAt(i);
+
+      // Checking Unicode range for common Chinese characters
+      if (charCode >= 0x4E00 && charCode <= 0x9FFF) {
+        return 'Chinese';
+      }
+    }
+    return 'English';
+  };
   // function to save
   async save() {
-    // construct the payload
-    const payload = {
-      email: this.email, // required for payload!
-      authorization: this.authorization,
-      firstName: this.firstName,
-      details: this.details,
-      language: this.modelLanguage,
-      model: this.model,
-      voice: this.selectedVoiceType,
-      speed: this.speed,
-      pitch: this.pitch
-    };
-    // Call the API
-    try {
-      const observable = this.httpClient.post<boolean>('https://backend-dot-nodal-component-399020.wl.r.appspot.com/modifyData', payload);
-      const result = await firstValueFrom(observable);
-      if (!result) {
-        console.log('Something went wrong in modifyData, the returned response was not true');
-      } else {
-        if (this.chinese) {
-          this.snackBar.open(
-            '使用者資料儲存!',
-            '關閉',
-            {
-              duration: 1000,
-              verticalPosition: 'bottom', // 'top' | 'bottom'
-              horizontalPosition: 'center', // 'start' | 'center' | 'end'
-              // panelClass: ['blue-snackbar'],
-            }
-          );
+    const modelLang = this.detectLanguage(this.model);
+    this.modelToLang(this.modelLanguage);
+    const aiLang = this.selectedLanguageType;
+    if (modelLang === aiLang) {
+      // construct the payload
+      const payload = {
+        email: this.email, // required for payload!
+        authorization: this.authorization,
+        firstName: this.firstName,
+        details: this.details,
+        language: this.modelLanguage,
+        model: this.model,
+        voice: this.selectedVoiceType,
+        speed: this.speed,
+        pitch: this.pitch
+      };
+      // Call the API
+      try {
+        const observable = this.httpClient.post<boolean>('https://backend-dot-nodal-component-399020.wl.r.appspot.com/modifyData', payload);
+        const result = await firstValueFrom(observable);
+        if (!result) {
+          console.log('Something went wrong in modifyData, the returned response was not true');
         } else {
-          this.snackBar.open(
-            'User details saved!',
-            'Close',
-            {
-              duration: 1000,
-              verticalPosition: 'bottom', // 'top' | 'bottom'
-              horizontalPosition: 'center', // 'start' | 'center' | 'end'
-              // panelClass: ['blue-snackbar'],
-            }
-          );
+          if (this.chinese) {
+            this.snackBar.open(
+              '使用者資料儲存!',
+              '關閉',
+              {
+                duration: 1000,
+                verticalPosition: 'bottom', // 'top' | 'bottom'
+                horizontalPosition: 'center', // 'start' | 'center' | 'end'
+                // panelClass: ['blue-snackbar'],
+              }
+            );
+          } else {
+            this.snackBar.open(
+              'User details saved!',
+              'Close',
+              {
+                duration: 1000,
+                verticalPosition: 'bottom', // 'top' | 'bottom'
+                horizontalPosition: 'center', // 'start' | 'center' | 'end'
+                // panelClass: ['blue-snackbar'],
+              }
+            );
+          }
         }
+        // Change the language afterwards
+        if (this.modelLanguage === 'zh-TW') {
+          this.chinese = true;
+        } else {
+          this.chinese = false;
+        }
+        this.sharedService.setData(this.chinese);
+      } catch (error) {
+        console.log('Something went wrong with saving the modified data', error);
       }
-      // Change the language afterwards
-      if (this.modelLanguage === 'zh-TW') {
-        this.chinese = true;
+    } else { // if model language is not equal to language
+      if (this.chinese) {
+        this.snackBar.open(
+          'AI 名稱與選擇的語言不同!!',
+          '關閉',
+          {
+            duration: 3000,
+            verticalPosition: 'top', // 'top' | 'bottom'
+            horizontalPosition: 'right', // 'start' | 'center' | 'end'
+            // panelClass: ['blue-snackbar'],
+          }
+        );
       } else {
-        this.chinese = false;
+        this.snackBar.open(
+          'Name chosen for AI is not in language of selected model!',
+          'Close',
+          {
+            duration: 3000,
+            verticalPosition: 'top', // 'top' | 'bottom'
+            horizontalPosition: 'right', // 'start' | 'center' | 'end'
+            // panelClass: ['negative'],
+          }
+        );
       }
-      this.sharedService.setData(this.chinese);
-    } catch (error) {
-      console.log('Something went wrong with saving the modified data', error);
     }
   }
   // function for toggling member to pro upgrade
-  togglePro () {
+  togglePro() {
     // Do not need to toggle this.proEnabled here because ngModel is already bound to the variable
     // console.log('Do you have pro enabled?', this.proEnabled);
     if (this.proEnabled && this.authorization === 'Member') {

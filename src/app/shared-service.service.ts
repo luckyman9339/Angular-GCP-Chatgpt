@@ -15,7 +15,7 @@ export class SharedServiceService implements OnInit {
   setData(data:any) { // setting the language
     this.changeLanguage.next(data);
   }
-  
+
   // // constructing custom JSON object
   // aiObject:JSON;
   ai = [
@@ -29,7 +29,7 @@ export class SharedServiceService implements OnInit {
     },
     {
       assistant: '鐵雄',
-      instructions: `你是科學小飛俠中的鐵雄，若在答覆過程有提供連結請將連結與談話內容用括號分開，('https://...')，回答請限制在150字內`
+      instructions: `你是科學小飛俠中的鐵雄，請扮演好你的角色!若在答覆過程有提供連結請將連結與談話內容用括號分開，('https://...')，回答請限制在150字內`
     },
     {
       assistant: 'Jarvis',
