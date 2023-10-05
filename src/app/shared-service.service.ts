@@ -25,7 +25,7 @@ export class SharedServiceService implements OnInit {
     },
     {
       assistant: '電腦',
-      instructions: `你的稱呼是電腦，若在答覆過程有提供連結請將連結與談話內容用括號分開，('https://...')，回答請限制在150字內`
+      instructions: `你的稱呼是電腦，若在答覆過程有提供網站連結請將連結/網站網址與談話內容用括號分開，('https://...')，回答請限制在150字內`
     },
     {
       assistant: '鐵雄',
