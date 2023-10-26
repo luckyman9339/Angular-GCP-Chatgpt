@@ -3,13 +3,13 @@ Friday is a revolutionary full-stack Angular web application designed to empower
 
 # Key Features
 
-# 1. Voice-Controlled Accessibility
+## 1. Voice-Controlled Accessibility
 Friday's core innovation lies in its voice-controlled accessibility, enabling individuals with physical impairments to effortlessly interact with the application. Through the integration of Google Cloud Services and ChatGPT's API, users can navigate and communicate within the application using natural language and voice commands.
 
-# 2. Robust Server-Side Architecture
+## 2. Robust Server-Side Architecture
 At the heart of Friday is a robust server-side architecture, powered by Node.js and Express.js. Our meticulously engineered server-side APIs optimize data flow, response times, and overall backend efficiency. This ensures that users experience a seamless and responsive interaction with the application, irrespective of their abilities.
 
-# 3. Inclusivity as the Driving Force
+## 3. Inclusivity as the Driving Force
 Friday is not just another web application; it's a commitment to inclusivity. Our mission is to break down technological barriers for physically impaired individuals, expanding user engagement and promoting accessibility. By championing accessibility, Friday empowers a broader audience to harness the power of AI-driven voice interactions.
 
 # How It Works
