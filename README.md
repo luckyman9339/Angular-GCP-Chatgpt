@@ -1,5 +1,8 @@
 # Friday: Accessibility-focused Application Empowering Inclusive Interactions
-Friday is a revolutionary full-stack Angular web application designed to empower users with disabilities through inclusive AI-driven voice interactions. Inspired by Tony Stark's AI assistant in the MCU, this cutting-edge platform integrates Google Cloud Services and ChatGPT's API to offer seamless, voice-controlled speech-to-text and text-to-speech capabilities, hosted via the Google Cloud SDK.
+Friday is a pioneering, full-stack Angular web application meticulously designed to revolutionize user experiences, with a primary focus on empowering individuals with disabilities. Drawing inspiration from the iconic AI assistant in the Marvel Cinematic Universe, our platform offers a groundbreaking solution that transcends language barriers. By seamlessly integrating Google Cloud Services and ChatGPT's API, Friday delivers a remarkable user journey marked by inclusive, AI-driven voice interactions.
+
+One of Friday's standout features is its multilingual capability, accommodating both Mandarin and English speakers. Users have the flexibility to activate the virtual assistant using trigger words and phrases in either language, making it a universally accessible tool.
+
 
 ## Key Features
 
