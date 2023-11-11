@@ -3,7 +3,7 @@ Friday is a pioneering, full-stack Angular web application meticulously designed
 
 One of Friday's standout features is its multilingual capability, accommodating both Mandarin and English speakers. Users have the flexibility to activate the virtual assistant using trigger words and phrases in either language, making it a universally accessible tool.
 
-In addition to its multilingual prowess, Friday introduces an unparalleled level of personalization. Users can fine-tune their virtual assistant's responses by adjusting parameters such as voice pitch, speed, voice type, and even language. This level of customization ensures that the assistant's interactions align with users' preferences and needs
+In addition to its multilingual prowess, Friday introduces an unparalleled level of personalization. Users can fine-tune their virtual assistant's responses by adjusting parameters such as voice pitch, speed, voice type, and even language. This level of customization ensures that the assistant's interactions align with users' preferences and needs.
 
 Friday's commitment to inclusivity extends to its ability to incorporate personal details, allowing users to shape the assistant's responses in a way that resonates with their unique identities. With this innovation, Friday goes beyond standard AI interaction, providing a tailored, dynamic experience that empowers users to engage with technology in a manner that truly reflects their individuality. Bringing personalized AI one step closer.
 
