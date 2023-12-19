@@ -1,5 +1,5 @@
 # Friday: Accessibility-focused Application Empowering Inclusive Interactions
-Friday is a pioneering, full-stack Angular web application meticulously designed to revolutionize user experiences, with a primary focus on empowering individuals with disabilities. Drawing inspiration from the iconic AI assistant in the Marvel Cinematic Universe, our platform offers a groundbreaking solution that transcends language barriers. By seamlessly integrating Google Cloud Services and ChatGPT's API, Friday delivers a user journey marked by inclusive, AI-driven voice interactions
+Friday is a pioneering, full-stack Angular web application meticulously designed to revolutionize user experiences, with a primary focus on empowering individuals with disabilities. Drawing inspiration from the iconic AI assistant in the Marvel Cinematic Universe, our platform offers a groundbreaking solution that transcends language barriers. By seamlessly integrating Google Cloud Services and ChatGPT's API, Friday delivers a user journey marked by inclusive, AI-driven voice interactions.
 
 One of Friday's standout features is its multilingual capability, accommodating both Mandarin and English speakers. Users have the flexibility to activate the virtual assistant using trigger words and phrases in either language, making it a universally accessible tool.
 
